@@ -11,24 +11,16 @@ public class CollectionListBean {
 
 
     /**
-     * type : 1
      * code : 0
-     * message : 获取成功
-     * resultdata : [{"Id":"ba457d8e-42bc-43a2-b6bb-c276e1427891","UserInfo_ID":"fb80d7ea-5667-4185-b8b8-4089b96542d0","Goods_ID":"452acc8f-c33b-4762-bd05-536a61c3c493","CreateTime":"2018-05-30T12:07:19.253","Goods_ImaPath":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164362&di=d71eaf72832ba1ec278ada176eebc579&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201510%2F12%2F20151012101939_QwRPC.thumb.700_0.jpeg","Goods_Name":"鞋子","SaveType":1},{"Id":"aaf4ed73-a6ad-449b-825b-4351badcd366","UserInfo_ID":"fb80d7ea-5667-4185-b8b8-4089b96542d0","Goods_ID":"bd69ae37-02fe-41bc-bb85-337ec579e369","CreateTime":"2018-06-04T09:45:38.883","Goods_ImaPath":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164361&di=40dcc97ef80aa6de3c2fbe2c6a9690f4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F19%2F68%2F13%2F69C58PICRfS_1024.jpg","Goods_Name":"这是商品名称","SaveType":1},{"Id":"0d40c1f8-da6f-4577-b28a-6ecb2b2152be","UserInfo_ID":"fb80d7ea-5667-4185-b8b8-4089b96542d0","Goods_ID":"1a4179e2-5555-46d0-aa62-0218369f211b","CreateTime":"2018-06-04T10:27:39.51","Goods_ImaPath":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164363&di=5273719a0ec59feb189fdc864d79cfa6&imgtype=0&src=http%3A%2F%2Fpic.90sjimg.com%2Fback_pic%2Fqk%2Fback_origin_pic%2F00%2F03%2F14%2Fc0391a6c1efab3fe00911b04e8cedca4.jpg","Goods_Name":"裤子","SaveType":1}]
+     * message : 请求成功
+     * resultdata : [{"Evaluation":0,"Id":1485,"Image":"/Storage/Shop/266/Products/1485/1_220.png","ProductName":"乔治汤米男短袖圆领T恤SQ081002","SalePrice":"96.00"},{"Evaluation":0,"Id":980,"Image":"/Storage/Shop/266/Products/980/1_220.png","ProductName":"荏仟堂 陶瓷粗陶一杯一壶快客杯旅行茶具单杯定制旅行包创意","SalePrice":"92.00"},{"Evaluation":0,"Id":1311,"Image":"/Storage/Shop/266/Products/1311/1_220.png","ProductName":"万利达8825吹风机","SalePrice":"160.00"},{"Evaluation":0,"Id":584,"Image":"/Storage/Shop/266/Products/584/1_220.png","ProductName":"草莓果茶整箱6瓶特惠","SalePrice":"105.00"}]
+     * type : 1
      */
 
-    private int type;
     private int code;
     private String message;
+    private int type;
     private List<ResultdataBean> resultdata;
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public int getCode() {
         return code;
@@ -46,6 +38,14 @@ public class CollectionListBean {
         this.message = message;
     }
 
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
     public List<ResultdataBean> getResultdata() {
         return resultdata;
     }
@@ -56,23 +56,19 @@ public class CollectionListBean {
 
     public static class ResultdataBean {
         /**
-         * Id : ba457d8e-42bc-43a2-b6bb-c276e1427891
-         * UserInfo_ID : fb80d7ea-5667-4185-b8b8-4089b96542d0
-         * Goods_ID : 452acc8f-c33b-4762-bd05-536a61c3c493
-         * CreateTime : 2018-05-30T12:07:19.253
-         * Goods_ImaPath : https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164362&di=d71eaf72832ba1ec278ada176eebc579&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fitem%2F201510%2F12%2F20151012101939_QwRPC.thumb.700_0.jpeg
-         * Goods_Name : 鞋子
-         * SaveType : 1
+         * Evaluation : 0
+         * Id : 1485
+         * Image : /Storage/Shop/266/Products/1485/1_220.png
+         * ProductName : 乔治汤米男短袖圆领T恤SQ081002
+         * SalePrice : 96.00
          */
 
-        private String Id;
-        private String UserInfo_ID;
-        private String Goods_ID;
-        private String CreateTime;
-        private String Goods_ImaPath;
-        private String Goods_Name;
-        private int SaveType;
-        private boolean isSelect;
+        private int Evaluation;
+        private int Id;
+        private String Image;
+        private String ProductName;
+        private String SalePrice;
+        private  boolean isSelect;
 
         public boolean isSelect() {
             return isSelect;
@@ -82,60 +78,44 @@ public class CollectionListBean {
             isSelect = select;
         }
 
-        public String getId() {
+        public int getEvaluation() {
+            return Evaluation;
+        }
+
+        public void setEvaluation(int Evaluation) {
+            this.Evaluation = Evaluation;
+        }
+
+        public int getId() {
             return Id;
         }
 
-        public void setId(String Id) {
+        public void setId(int Id) {
             this.Id = Id;
         }
 
-        public String getUserInfo_ID() {
-            return UserInfo_ID;
+        public String getImage() {
+            return Image;
         }
 
-        public void setUserInfo_ID(String UserInfo_ID) {
-            this.UserInfo_ID = UserInfo_ID;
+        public void setImage(String Image) {
+            this.Image = Image;
         }
 
-        public String getGoods_ID() {
-            return Goods_ID;
+        public String getProductName() {
+            return ProductName;
         }
 
-        public void setGoods_ID(String Goods_ID) {
-            this.Goods_ID = Goods_ID;
+        public void setProductName(String ProductName) {
+            this.ProductName = ProductName;
         }
 
-        public String getCreateTime() {
-            return CreateTime;
+        public String getSalePrice() {
+            return SalePrice;
         }
 
-        public void setCreateTime(String CreateTime) {
-            this.CreateTime = CreateTime;
-        }
-
-        public String getGoods_ImaPath() {
-            return Goods_ImaPath;
-        }
-
-        public void setGoods_ImaPath(String Goods_ImaPath) {
-            this.Goods_ImaPath = Goods_ImaPath;
-        }
-
-        public String getGoods_Name() {
-            return Goods_Name;
-        }
-
-        public void setGoods_Name(String Goods_Name) {
-            this.Goods_Name = Goods_Name;
-        }
-
-        public int getSaveType() {
-            return SaveType;
-        }
-
-        public void setSaveType(int SaveType) {
-            this.SaveType = SaveType;
+        public void setSalePrice(String SalePrice) {
+            this.SalePrice = SalePrice;
         }
     }
 }

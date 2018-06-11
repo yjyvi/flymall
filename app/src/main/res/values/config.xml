@@ -110,13 +110,29 @@
     <string name="GetEvaluateItem">/api/Order/GetEvaluateItem</string>
     <!--评论商品-->
     <string name="AddEvaluateItem">/api/Order/AddEvaluateItem</string>
-    <!--是否加入收藏-->
+
+    <!--接口名称：是否加入收藏
+        说明：用户是否收藏某商品
+        地址：/IsFavorite/IsFavorite?productId=商品id&userId=用户id
+        请求方法：get-->
     <string name="IsFavorite">/api/IsFavorite/IsFavorite</string>
-    <!--收藏商品列表-->
-    <string name="ListCollectionAndFootMark">/api/IsFavorite/DeleteFavorite</string>
-    <!--取消收藏-->
+
+    <!--接口名称：收藏商品列表
+        说明：收藏商品列表
+        地址：/IsFavorite/DeleteFavorite?pageNo=当前页码&userId=用户id&pageSize=页大小，默认10
+        请求方法：get-->
+    <string name="ListCollectionAndFootMark">/api/IsFavorite/GetUserCollectionProduct</string>
+
+    <!--接口名称：取消收藏
+        说明：取消收藏
+        地址：/IsFavorite/DeleteFavorite?productId=商品id&userId=用户id
+        请求方法：get-->
     <string name="DeleteSingle">/api/IsFavorite/DeleteFavorite</string>
-    <!--添加收藏-->
+
+    <!--接口名称：添加收藏
+        说明：添加收藏
+        地址：/IsFavorite/AddFavorite?productId=商品id&userId=用户id
+        请求方法：get-->
     <string name="AddCollection">/api/IsFavorite/AddFavorite</string>
 
 

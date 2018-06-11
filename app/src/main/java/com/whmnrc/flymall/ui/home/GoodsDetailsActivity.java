@@ -61,7 +61,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener,  AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener {
+public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener {
 
 
     @BindView(R.id.ptlm_specialist_tour_detail)
@@ -355,14 +355,13 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     }
 
 
-
     @Override
-    public void onEntryClick(int oneId, int twoId, int number, String priceId) {
+    public void onEntryClick(int oneId, int twoId, int number, GoodsSpecificationsBean.ResultdataBean goodSpe) {
         if (!UserManager.getIsLogin(this)) {
             return;
         }
         if (isAddCart) {
-            mAddShoppingCartPresenter.addShoppingCartList(mGoodsId, priceId, String.valueOf(number));
+            mAddShoppingCartPresenter.addShoppingCartList(goodSpe.getId(), String.valueOf(number));
         } else {
             ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
             ConfirmBean confirmBean = new ConfirmBean();
@@ -371,9 +370,9 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             confirmBean.setGoods_Name(mGoodsBean.getProduct().getProductName());
             confirmBean.setGoodsNUm(number);
             if (mGoodsSpecificationBean != null) {
-//                confirmBean.setGoods_spec(mGoodsSpecificationBean.get(oneId).getGoodsPrice_AttrName() + mGoodsSpecificationBean.get(oneId).getContent().get(twoId).getGoodsPrice_Attribute());
+                confirmBean.setGoods_spec(goodSpe.getColor() + goodSpe.getSize() + goodSpe.getVersion());
             }
-            confirmBean.setPriceIds(priceId);
+            confirmBean.setPriceIds(goodSpe.getId());
             confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
             confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
             confirmBeans.add(confirmBean);

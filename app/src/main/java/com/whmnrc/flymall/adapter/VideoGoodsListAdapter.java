@@ -27,12 +27,12 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
     public void convert(ViewHolder holder, final AllVideoBean.ResultdataBean data, int position) {
         int getWidth = (holder.itemView.getContext().getResources().getDisplayMetrics().widthPixels - holder.itemView.getContext().getResources().getDimensionPixelOffset(R.dimen.dm_40)) / 2;
         GetViewHeightUtils.changeViewHeight(holder.getView(R.id.rl_goods), getWidth);
-        GlideUtils.LoadImage(mContext, data.getVideo_Thumbnail(), (ImageView) holder.getView(R.id.iv_goods_img));
-        holder.setText(R.id.tv_name, data.getGoods_Name());
+        GlideUtils.LoadImage(mContext, data.getImageUrl(), (ImageView) holder.getView(R.id.iv_goods_img));
+        holder.setText(R.id.tv_name, data.getVideoName());
         holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureVideoPlayActivity.start(v.getContext(), data.getVideo_Path());
+                PictureVideoPlayActivity.start(v.getContext(), data.getVideoUrl());
             }
         });
 
@@ -40,7 +40,7 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
         holder.setOnClickListener(R.id.tv_name, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailsActivity.start(v.getContext(), data.getGoods_ID());
+                GoodsDetailsActivity.start(v.getContext(), String.valueOf(data.getId()));
             }
         });
     }

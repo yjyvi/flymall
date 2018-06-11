@@ -1,6 +1,5 @@
 package com.whmnrc.flymall.presener;
 
-import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -25,13 +24,12 @@ public class AddShoppingCartPresenter extends PresenterBase {
 
     }
 
-    public void addShoppingCartList(String goodsId, String goodsPriceId, String goodsNum) {
+    public void addShoppingCartList( String goodsPriceId, String goodsNum) {
         HashMap<String, String> paramters = new HashMap<>(3);
-        paramters.put("Goods_ID", goodsId);
-        paramters.put("GoodsPrice_ID", goodsPriceId);
-        paramters.put("BuyCar_Num", goodsNum);
-        paramters.put("UserInfo_ID", UserManager.getUser().getId());
-        OKHttpManager.postString(getUrl(R.string.AddProductToCart), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+        paramters.put("skuId", goodsPriceId);
+        paramters.put("count", goodsNum);
+        paramters.put("userId", UserManager.getUser().getId());
+        OKHttpManager.get(getUrl(R.string.AddProductToCart), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {

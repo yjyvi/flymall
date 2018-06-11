@@ -71,6 +71,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     private String versionSkuId = "0";
     public String mColorSkuId = "0";
     public String mSizeSkuId = "0";
+    private GoodsSpecificationsBean.ResultdataBean mSpecificationBean;
 
     public void setPopListener(PopListener popListener) {
         this.popListener = popListener;
@@ -129,11 +130,9 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         tvEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (popListener != null) {
-                    if (TextUtils.isEmpty(mProductAttrIds)) {
-                        return;
-                    }
-                    popListener.onEntryClick(selectOneListPosition, selectTwoListPosition, currentNumber, mProductAttrIds);
+                if (mSpecificationBean != null) {
+
+                    popListener.onEntryClick(selectOneListPosition, selectTwoListPosition, currentNumber, mSpecificationBean);
                 }
             }
         });
@@ -155,9 +154,22 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         mOnTagClickListener = new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                mColorSkuId = String.valueOf(oneList.get(position).getSKUId());
+                mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
                 selectOneListPosition = position;
 
+
+//                mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                return true;
+            }
+        };
+        recyclerView1.setOnTagClickListener(mOnTagClickListener);
+
+        mOnTagClickListener2 = new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                selectTwoListPosition = position;
+
+                mColorSkuId = String.valueOf(twoList.get(position).getSKUId());
 
                 if (mGoodsSpecificationBean.getColor() != null && mGoodsSpecificationBean.getColor().size() > 0 &&
                         TextUtils.equals(mColorSkuId, "0")) {
@@ -175,18 +187,6 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
                     ToastUtils.showToast("请选择型号");
                     return false;
                 }
-                mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
-                return true;
-            }
-        };
-        recyclerView1.setOnTagClickListener(mOnTagClickListener);
-
-        mOnTagClickListener2 = new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                selectTwoListPosition = position;
-
-                mSizeSkuId = String.valueOf(twoList.get(position).getSKUId());
                 mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
                 return true;
             }
@@ -275,6 +275,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
 
     @Override
     public void getGoodsSpecificationsSuccess(GoodsSpecificationsBean.ResultdataBean resultdataBean) {
+        this.mSpecificationBean = resultdataBean;
         mTotalNumber = resultdataBean.getStock();
         tvPrice.setText(PlaceholderUtils.pricePlaceholder(resultdataBean.getSalePrice()));
         tvSelectTag.setText(String.format("Chosen“%s”“%s”", resultdataBean.getSize(), resultdataBean.getColor()));
@@ -283,7 +284,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
 
     //
     public interface PopListener {
-        void onEntryClick(int oneId, int twoId, int number, String productAttrIds);
+        void onEntryClick(int oneId, int twoId, int number, GoodsSpecificationsBean.ResultdataBean productAttrIds);
 
 //        void onSelectClick(String sizeSku, String colorSku);
 //

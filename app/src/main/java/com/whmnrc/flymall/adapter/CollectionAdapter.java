@@ -30,8 +30,8 @@ public class CollectionAdapter extends CommonAdapter<CollectionListBean.Resultda
     @Override
     public void convert(ViewHolder holder, final CollectionListBean.ResultdataBean resultdataBean, final int position) {
 
-        holder.setText(R.id.tv_goods_name, resultdataBean.getGoods_Name());
-        GlideUtils.LoadImage(mContext, resultdataBean.getGoods_ImaPath(), (ImageView) holder.getView(R.id.iv_goods_img));
+        holder.setText(R.id.tv_goods_name, resultdataBean.getProductName());
+        GlideUtils.LoadImage(mContext, resultdataBean.getImage(), (ImageView) holder.getView(R.id.iv_goods_img));
         holder.setOnClickListener(R.id.iv_del_collection, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +61,7 @@ public class CollectionAdapter extends CommonAdapter<CollectionListBean.Resultda
         holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailsActivity.start(v.getContext(), resultdataBean.getGoods_ID());
+                GoodsDetailsActivity.start(v.getContext(), String.valueOf(resultdataBean.getId()));
             }
         });
     }
@@ -78,11 +78,11 @@ public class CollectionAdapter extends CommonAdapter<CollectionListBean.Resultda
         if (!resultdataBean.isSelect()) {
             view.setSelected(true);
             resultdataBean.setSelect(true);
-            mCollectionOpertionListener.selectCollection(position, true, resultdataBean.getId());
+            mCollectionOpertionListener.selectCollection(position, true, String.valueOf(resultdataBean.getId()));
         } else {
             view.setSelected(false);
             resultdataBean.setSelect(false);
-            mCollectionOpertionListener.selectCollection(position, false, resultdataBean.getId());
+            mCollectionOpertionListener.selectCollection(position, false, String.valueOf(resultdataBean.getId()));
         }
 
 

@@ -212,14 +212,14 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     @Override
-    public void getSearchGoodsSuccess(List<SearchResultBean.ResultdataBean.ProductListBean> dataBean) {
+    public void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean) {
 
         if (page == 1) {
-            mAdapter.setDataArray(dataBean);
+            mAdapter.setDataArray(dataBean.getProductList());
             mRvGoodsList.setAdapter(mAdapter);
         } else {
             List<SearchResultBean.ResultdataBean.ProductListBean> datas = mAdapter.getDatas();
-            datas.addAll(dataBean);
+            datas.addAll(dataBean.getProductList());
             mAdapter.setDataArray(datas);
         }
 

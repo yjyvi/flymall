@@ -9,7 +9,6 @@ import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author yjyvi
@@ -34,6 +33,7 @@ public class GetShoppingCartListPresenter extends PresenterBase {
             @Override
             protected void onSuccess(ShoppingCartListBean data) {
                 if (data.getType() == 1) {
+
                     mGetShoppingCartListListener.getListSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
@@ -44,7 +44,7 @@ public class GetShoppingCartListPresenter extends PresenterBase {
     }
 
     public interface GetShoppingCartListListener {
-        void getListSuccess(List<ShoppingCartListBean.ResultdataBean> resultdataBeans);
+        void getListSuccess(ShoppingCartListBean.ResultdataBean resultdataBeans);
     }
 
 }

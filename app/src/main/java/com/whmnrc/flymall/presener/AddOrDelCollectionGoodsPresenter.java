@@ -1,6 +1,5 @@
 package com.whmnrc.flymall.presener;
 
-import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -37,10 +36,9 @@ public class AddOrDelCollectionGoodsPresenter extends PresenterBase {
         if (UserManager.getUser() == null) {
             return;
         }
-        params.put("UserInfo_ID", UserManager.getUser().getId());
-        params.put("Goods_ID", goodsId);
-        params.put("SaveType", String.valueOf(type));
-        OKHttpManager.postString(getUrl(R.string.AddCollection), JSON.toJSONString(params), new CommonCallBack<BaseBean>() {
+        params.put("userId", UserManager.getUser().getId());
+        params.put("productId", goodsId);
+        OKHttpManager.get(getUrl(R.string.AddCollection), params, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {
@@ -60,7 +58,8 @@ public class AddOrDelCollectionGoodsPresenter extends PresenterBase {
      */
     public void delCollection(String goodsId) {
         Map<String, String> params = new HashMap<>(1);
-        params.put("Id", goodsId);
+        params.put("productId", goodsId);
+        params.put("userId",  UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.DeleteSingle), params, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

@@ -9,7 +9,6 @@ import com.whmnrc.flymall.ui.PresenterBase;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author yjyvi
@@ -30,8 +29,8 @@ public class SearchGoodsListPresenter extends PresenterBase {
         HashMap<String, String> paramters = new HashMap<>(8);
         paramters.put("keywords", searchContent);
         paramters.put("cid", cid);
-        paramters.put("b_id", bid);
-        paramters.put("a_id", aid);
+        paramters.put("bid", bid);
+        paramters.put("aid", aid);
         paramters.put("orderKey", orderKey);
         paramters.put("orderType", orderType);
         paramters.put("pageNo", String.valueOf(page));
@@ -41,7 +40,7 @@ public class SearchGoodsListPresenter extends PresenterBase {
             @Override
             protected void onSuccess(SearchResultBean data) {
                 if (data.getType() == 1) {
-                    mSearchGoodsListener.getSearchGoodsSuccess(data.getResultdata().getProductList());
+                    mSearchGoodsListener.getSearchGoodsSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -51,7 +50,7 @@ public class SearchGoodsListPresenter extends PresenterBase {
 
 
     public interface SearchGoodsListener {
-        void getSearchGoodsSuccess(List<SearchResultBean.ResultdataBean.ProductListBean> dataBean);
+        void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean);
     }
 
 }

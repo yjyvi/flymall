@@ -5,6 +5,7 @@ import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -23,9 +24,10 @@ public class DelShoppingCartPresenter extends PresenterBase {
 
     }
 
-    public void delShoppingCartList(String cids) {
+    public void delShoppingCartList(String skuId) {
         HashMap<String, String> paramters = new HashMap<>(1);
-        paramters.put("Cids", cids);
+        paramters.put("skuId", skuId);
+        paramters.put("userId", UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.RemoveFromCart), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

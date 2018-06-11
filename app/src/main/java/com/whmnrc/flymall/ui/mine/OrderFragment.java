@@ -14,10 +14,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.adapter.GoodListAdapter;
+import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.adapter.OrderListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
+import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.presener.OrderListPresenter;
@@ -57,7 +57,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     public int mOrderType;
     private OrderListPresenter mOrderListPresenter;
     private GetLikeGoodsPresenter mGetLikeGoodsPresenter;
-    private GoodListAdapter mAdapter;
+    private LikeGoodListAdapter mAdapter;
 
     @Override
     protected int contentViewLayoutID() {
@@ -87,7 +87,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
 
         mRvGoodsList.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        mAdapter = new GoodListAdapter(getActivity(), R.layout.item_goods_list);
+        mAdapter = new LikeGoodListAdapter(getActivity(), R.layout.item_goods_list);
         mRvGoodsList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -205,7 +205,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     }
 
     @Override
-    public void loadGoodsSucces(List<GoodsListBean.ResultdataBean> resultdataBean) {
+    public void loadGoodsSucces(List<LikeGoodsBean.ResultdataBean> resultdataBean) {
         mAdapter.setDataArray(resultdataBean);
         mAdapter.notifyDataSetChanged();
     }

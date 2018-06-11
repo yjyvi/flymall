@@ -16,10 +16,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.adapter.GoodListAdapter;
+import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.adapter.ShoppingCartAdapter;
 import com.whmnrc.flymall.beans.ConfirmBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
+import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.beans.ShoppingCartListBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.DelShoppingCartPresenter;
@@ -72,7 +72,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     TextView mTvToHome;
 
     public ShoppingCartAdapter mShoppingCartAdapter;
-    public GoodListAdapter mGoodListAdapter;
+    public LikeGoodListAdapter mGoodListAdapter;
     private GetLikeGoodsPresenter mGetLikeGoodsPresenter;
     private boolean isAllChecked;
     public GetShoppingCartListPresenter mGetShoppingCartListPresenter;
@@ -132,7 +132,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                 outRect.bottom = getResources().getDimensionPixelOffset(R.dimen.dm_4);
             }
         });
-        mGoodListAdapter = new GoodListAdapter(getActivity(), R.layout.item_goods_list);
+        mGoodListAdapter = new LikeGoodListAdapter(getActivity(), R.layout.item_goods_list);
         mRvOtherGoods.setAdapter(mGoodListAdapter);
 
         mRvInGoods.setNestedScrollingEnabled(false);
@@ -155,12 +155,12 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
             public void delItem(int position) {
                 removePosition.add(position);
 
-                cartIds.put(mShoppingCartAdapter.getDatas().get(position).getBuyCar_ID(), position);
-                mDelShoppingCartPresenter.delShoppingCartList(mShoppingCartAdapter.getDatas().get(position).getBuyCar_ID());
+                cartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(position).getId()), position);
+                mDelShoppingCartPresenter.delShoppingCartList(String.valueOf(mShoppingCartAdapter.getDatas().get(position).getSkuId()));
 
                 String trim = mTvSumPrices.getText().toString().trim();
                 trim = trim.substring(1, trim.length());
-                double goodsPricePrice = mShoppingCartAdapter.getDatas().get(position).getGoodsPrice_Price() * mShoppingCartAdapter.getDatas().get(position).getBuyCar_Num();
+                double goodsPricePrice = mShoppingCartAdapter.getDatas().get(position).getPrice() * mShoppingCartAdapter.getDatas().get(position).getCount();
                 double currentPrice = Double.parseDouble(trim);
                 mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(currentPrice - goodsPricePrice));
             }
@@ -184,7 +184,6 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                 mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
             }
         });
-
 
 
     }
@@ -258,15 +257,15 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                     for (int i = 0; i < mShoppingCartAdapter.getDatas().size(); i++) {
                         if (mShoppingCartAdapter.getDatas().get(i).isSelect()) {
                             ConfirmBean confirmBean = new ConfirmBean();
-                            ShoppingCartListBean.ResultdataBean resultdataBean = mShoppingCartAdapter.getDatas().get(i);
+                            ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean = mShoppingCartAdapter.getDatas().get(i);
                             confirmBean.setGoodsPrice_Price(0);
-                            confirmBean.setGoods_spec(resultdataBean.getGoodsPrice_Attribute());
-                            confirmBean.setGoods_SourcePrice(resultdataBean.getGoodsPrice_Price() * resultdataBean.getBuyCar_Num());
-                            confirmBean.setPriceIds(resultdataBean.getGoodsPrice_ID() + "," + resultdataBean.getBuyCar_Num());
-                            confirmBean.setGoodsNUm(resultdataBean.getBuyCar_Num());
-                            confirmBean.setGoods_ImaPath(resultdataBean.getGoods_ImaPath());
-                            confirmBean.setGoods_Name(resultdataBean.getGoods_Name());
-                            confirmBean.setGoods_Describe(resultdataBean.getGoodsPrice_AttrName());
+                            confirmBean.setGoods_spec(resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
+                            confirmBean.setGoods_SourcePrice(resultdataBean.getPrice() * resultdataBean.getCount());
+                            confirmBean.setPriceIds(resultdataBean.getSkuId());
+                            confirmBean.setGoodsNUm(resultdataBean.getCount());
+                            confirmBean.setGoods_ImaPath(resultdataBean.getImgUrl());
+                            confirmBean.setGoods_Name(resultdataBean.getName());
+                            confirmBean.setGoods_Describe(resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
                             confirmBeans.add(confirmBean);
                         }
                     }
@@ -299,9 +298,9 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
             double totalPrice = 0;
             if (isAllChecked) {
                 for (int i = 0; i < mShoppingCartAdapter.getDatas().size(); i++) {
-                    cartIds.put(mShoppingCartAdapter.getDatas().get(i).getBuyCar_ID(), i);
+                    cartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(i).getId()), i);
                     mShoppingCartAdapter.getDatas().get(i).setSelect(true);
-                    totalPrice += mShoppingCartAdapter.getDatas().get(i).getGoodsPrice_Price();
+                    totalPrice += mShoppingCartAdapter.getDatas().get(i).getPrice();
                 }
                 mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
             } else {
@@ -313,19 +312,19 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     }
 
     @Override
-    public void loadGoodsSucces(List<GoodsListBean.ResultdataBean> resultdataBean) {
+    public void loadGoodsSucces(List<LikeGoodsBean.ResultdataBean> resultdataBean) {
         mGoodListAdapter.setDataArray(resultdataBean);
         mGoodListAdapter.notifyDataSetChanged();
     }
 
 
     @Override
-    public void getListSuccess(List<ShoppingCartListBean.ResultdataBean> resultdataBeans) {
+    public void getListSuccess(ShoppingCartListBean.ResultdataBean resultdataBeans) {
         if (page == 1) {
-            mShoppingCartAdapter.setDataArray(resultdataBeans);
+            mShoppingCartAdapter.setDataArray(resultdataBeans.getProducts());
         } else {
-            List<ShoppingCartListBean.ResultdataBean> datas = mShoppingCartAdapter.getDatas();
-            datas.addAll(resultdataBeans);
+            List<ShoppingCartListBean.ResultdataBean.ProductsBean> datas = mShoppingCartAdapter.getDatas();
+            datas.addAll(resultdataBeans.getProducts());
             mShoppingCartAdapter.setDataArray(datas);
         }
         mShoppingCartAdapter.notifyDataSetChanged();
@@ -345,14 +344,13 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     public void delCartSuccess() {
 
 
-
         RecyclerView.LayoutManager layoutManager = mRvInGoods.getLayoutManager();
         int childCount = layoutManager.getChildCount();
         for (int i = 0; i < childCount; i++) {
             layoutManager.getChildAt(i).setSelected(false);
         }
 
-        for (ShoppingCartListBean.ResultdataBean resultdataBean : mShoppingCartAdapter.getDatas()) {
+        for (ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean : mShoppingCartAdapter.getDatas()) {
             resultdataBean.setSelect(false);
         }
 

@@ -29,9 +29,9 @@ public class CollectionListPresenter extends PresenterBase {
 
     public void getCollectionList(int type, int page) {
         HashMap<String, String> params = new HashMap<>(3);
-        params.put("UserInfo_ID", UserManager.getUser().getId());
-        params.put("SaveType", String.valueOf(type));
-        params.put("PageIndex", String.valueOf(page));
+        params.put("userId", UserManager.getUser().getId());
+        params.put("pageSize", "10");
+        params.put("pageNo", String.valueOf(page));
 
         if (type == 1) {
             OKHttpManager.get(getUrl(R.string.ListCollectionAndFootMark), params, new CommonCallBack<CollectionListBean>() {

@@ -14,8 +14,8 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.adapter.GoodListAdapter;
-import com.whmnrc.flymall.beans.GoodsListBean;
+import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
+import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
@@ -65,7 +65,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
     @BindView(R.id.refresh)
     SmartRefreshLayout mRefresh;
 
-    private GoodListAdapter mAdapter;
+    private LikeGoodListAdapter mAdapter;
     public GetLikeGoodsPresenter mGetLikeGoodsPresenter;
 
     /**
@@ -97,7 +97,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
         EventBus.getDefault().register(this);
 
         mRvList.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        mAdapter = new GoodListAdapter(getActivity(), R.layout.item_goods_list);
+        mAdapter = new LikeGoodListAdapter(getActivity(), R.layout.item_goods_list);
         mRvList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -216,7 +216,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
     }
 
     @Override
-    public void loadGoodsSucces(List<GoodsListBean.ResultdataBean> resultdataBean) {
+    public void loadGoodsSucces(List<LikeGoodsBean.ResultdataBean> resultdataBean) {
         mAdapter.setDataArray(resultdataBean);
         mAdapter.notifyDataSetChanged();
         showEmpty();

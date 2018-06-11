@@ -136,7 +136,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
             mIvAllCheck.setSelected(isAllChecked);
             if (isAllChecked) {
                 for (int i = 0; i < mCollectionAdapter.getDatas().size(); i++) {
-                    collections.put(mCollectionAdapter.getDatas().get(i).getId(), i);
+                    collections.put(String.valueOf(mCollectionAdapter.getDatas().get(i).getId()), i);
                 }
             } else {
                 collections.clear();
@@ -148,7 +148,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
     @Override
     public void delCollection(final CollectionListBean.ResultdataBean good) {
         mDelGoodsBean = good;
-        isCancelCollection(good.getId());
+        isCancelCollection(String.valueOf(good.getId()));
     }
 
     private void isCancelCollection(final String collectionId) {

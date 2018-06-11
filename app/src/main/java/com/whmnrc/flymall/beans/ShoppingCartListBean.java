@@ -11,24 +11,16 @@ public class ShoppingCartListBean {
 
 
     /**
-     * type : 1
      * code : 0
-     * message : 成功。
-     * resultdata : [{"BuyCar_ID":"d1dfd7c4-3598-44c6-a5f8-ea0f23a34dfc","Goods_ID":"bd69ae37-02fe-41bc-bb85-337ec579e369","GoodsPrice_ID":"db13aa8c-d304-4091-a28b-6bb9fd534c1a","UserInfo_ID":"fb80d7ea-5667-4185-b8b8-4089b96542d0","BuyCar_Num":1,"BuyCar_CreateDate":"2018-06-05T09:56:15.423","GoodsPrice_Price":555,"Goods_Name":"这是商品名称","GoodsPrice_AttrName":"长裤","Goods_ImaPath":"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164361&di=40dcc97ef80aa6de3c2fbe2c6a9690f4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F19%2F68%2F13%2F69C58PICRfS_1024.jpg","GoodsPrice_Stock":200,"GoodsPrice_Attribute":"白色"}]
+     * message : 请求成功
+     * resultdata : {"amount":384,"products":[{"cartItemId":657,"color":"白色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_131_621_0","status":1,"version":"","vshopId":0},{"cartItemId":658,"color":"灰色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_130_621_0","status":1,"version":"","vshopId":0},{"cartItemId":659,"color":"黑色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_129_621_0","status":1,"version":"","vshopId":0},{"cartItemId":660,"color":"白色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"XL","skuId":"1485_131_19_0","status":1,"version":"","vshopId":0}],"totalCount":4}
+     * type : 1
      */
 
-    private int type;
     private int code;
     private String message;
-    private List<ResultdataBean> resultdata;
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
+    private ResultdataBean resultdata;
+    private int type;
 
     public int getCode() {
         return code;
@@ -46,146 +38,220 @@ public class ShoppingCartListBean {
         this.message = message;
     }
 
-    public List<ResultdataBean> getResultdata() {
+    public ResultdataBean getResultdata() {
         return resultdata;
     }
 
-    public void setResultdata(List<ResultdataBean> resultdata) {
+    public void setResultdata(ResultdataBean resultdata) {
         this.resultdata = resultdata;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public static class ResultdataBean {
         /**
-         * BuyCar_ID : d1dfd7c4-3598-44c6-a5f8-ea0f23a34dfc
-         * Goods_ID : bd69ae37-02fe-41bc-bb85-337ec579e369
-         * GoodsPrice_ID : db13aa8c-d304-4091-a28b-6bb9fd534c1a
-         * UserInfo_ID : fb80d7ea-5667-4185-b8b8-4089b96542d0
-         * BuyCar_Num : 1
-         * BuyCar_CreateDate : 2018-06-05T09:56:15.423
-         * GoodsPrice_Price : 555
-         * Goods_Name : 这是商品名称
-         * GoodsPrice_AttrName : 长裤
-         * Goods_ImaPath : https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527597164361&di=40dcc97ef80aa6de3c2fbe2c6a9690f4&imgtype=0&src=http%3A%2F%2Fpic.qiantucdn.com%2F58pic%2F19%2F68%2F13%2F69C58PICRfS_1024.jpg
-         * GoodsPrice_Stock : 200
-         * GoodsPrice_Attribute : 白色
+         * amount : 384.0
+         * products : [{"cartItemId":657,"color":"白色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_131_621_0","status":1,"version":"","vshopId":0},{"cartItemId":658,"color":"灰色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_130_621_0","status":1,"version":"","vshopId":0},{"cartItemId":659,"color":"黑色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"2XL","skuId":"1485_129_621_0","status":1,"version":"","vshopId":0},{"cartItemId":660,"color":"白色","count":1,"id":1485,"imgUrl":"/Storage/Shop/266/Products/1485/1_350.png","name":"乔治汤米男短袖圆领T恤SQ081002","price":96,"shopId":266,"shopLogo":"","shopName":"百货商店","size":"XL","skuId":"1485_131_19_0","status":1,"version":"","vshopId":0}]
+         * totalCount : 4
          */
 
-        private String BuyCar_ID;
-        private String Goods_ID;
-        private String GoodsPrice_ID;
-        private String UserInfo_ID;
-        private int BuyCar_Num;
-        private String BuyCar_CreateDate;
-        private double GoodsPrice_Price;
-        private String Goods_Name;
-        private String GoodsPrice_AttrName;
-        private String Goods_ImaPath;
-        private int GoodsPrice_Stock;
-        private String GoodsPrice_Attribute;
-        private boolean isSelect;
+        private double amount;
+        private int totalCount;
+        private List<ProductsBean> products;
 
-        public boolean isSelect() {
-            return isSelect;
+        public double getAmount() {
+            return amount;
         }
 
-        public void setSelect(boolean select) {
-            isSelect = select;
+        public void setAmount(double amount) {
+            this.amount = amount;
         }
 
-        public String getBuyCar_ID() {
-            return BuyCar_ID;
+        public int getTotalCount() {
+            return totalCount;
         }
 
-        public void setBuyCar_ID(String BuyCar_ID) {
-            this.BuyCar_ID = BuyCar_ID;
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
         }
 
-        public String getGoods_ID() {
-            return Goods_ID;
+        public List<ProductsBean> getProducts() {
+            return products;
         }
 
-        public void setGoods_ID(String Goods_ID) {
-            this.Goods_ID = Goods_ID;
+        public void setProducts(List<ProductsBean> products) {
+            this.products = products;
         }
 
-        public String getGoodsPrice_ID() {
-            return GoodsPrice_ID;
-        }
+        public static class ProductsBean {
+            /**
+             * cartItemId : 657
+             * color : 白色
+             * count : 1
+             * id : 1485
+             * imgUrl : /Storage/Shop/266/Products/1485/1_350.png
+             * name : 乔治汤米男短袖圆领T恤SQ081002
+             * price : 96.0
+             * shopId : 266
+             * shopLogo :
+             * shopName : 百货商店
+             * size : 2XL
+             * skuId : 1485_131_621_0
+             * status : 1
+             * version :
+             * vshopId : 0
+             */
 
-        public void setGoodsPrice_ID(String GoodsPrice_ID) {
-            this.GoodsPrice_ID = GoodsPrice_ID;
-        }
+            private int cartItemId;
+            private String color;
+            private int count;
+            private int id;
+            private String imgUrl;
+            private String name;
+            private double price;
+            private int shopId;
+            private String shopLogo;
+            private String shopName;
+            private String size;
+            private String skuId;
+            private int status;
+            private String version;
+            private int vshopId;
+            private boolean isSelect;
 
-        public String getUserInfo_ID() {
-            return UserInfo_ID;
-        }
+            public boolean isSelect() {
+                return isSelect;
+            }
 
-        public void setUserInfo_ID(String UserInfo_ID) {
-            this.UserInfo_ID = UserInfo_ID;
-        }
+            public void setSelect(boolean select) {
+                isSelect = select;
+            }
 
-        public int getBuyCar_Num() {
-            return BuyCar_Num;
-        }
+            public int getCartItemId() {
+                return cartItemId;
+            }
 
-        public void setBuyCar_Num(int BuyCar_Num) {
-            this.BuyCar_Num = BuyCar_Num;
-        }
+            public void setCartItemId(int cartItemId) {
+                this.cartItemId = cartItemId;
+            }
 
-        public String getBuyCar_CreateDate() {
-            return BuyCar_CreateDate;
-        }
+            public String getColor() {
+                return color;
+            }
 
-        public void setBuyCar_CreateDate(String BuyCar_CreateDate) {
-            this.BuyCar_CreateDate = BuyCar_CreateDate;
-        }
+            public void setColor(String color) {
+                this.color = color;
+            }
 
-        public double getGoodsPrice_Price() {
-            return GoodsPrice_Price;
-        }
+            public int getCount() {
+                return count;
+            }
 
-        public void setGoodsPrice_Price(double GoodsPrice_Price) {
-            this.GoodsPrice_Price = GoodsPrice_Price;
-        }
+            public void setCount(int count) {
+                this.count = count;
+            }
 
-        public String getGoods_Name() {
-            return Goods_Name;
-        }
+            public int getId() {
+                return id;
+            }
 
-        public void setGoods_Name(String Goods_Name) {
-            this.Goods_Name = Goods_Name;
-        }
+            public void setId(int id) {
+                this.id = id;
+            }
 
-        public String getGoodsPrice_AttrName() {
-            return GoodsPrice_AttrName;
-        }
+            public String getImgUrl() {
+                return imgUrl;
+            }
 
-        public void setGoodsPrice_AttrName(String GoodsPrice_AttrName) {
-            this.GoodsPrice_AttrName = GoodsPrice_AttrName;
-        }
+            public void setImgUrl(String imgUrl) {
+                this.imgUrl = imgUrl;
+            }
 
-        public String getGoods_ImaPath() {
-            return Goods_ImaPath;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public void setGoods_ImaPath(String Goods_ImaPath) {
-            this.Goods_ImaPath = Goods_ImaPath;
-        }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-        public int getGoodsPrice_Stock() {
-            return GoodsPrice_Stock;
-        }
+            public double getPrice() {
+                return price;
+            }
 
-        public void setGoodsPrice_Stock(int GoodsPrice_Stock) {
-            this.GoodsPrice_Stock = GoodsPrice_Stock;
-        }
+            public void setPrice(double price) {
+                this.price = price;
+            }
 
-        public String getGoodsPrice_Attribute() {
-            return GoodsPrice_Attribute;
-        }
+            public int getShopId() {
+                return shopId;
+            }
 
-        public void setGoodsPrice_Attribute(String GoodsPrice_Attribute) {
-            this.GoodsPrice_Attribute = GoodsPrice_Attribute;
+            public void setShopId(int shopId) {
+                this.shopId = shopId;
+            }
+
+            public String getShopLogo() {
+                return shopLogo;
+            }
+
+            public void setShopLogo(String shopLogo) {
+                this.shopLogo = shopLogo;
+            }
+
+            public String getShopName() {
+                return shopName;
+            }
+
+            public void setShopName(String shopName) {
+                this.shopName = shopName;
+            }
+
+            public String getSize() {
+                return size;
+            }
+
+            public void setSize(String size) {
+                this.size = size;
+            }
+
+            public String getSkuId() {
+                return skuId;
+            }
+
+            public void setSkuId(String skuId) {
+                this.skuId = skuId;
+            }
+
+            public int getStatus() {
+                return status;
+            }
+
+            public void setStatus(int status) {
+                this.status = status;
+            }
+
+            public String getVersion() {
+                return version;
+            }
+
+            public void setVersion(String version) {
+                this.version = version;
+            }
+
+            public int getVshopId() {
+                return vshopId;
+            }
+
+            public void setVshopId(int vshopId) {
+                this.vshopId = vshopId;
+            }
         }
     }
 }

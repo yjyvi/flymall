@@ -1,7 +1,7 @@
 package com.whmnrc.flymall.presener;
 
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.beans.GoodsListBean;
+import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
@@ -25,9 +25,9 @@ public class GetLikeGoodsPresenter extends PresenterBase {
 
     public void getLikeGoods() {
         HashMap<String, String> paramters = new HashMap<>();
-        OKHttpManager.get(getUrl(R.string.MayLike), paramters, new CommonCallBack<GoodsListBean>() {
+        OKHttpManager.get(getUrl(R.string.MayLike), paramters, new CommonCallBack<LikeGoodsBean>() {
             @Override
-            protected void onSuccess(GoodsListBean data) {
+            protected void onSuccess(LikeGoodsBean data) {
                 if (data.getType() == 1) {
 
                     mGetLikeGoodsListener.loadGoodsSucces(data.getResultdata());
@@ -39,6 +39,6 @@ public class GetLikeGoodsPresenter extends PresenterBase {
     }
 
     public interface GetLikeGoodsListener {
-        void loadGoodsSucces(List<GoodsListBean.ResultdataBean> resultdataBean);
+        void loadGoodsSucces(List<LikeGoodsBean.ResultdataBean> resultdataBean);
     }
 }

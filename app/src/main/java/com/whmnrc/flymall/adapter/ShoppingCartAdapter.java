@@ -18,7 +18,7 @@ import com.whmnrc.mylibrary.utils.GlideUtils;
  * @data 2018/5/18.
  */
 
-public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.ResultdataBean> {
+public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.ResultdataBean.ProductsBean> {
     public ShoppingCartAdapter(Context context, int layoutId) {
         super(context, layoutId);
     }
@@ -30,13 +30,13 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
     }
 
     @Override
-    public void convert(ViewHolder holder, final ShoppingCartListBean.ResultdataBean resultdataBean, final int position) {
+    public void convert(ViewHolder holder, final ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean, final int position) {
 
-        GlideUtils.LoadImage(mContext, resultdataBean.getGoods_ImaPath(), (ImageView) holder.getView(R.id.iv_goods_img));
-        holder.setText(R.id.tv_goods_name, resultdataBean.getGoods_Name());
-        holder.setText(R.id.tv_goods_spec, resultdataBean.getGoodsPrice_AttrName());
-        holder.setText(R.id.edit_num, String.valueOf(resultdataBean.getBuyCar_Num()));
-        holder.setText(R.id.tv_goods_price, PlaceholderUtils.pricePlaceholder(resultdataBean.getGoodsPrice_Price()));
+        GlideUtils.LoadImage(mContext, resultdataBean.getImgUrl(), (ImageView) holder.getView(R.id.iv_goods_img));
+        holder.setText(R.id.tv_goods_name, resultdataBean.getName());
+        holder.setText(R.id.tv_goods_spec, resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
+        holder.setText(R.id.edit_num, String.valueOf(resultdataBean.getCount()));
+        holder.setText(R.id.tv_goods_price, PlaceholderUtils.pricePlaceholder(resultdataBean.getPrice()));
 
         final ImageView view = holder.getView(R.id.iv_selected);
         holder.setOnClickListener(R.id.iv_selected, new View.OnClickListener() {
@@ -70,10 +70,10 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
             public void onClick(View v) {
                 int num = Integer.parseInt(goodsNum.getText().toString().trim());
                 int buyCarNum = ++num;
-                resultdataBean.setBuyCar_Num(buyCarNum);
+                resultdataBean.setCount(buyCarNum);
                 goodsNum.setText(String.valueOf(buyCarNum));
                 if (resultdataBean.isSelect()) {
-                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getGoodsPrice_Price() , true, resultdataBean.getBuyCar_ID());
+                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getSkuId()));
                 }
             }
         });
@@ -85,9 +85,9 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                 if (num >= 2) {
                     int buyCarNum = --num;
                     goodsNum.setText(String.valueOf(buyCarNum));
-                    resultdataBean.setBuyCar_Num(buyCarNum);
+                    resultdataBean.setCount(buyCarNum);
                     if (resultdataBean.isSelect()) {
-                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getGoodsPrice_Price() , false, resultdataBean.getBuyCar_ID());
+                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getSkuId()));
                     }
                 }
             }
@@ -102,15 +102,15 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
     }
 
 
-    private void selectedView(View view, int position, ShoppingCartListBean.ResultdataBean resultdataBean) {
+    private void selectedView(View view, int position, ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean) {
         if (!resultdataBean.isSelect()) {
             view.setSelected(true);
             resultdataBean.setSelect(true);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getGoodsPrice_Price() * resultdataBean.getBuyCar_Num(), true, resultdataBean.getBuyCar_ID());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, resultdataBean.getSkuId());
         } else {
             view.setSelected(false);
             resultdataBean.setSelect(false);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getGoodsPrice_Price() * resultdataBean.getBuyCar_Num(), false, resultdataBean.getBuyCar_ID());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, resultdataBean.getSkuId());
         }
 
     }
