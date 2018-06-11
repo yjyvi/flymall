@@ -25,12 +25,12 @@ public class OrderListPresenter extends PresenterBase {
 
     public void getOrderList( int orderState,  int page) {
         HashMap<String, String> paramters = new HashMap<>(4);
-        paramters.put("UserInfo_ID", UserManager.getUser().getId());
-        paramters.put("Page", String.valueOf(page));
-        paramters.put("Order_State", String.valueOf(orderState));
-        paramters.put("Rows", "10");
-
-        OKHttpManager.get(getUrl(R.string.GetAllOrder), paramters, new CommonCallBack<OrderListBean>() {
+        paramters.put("userId", UserManager.getUser().getId());
+        paramters.put("pageNo", String.valueOf(page));
+        paramters.put("orderStatus", String.valueOf(orderState));
+        paramters.put("pageSize", "10");
+        String url = getUrl(R.string.GetAllOrder);
+        OKHttpManager.get(url, paramters, new CommonCallBack<OrderListBean>() {
 
             @Override
             public void onFailure(int call, String e) {

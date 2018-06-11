@@ -26,6 +26,7 @@ import com.whmnrc.flymall.views.MyClassicsHeader;
 public class MyApplication extends MultiDexApplication {
 
     /**
+     *
      * 全局context
      */
     public static Context applicationContext;
