@@ -366,17 +366,29 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
         ArrayList<ArrayList<HomeDataBean.ResultdataBean.BrandsBean>> onPageVideoLists = new ArrayList<>();
         ArrayList<HomeDataBean.ResultdataBean.BrandsBean> onPageVideoList;
-
-
         for (int i = 0; i < brandsPage; i++) {
-            onPageVideoList = new ArrayList();
-            for (int j = 0; j < brands.size(); j++) {
-                if (j <= pageMax * i) {
-                    onPageVideoList.add(brands.get(j));
-                }
+            onPageVideoList = new ArrayList<>();
+            int maxNum;
+            if (i == brandsPage - 1){
+                maxNum = i * pageMax + size % pageMax;
+            }else {
+                maxNum = i * pageMax + 10;
+            }
+            for (int j = i * pageMax; j < maxNum; j++) {
+                onPageVideoList.add(brands.get(j));
             }
             onPageVideoLists.add(onPageVideoList);
         }
+
+//        for (int i = 0; i < brandsPage; i++) {
+//            onPageVideoList = new ArrayList();
+//            for (int j = 0; j < brands.size(); j++) {
+//                if (j <= pageMax * i) {
+//                    onPageVideoList.add(brands.get(j));
+//                }
+//            }
+//            onPageVideoLists.add(onPageVideoList);
+//        }
 
 
         for (int i = 0; i < brandsPage; i++) {

@@ -45,6 +45,8 @@ public class HomeBrandsFragment extends LazyLoadFragment{
         mRvBrandsList.setFocusableInTouchMode(false);
         mRvBrandsList.setNestedScrollingEnabled(false);
 
+        loadBrandSuccess();
+
 
     }
 
