@@ -80,7 +80,7 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
                         .setPositiveButton("agree", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                mAddressEditPresenter.delAddress(mAddressManagerAdapter.getDatas().get(position).getAddress_ID());
+                                mAddressEditPresenter.delAddress(String.valueOf(mAddressManagerAdapter.getDatas().get(position).getId()));
                             }
                         })
                         .setNegativeButton("cancel", new View.OnClickListener() {

@@ -100,12 +100,12 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         }
 
         if (mResultdataBean != null) {
-            mEtFirstName.setText(mResultdataBean.getAddress_Name());
-            mEtLastName.setText(mResultdataBean.getAddress_Name());
-            mEtAddress.setText(mResultdataBean.getAddress_Name());
-            mEtTel.setText(mResultdataBean.getAddress_Mobile());
+            mEtFirstName.setText(mResultdataBean.getShipTo());
+            mEtLastName.setText(mResultdataBean.getAddress_LastName());
+            mEtAddress.setText(mResultdataBean.getAddress());
+            mEtTel.setText(mResultdataBean.getPhone());
             mEtCity.setText(mResultdataBean.getAddress_City());
-            mEtAddressContinued.setText(mResultdataBean.getAddress_Region());
+            mEtAddressContinued.setText(mResultdataBean.getRegionIdPath());
             if (mResultdataBean.getAddress_IsDefault() == 1) {
                 mTvIsDefault.setSelected(true);
             } else {

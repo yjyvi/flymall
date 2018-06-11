@@ -22,9 +22,9 @@ public class AddressManagerAdapter extends CommonAdapter<AddressBean.ResultdataB
 
     @Override
     public void convert(ViewHolder holder, final AddressBean.ResultdataBean resultdataBean, int position) {
-        holder.setText(R.id.tv_address_name, String.format("Receiver：%s", resultdataBean.getAddress_Name()));
-        holder.setText(R.id.tv_address_tel, resultdataBean.getAddress_Mobile());
-        holder.setText(R.id.tv_address_desc, resultdataBean.getAddress_Detail());
+        holder.setText(R.id.tv_address_name, String.format("Receiver：%s", resultdataBean.getShipTo()));
+        holder.setText(R.id.tv_address_tel, resultdataBean.getPhone());
+        holder.setText(R.id.tv_address_desc, resultdataBean.getAddress());
         holder.setOnClickListener(R.id.iv_address_edit, new View.OnClickListener() {
             @Override
             public void onClick(View v) {

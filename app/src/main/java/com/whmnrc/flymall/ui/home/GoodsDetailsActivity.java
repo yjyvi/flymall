@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -36,7 +37,9 @@ import com.whmnrc.flymall.views.MyScrollView;
 import com.whmnrc.flymall.views.MyViewPager;
 import com.whmnrc.flymall.views.PullUpToLoadMore;
 import com.whmnrc.flymall.views.RatingBarView;
+import com.whmnrc.mylibrary.utils.GlideUtils;
 import com.youth.banner.Banner;
+import com.youth.banner.loader.ImageLoader;
 
 import net.lucode.hackware.magicindicator.MagicIndicator;
 import net.lucode.hackware.magicindicator.ViewPagerHelper;
@@ -143,48 +146,48 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
     }
 
-//    private void initBanner(List<GoodsDetailsBean.ResultdataBean.ImgBean> img) {
-//        if (img == null || img.size() <= 0) {
-//            mLlBannerPosition.setVisibility(View.GONE);
-//            return;
-//        }
-//        mLlBannerPosition.setVisibility(View.VISIBLE);
-//        mTvCurrentPage.setText("1");
-//        mTvTotalPage.setText(String.format("/%s", img.size()));
-//        mBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                mTvCurrentPage.setText(String.valueOf(position + 1));
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
-//        mBanner.isAutoPlay(false).setImages(img).setImageLoader(new ImageLoader() {
-//            @Override
-//            public void displayImage(Context context, Object path, ImageView imageView) {
-//
-//                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//                GoodsDetailsBean.ResultdataBean.ImgBean imgBeans = (GoodsDetailsBean.ResultdataBean.ImgBean) path;
-//                UIUtils.loadCommentImg(imageView, imgBeans.getImg_Path());
-//
-//                //轮播图跳转
-//                imageView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                    }
-//                });
-//            }
-//        }).start();
-//    }
+    private void initBanner(List<String> img) {
+        if (img == null || img.size() <= 0) {
+            mLlBannerPosition.setVisibility(View.GONE);
+            return;
+        }
+        mLlBannerPosition.setVisibility(View.VISIBLE);
+        mTvCurrentPage.setText("1");
+        mTvTotalPage.setText(String.format("/%s", img.size()));
+        mBanner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                mTvCurrentPage.setText(String.valueOf(position + 1));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        mBanner.isAutoPlay(false).setImages(img).setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                String imgBeans = (String) path;
+                GlideUtils.LoadImage(GoodsDetailsActivity.this, imgBeans, imageView);
+
+                //轮播图跳转
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+            }
+        }).start();
+    }
 
 
     private void initTab(String goodsContent, GoodsDetailsBean.ResultdataBean evaluate, String goodsId) {
@@ -270,7 +273,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
                 isAddCart = true;
                 if (mGoodSpecificationsPop != null) {
-                    mGoodSpecificationsPop.show();
+                    if (mGoodsBean.getColor().size() == 0 || mGoodsBean.getSize().size() == 0 || mGoodsBean.getVersion().size() == 0) {
+                        mAddShoppingCartPresenter.addShoppingCartList(mGoodsId + "_0_0_0", "1");
+                    } else {
+                        mGoodSpecificationsPop.show();
+                    }
                 }
                 break;
             case R.id.tv_buy:
@@ -328,7 +335,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mRbStar.setStar(product.getAuditStatus(), true);
             mTvCommentNum.setText(String.valueOf(product.getSaleCounts()));
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
-//            initBanner(goodsDetailsBean.getImg());
+            initBanner(goodsDetailsBean.getBannners());
 
             //是否收藏
 //            if (TextUtils.equals(goodsDetailsBean.getCollection(), "1")) {
@@ -356,7 +363,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
 
     @Override
-    public void onEntryClick(int oneId, int twoId, int number, String goodSpe,String goodsAttr) {
+    public void onEntryClick(int oneId, int twoId, int number, String goodSpe, String goodsAttr) {
         if (!UserManager.getIsLogin(this)) {
             return;
         }

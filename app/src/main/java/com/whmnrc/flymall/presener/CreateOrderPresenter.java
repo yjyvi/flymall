@@ -26,10 +26,11 @@ public class CreateOrderPresenter extends PresenterBase {
 
     public void createOrder(String productAttrIds, String addressId, String couponId,String remark) {
         HashMap<String, String> paramters = new HashMap<>(1);
-        paramters.put("ProductAttrIds", productAttrIds);
-        paramters.put("UserInfo_ID", UserManager.getUser().getId());
+        paramters.put("skuIds", productAttrIds);
+        paramters.put("userId", UserManager.getUser().getId());
+        paramters.put("counts", UserManager.getUser().getId());
         paramters.put("Address_ID", addressId);
-        paramters.put("Coupon_ID", couponId);
+        paramters.put("collpids", couponId);
         paramters.put("Order_Remark", remark);
         OKHttpManager.postString(getUrl(R.string.AddOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override

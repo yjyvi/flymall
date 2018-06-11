@@ -238,9 +238,9 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     @Override
     public void payOrder(OrderListBean.ResultdataBean resultdataBean) {
         AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-        addressBean.setAddress_Detail(resultdataBean.getOrder().getAddress_Detail());
-        addressBean.setAddress_Mobile(resultdataBean.getOrder().getAddress_Mobile());
-        addressBean.setAddress_Name(resultdataBean.getOrder().getAddress_Name());
+        addressBean.setAddress(resultdataBean.getOrder().getAddress_Detail());
+        addressBean.setPhone(resultdataBean.getOrder().getAddress_Mobile());
+        addressBean.setAddress(resultdataBean.getOrder().getAddress_Name());
         ConfirmPaymentActivity.start(getActivity(),resultdataBean.getOrder().getOrder_No(), String.valueOf(resultdataBean.getOrder().getOrder_Money()), JSON.toJSONString(addressBean));
     }
 

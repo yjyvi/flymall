@@ -193,8 +193,15 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
         mClassifyLeftAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mClassifyData == null && mClassifyLeftAdapter != null) {
+            mClassifyP.getOneBrans();
+        }
+    }
 
-//    @OnClick({
+    //    @OnClick({
 //            R.id.iv_men, R.id.iv_women
 //    })
 //    public void onClick(View view) {

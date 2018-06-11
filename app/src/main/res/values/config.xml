@@ -193,8 +193,11 @@
         请求方法：get-->
     <string name="GetAllOrder">/api/Order/OrderList</string>
 
-    <!--创建订单-->
-    <string name="AddOrder">/api/Order/AddOrder</string>
+    <!--单个接口名称：立即购买
+        说明：商品详情页点击立即购买
+        地址：/ImmediatelyBuy/SubmitOrderByProductId?userId=当前用户id&skuIds=商品sku属性&counts商品数量&collpids = 优惠券id
+        请求方法：get-->
+    <string name="AddOrder">/api/ImmediatelyBuy/SubmitOrderByProductId</string>
 
 
     <!--接口名称：订单详情

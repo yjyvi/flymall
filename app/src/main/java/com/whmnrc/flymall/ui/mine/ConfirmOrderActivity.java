@@ -149,7 +149,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.dm_75), getResources().getDimensionPixelOffset(R.dimen.dm_75)));
                 imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imageView.setBackgroundResource(R.color.normal_gray);
-                GlideUtils.LoadImage(this, R.mipmap.normal, imageView);
+                GlideUtils.LoadImage(this, R.mipmap.icon_order_normal, imageView);
                 mFlGoodsImg.addView(imageView);
             }
         }
@@ -232,10 +232,10 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                     AddressManagerActivity.start(v.getContext(), true);
                 }
             });
-            mAddressId = resultdataBeans.get(0).getAddress_ID();
-            mTvAddressDesc.setText(resultdataBeans.get(0).getAddress_Detail());
-            mTvAddressName.setText(String.format("Receiver：%s", resultdataBeans.get(0).getAddress_Name()));
-            mTvAddressTel.setText(resultdataBeans.get(0).getAddress_Mobile());
+            mAddressId = String.valueOf(resultdataBeans.get(0).getId());
+            mTvAddressDesc.setText(resultdataBeans.get(0).getAddress());
+            mTvAddressName.setText(String.format("Receiver：%s", resultdataBeans.get(0).getRegionFullName()));
+            mTvAddressTel.setText(resultdataBeans.get(0).getPhone());
         }
 
     }
@@ -252,10 +252,10 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
         if (addressEvent.getEventType() == AddressEvent.ORDER_SELECT_ADDRESS) {
             addressEventData = (AddressBean.ResultdataBean) addressEvent.getData();
             if (addressEventData != null) {
-                mAddressId = addressEventData.getAddress_ID();
-                mTvAddressTel.setText(addressEventData.getAddress_Mobile());
-                mTvAddressDesc.setText(addressEventData.getAddress_Detail());
-                mTvAddressName.setText(String.format("Receiver：%s", addressEventData.getAddress_Name()));
+                mAddressId = String.valueOf(addressEventData.getId());
+                mTvAddressTel.setText(addressEventData.getPhone());
+                mTvAddressDesc.setText(addressEventData.getAddress());
+                mTvAddressName.setText(String.format("Receiver：%s", addressEventData.getRegionFullName()));
             }
         }
     }

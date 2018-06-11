@@ -213,9 +213,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 switch (orderBean.getOrder().getOrder_State()) {
                     case 0:
                         AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-                        addressBean.setAddress_Detail(orderBean.getOrder().getAddress_Detail());
-                        addressBean.setAddress_Mobile(orderBean.getOrder().getAddress_Mobile());
-                        addressBean.setAddress_Name(orderBean.getOrder().getAddress_Name());
+                        addressBean.setAddress(orderBean.getOrder().getAddress_Detail());
+                        addressBean.setPhone(orderBean.getOrder().getAddress_Mobile());
+                        addressBean.setAddress(orderBean.getOrder().getAddress_Name());
                         ConfirmPaymentActivity.start(OrderDetailsActivity.this, orderBean.getOrder().getOrder_No(), String.valueOf(orderBean.getOrder().getOrder_Money()), JSON.toJSONString(addressBean));
                         break;
                     case 3:

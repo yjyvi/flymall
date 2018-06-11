@@ -83,9 +83,9 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         mTvTotalPrice.setText(String.format("Total merchandise：%s", totalPrice));
 
         if (confirmAddressBean != null) {
-            mTvAddressDesc.setText(confirmAddressBean.getAddress_Detail());
-            mTvAddressName.setText(String.format("Receiver：%s", confirmAddressBean.getAddress_Name()));
-            mTvAddressTel.setText(confirmAddressBean.getAddress_Mobile());
+            mTvAddressDesc.setText(confirmAddressBean.getAddress_Address2());
+            mTvAddressName.setText(String.format("Receiver：%s", confirmAddressBean.getAddress()));
+            mTvAddressTel.setText(confirmAddressBean.getPhone());
         }
     }
 

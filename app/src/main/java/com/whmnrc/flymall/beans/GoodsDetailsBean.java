@@ -88,6 +88,15 @@ public class GoodsDetailsBean {
         private List<ColorBean> Color;
         private List<SizeBean> Size;
         private List<?> Version;
+        private List<String > Bannners ;
+
+        public List<String> getBannners() {
+            return Bannners;
+        }
+
+        public void setBannners(List<String> bannners) {
+            Bannners = bannners;
+        }
 
         public Object getBoughtProducts() {
             return BoughtProducts;

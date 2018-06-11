@@ -40,7 +40,6 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
     protected void initViewData() {
 
 
-
         String evaluate = getArguments().getString("evaluate");
         mEvaluateBean = JSON.parseObject(evaluate, GoodsDetailsBean.ResultdataBean.class);
 
@@ -58,17 +57,40 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
         web.post(new Runnable() {
             @Override
             public void run() {
-                web.loadData(contUrl, "text/html; charset=UTF-8", null);
+                web.loadData(getHtmlData(contUrl), "text/html; charset=UTF-8", null);
+                //去除WebView的焦点事件
+                web.setFocusableInTouchMode(false);
                 WebSettings settings = web.getSettings();
-                settings.setJavaScriptEnabled(false);
-                settings.setUseWideViewPort(true);
                 settings.setSupportZoom(false);
+                settings.setJavaScriptEnabled(false);
+                settings.setDefaultTextEncodingName("utf-8");
             }
         });
     }
 
+    /**
+     * 添加HTML标签样式
+     *
+     * @param bodyHTML
+     * @return
+     */
+    public static String getHtmlData(String bodyHTML) {
 
-    public static GoodsDetailsFragment newInstance(String goodsContent, String  evaluate) {
+
+        String css = "@font-face {font-family:myWebFont; src: url(PingFang Light_0.ttf)}";
+        String head = "<head><style>* {\n" +
+                "        margin: 0;\n" +
+                "        padding: 0;\n" +
+                "    }\n" +
+                "\n" +
+                "    img {\n" +
+                "        width: 100%;\n" +
+                "    }\n" + css + "</style></head>";
+        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
+    }
+
+
+    public static GoodsDetailsFragment newInstance(String goodsContent, String evaluate) {
         Bundle args = new Bundle();
         GoodsDetailsFragment fragment = new GoodsDetailsFragment();
         args.putString("goodsContent", goodsContent);

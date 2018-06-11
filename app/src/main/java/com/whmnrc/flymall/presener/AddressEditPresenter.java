@@ -25,8 +25,9 @@ public class AddressEditPresenter extends PresenterBase {
     }
 
     public void delAddress(String addressId) {
-        HashMap<String, String> paramters = new HashMap<>(1);
+        HashMap<String, String> paramters = new HashMap<>(2);
         paramters.put("Address_ID", addressId);
+        paramters.put("UserId", UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.DelAddress), paramters, new CommonCallBack<AddressBean>() {
             @Override
             protected void onSuccess(AddressBean data) {
@@ -39,22 +40,6 @@ public class AddressEditPresenter extends PresenterBase {
         });
     }
 
-
-    public void setDefaultAddress(String addressId) {
-        HashMap<String, String> paramters = new HashMap<>();
-        paramters.put("UserInfoID", UserManager.getUser().getId());
-        paramters.put("Address_ID", addressId);
-        OKHttpManager.get(getUrl(R.string.SetDetaultAddress), paramters, new CommonCallBack<AddressBean>() {
-            @Override
-            protected void onSuccess(AddressBean data) {
-                if (data.getType() == 1) {
-                    mAddressEditListener.setDefaultSuccess();
-                } else {
-                    ToastUtils.showToast(data.getMessage());
-                }
-            }
-        });
-    }
 
 
     public interface AddressEditListener {
