@@ -82,7 +82,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         mRvOrderList.setAdapter(mOrderListAdapter);
         mRefresh.setOnRefreshLoadMoreListener(this);
 
-        mLoadingDialog.show();
+        showLoadingDialog();
         getOrder(mOrderType);
 
 
@@ -124,6 +124,12 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         EventBus.getDefault().unregister(this);
     }
 
+    private void showLoadingDialog(){
+        if (!mLoadingDialog.isShowing()){
+            mLoadingDialog.show();
+        }
+    }
+
     @Subscribe
     public void orderListEvent(OrderListEvent orderListEvent) {
         page = 1;
@@ -148,7 +154,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     private void getOrder(int type) {
         if (mOrderType == type) {
-            mLoadingDialog.show();
+            showLoadingDialog();
             mOrderListPresenter.getOrderList(mOrderType, page);
         }
     }
