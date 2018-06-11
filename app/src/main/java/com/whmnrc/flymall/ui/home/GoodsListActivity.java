@@ -24,6 +24,7 @@ import com.whmnrc.flymall.adapter.SearchTagListAdapter;
 import com.whmnrc.flymall.beans.SearchResultBean;
 import com.whmnrc.flymall.presener.SearchGoodsListPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.shop.ShoppingCartActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.views.FilterPop;
@@ -69,7 +70,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     public SearchGoodsListPresenter mSearchGoodsListPresenter;
     private int rows = 10;
     private int page = 1;
-    public String mBrandId="";
+    public String mBrandId = "";
 
     @Override
     protected void initViewData() {
@@ -94,13 +95,15 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     String trim = view.getText().toString().trim();
                     if (!TextUtils.isEmpty(trim)) {
-                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(),  mBrandId, "", "", "", "", page, rows);
+                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mBrandId, "", "", "", "", page, rows);
                         return true;
                     }
                 }
                 return false;
             }
         });
+
+        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
     }
 
     private void initGoodsList() {
@@ -146,7 +149,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     public void showEmpty() {
-        if (mAdapter != null && mAdapter.getDatas().size() == 0) {
+        if (mAdapter != null && mAdapter.getDatas() == null) {
             EmptyListUtils.loadEmpty(true, "暂时没有信息", R.mipmap.no_data_list, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
@@ -190,6 +193,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
             default:
                 break;
         }
+
+        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
     }
 
 
@@ -213,16 +218,16 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 
     @Override
     public void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean) {
-
-        if (page == 1) {
-            mAdapter.setDataArray(dataBean.getProductList());
-            mRvGoodsList.setAdapter(mAdapter);
-        } else {
-            List<SearchResultBean.ResultdataBean.ProductListBean> datas = mAdapter.getDatas();
-            datas.addAll(dataBean.getProductList());
-            mAdapter.setDataArray(datas);
+        if (dataBean != null) {
+            if (page == 1) {
+                mAdapter.setDataArray(dataBean.getProductList());
+                mRvGoodsList.setAdapter(mAdapter);
+            } else {
+                List<SearchResultBean.ResultdataBean.ProductListBean> datas = mAdapter.getDatas();
+                datas.addAll(dataBean.getProductList());
+                mAdapter.setDataArray(datas);
+            }
         }
-
         mAdapter.notifyDataSetChanged();
 
         showEmpty();

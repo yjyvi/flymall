@@ -356,12 +356,12 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
 
     @Override
-    public void onEntryClick(int oneId, int twoId, int number, GoodsSpecificationsBean.ResultdataBean goodSpe) {
+    public void onEntryClick(int oneId, int twoId, int number, String goodSpe,String goodsAttr) {
         if (!UserManager.getIsLogin(this)) {
             return;
         }
         if (isAddCart) {
-            mAddShoppingCartPresenter.addShoppingCartList(goodSpe.getId(), String.valueOf(number));
+            mAddShoppingCartPresenter.addShoppingCartList(goodSpe, String.valueOf(number));
         } else {
             ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
             ConfirmBean confirmBean = new ConfirmBean();
@@ -370,9 +370,9 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             confirmBean.setGoods_Name(mGoodsBean.getProduct().getProductName());
             confirmBean.setGoodsNUm(number);
             if (mGoodsSpecificationBean != null) {
-                confirmBean.setGoods_spec(goodSpe.getColor() + goodSpe.getSize() + goodSpe.getVersion());
+                confirmBean.setGoods_spec(goodsAttr);
             }
-            confirmBean.setPriceIds(goodSpe.getId());
+            confirmBean.setPriceIds(goodSpe);
             confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
             confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
             confirmBeans.add(confirmBean);

@@ -130,10 +130,16 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         tvEntry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mSpecificationBean != null) {
-
-                    popListener.onEntryClick(selectOneListPosition, selectTwoListPosition, currentNumber, mSpecificationBean);
+                String skuId;
+                String skuAttr;
+                if (mSpecificationBean == null) {
+                    skuId = mGoodsId + "_" + mColorSkuId + "_" + mSizeSkuId + "_" + versionSkuId;
+                    skuAttr="";
+                }else {
+                    skuId = mSpecificationBean.getId();
+                    skuAttr = mSpecificationBean.getColor() + mSpecificationBean.getColor() + mSpecificationBean.getVersion();
                 }
+                popListener.onEntryClick(selectOneListPosition, selectTwoListPosition, currentNumber, skuId, skuAttr);
             }
         });
 
@@ -284,7 +290,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
 
     //
     public interface PopListener {
-        void onEntryClick(int oneId, int twoId, int number, GoodsSpecificationsBean.ResultdataBean productAttrIds);
+        void onEntryClick(int oneId, int twoId, int number, String productAttrIds, String goodsAttr);
 
 //        void onSelectClick(String sizeSku, String colorSku);
 //
