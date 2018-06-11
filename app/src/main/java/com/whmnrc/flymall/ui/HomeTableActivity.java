@@ -127,6 +127,7 @@ public class HomeTableActivity extends BaseActivity {
         mIndex = position;
 
 
+        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
     }
 
 
