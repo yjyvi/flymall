@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<string name="service_host_address">http://hwscapi.whmnx.com</string>-->
+    <string name="service_host_address">http://flymall.store</string>
+    <string name="service_host_image">http://flymall.store</string>
+
+
+
+    <!-- [HttpPost]      登录
+        Login(LoginEntity Login)
+
+        string Token          第三方登录就是token若为邮箱登录就是邮箱账号
+        string Password       密码
+        int Type              登录类别：0：微信；1：MailBox;2:FaceBox;3:TwitTer;
+        string HeadImg        头像
+        string Sex            性别
+        string NickName       昵称 -->
+    <string name="Login">/api/ApiLogin/Login</string>
+
+    <!--获取用户信息[HttpGet]      获取用户信息
+        UserInfo_ID   用户ID-->
+    <string name="GetUserInfo">/api/ApiLogin/SelectUserInformation</string>
+
+
+    <!--第三方登录-->
+    <string name="ThirdPartyLogin">/api/User/ThirdPartyLogin</string>
+    <!-- 修改用户的默认货币
+        [HttpGet]
+        public AjaxResult UpdateDefaultCurrency(int Currency_ID = 1, int UserInfo_ID = 0)
+        Currency_ID   优惠券ID
+        UserInfo_ID   用户ID -->
+    <string name="UpdateDefaultCurrency">/api/ApiLogin/UpdateDefaultCurrency</string>
+    <!--获取所有的货币信息  get-->
+    <string name="GetAllCurrency">/api/ApiCurrency/GetAllCurrency</string>
+
+    <!--修改用户信息
+    [HttpPost]     修改用户信息
+        public AjaxResult UpdateUser(string HeadImg,string NickName,string Sex,int UserInfo_ID = 0)-->
+    <string name="UpdateUser">/api/ApiLogin/UpdateUserr</string>
+
+    <!--上传图片文件-->
+    <string name="UploadFile">/api/ApiLogin/UploadFile</string>
+    <!--上传视频文件-->
+    <string name="UploadMp4File">/api/ApiLogin/UploadMp4File</string>
+
+
+
+
+    <!--接口名称：首页数据 轮播图，热门品牌，视频列表
+        说明：首页数据 轮播图，热门品牌，视频列表
+        地址：/HomePageAPI/InitHomePage
+        请求方法：get-->
+    <string name="InitHomePage">/api/HomePageAPI/InitHomePage</string>
+
+    <!--接口名称：活动专题列表
+        说明：活动专题列表
+        地址：/HomePageAPI/HomeActions
+        请求方法：get-->
+    <string name="HomeActions">/api/HomePageAPI/HomeActions</string>
+
+    <!--接口名称：根据活动编号查询商品列表
+        说明：根据活动编号查询商品列表
+        地址：/HomePageAPI/GetHomeActionProducts?topicId=活动id
+        请求方法：get-->
+    <string name="GetHomeActionProducts">/api/HomePageAPI/GetHomeActionProducts</string>
+
+    <!--接口名称：获取分类及分类商品列表
+        说明：获取分类及分类商品列表
+        地址：/HomePageAPI/GetCategoryProducts
+        请求方法：get-->
+    <string name="GetCategoryProducts">/api/HomePageAPI/GetCategoryProducts</string>
+
+
+
+
+
+
+    <!--优惠券  get
+        Currency_ID   优惠券ID
+        UserInfo_ID   用户ID-->
+    <string name="GetCoupon">/api/ApiCoupon/GetAllCouponsByUserID</string>
+    <!--购物车，获取用户可以使用的优惠券信息   get GetSomesomeCoupons(int userId,string money) -->
+    <string name="GetSomesomeCoupons">/api/ApiCoupon/GetSomesomeCoupons</string>
+
+    <!--获取视频中心-->
+    <string name="GetAllVideo">/api/ApiVideo/GetVideoList</string>
+
+
+    <!--接口名称：猜你喜欢
+        说明：随机获取5个商品
+        地址：/Product/GuessYouLike
+        请求方法：get-->
+    <string name="MayLike">/api/Product/GuessYouLike</string>
+
+    <!--接口名称：商品详情
+        说明：商品详情
+        地址：ProductDetails/Details?productId=商品id
+        请求方法：get-->
+    <string name="getProductDetails">/api/ProductDetails/Details</string>
+
+    <!--接口名称：根据商品sku组合查询商品价格和库存
+        说明：根据商品sku组合查询商品价格和库存
+        地址：ProductDetails/GetStockBySkuGroup/?skuGroup=商品sku组合(商品id_颜色id_尺寸id_型号id)
+        请求方法：get-->
+    <string name="GetSpecifications">/api/ProductDetails/GetStockBySkuGroup</string>
+
+
+    <!--商品评论-->
+    <string name="GetEvaluateItem">/api/Order/GetEvaluateItem</string>
+    <!--评论商品-->
+    <string name="AddEvaluateItem">/api/Order/AddEvaluateItem</string>
+    <!--是否加入收藏-->
+    <string name="IsFavorite">/api/IsFavorite/IsFavorite</string>
+    <!--收藏商品列表-->
+    <string name="ListCollectionAndFootMark">/api/IsFavorite/DeleteFavorite</string>
+    <!--取消收藏-->
+    <string name="DeleteSingle">/api/IsFavorite/DeleteFavorite</string>
+    <!--添加收藏-->
+    <string name="AddCollection">/api/IsFavorite/AddFavorite</string>
+
+
+    <!--接口名称：获取系统分类列表
+        说明：获取系统分类列表
+        地址：/Category/GetSysCategory/
+        请求方法：get-->
+    <string name="GetSysCategory">/api/Category/GetSysCategory</string>
+
+    <!--接口名称：根据分类id查询商品列表及筛选功能
+        说明：根据分类id查询商品列表及筛选功能
+        地址：/SearchAPI/Search/
+        请求方法：post
+        参数：
+        keywords = 搜索关键字
+        cid = 分类id，默认0
+         b_id = 品牌id；
+        a_id = 属性id
+        orderKey = 排序字段
+        orderType = 排序类型，1升序2降序
+        pageNo = 页码;
+        pageSize = 页大小;-->
+    <string name="Search">/api/SearchAPI/Search</string>
+
+
+
+    <!--获取用户的收货地址列表   get GetAllAddress(int UserInfoID = 0)-->
+    <string name="GetAllAddress">/api/ApiAddress/GetAllAddress</string>
+    <!--添加、修改收货地址信息  [HttpPost]    添加、修改收货地址信息
+        public AjaxResult EditAddress([FromBody]ShippingAddressInfo Address)
+
+        注：添加时  Address.Id=0;
+
+        int     UserId    	        用户ID
+        string  ShipTo    	        收货人
+        string  Address   	        收货地址1
+        string  Phone     	        电话
+        string  Address_Provice         省/州ID
+        string  Address_Country         国家ID
+        string  Address_Address2        收货地址2
+        string  Address_City            城市
+        int     Address_IsDefault       是否默认地址：0不是，1是。
+        string  Address_ZipCode         邮编
+        string  Address_LastName
+        string  Address_StateProvince   国家,州-->
+    <string name="AddAddress">/api/ApiAddress/EditAddress</string>
+    <!--删除地址   get DelAddress(int Address_ID = 0, int UserId = 0)-->
+    <string name="DelAddress">/api/ApiAddress/DelAddress</string>
+    <!--设为默认地址  get SetDetault(int Address_ID = 0, int UserId = 0)-->
+    <string name="SetDetaultAddress">/api/ApiAddress/SetDetault</string>
+    <!--获取地址选择-->
+    <string name="GetTheAddress">/api/ApiAddress/GetTheAddress</string>
+
+
+    <!--接口名称：各状态订单列表
+        说明：各状态订单列表
+        地址：/Order/OrderList/userId=当前用户id&orderStatus=订单状态&pageNo=当前页码&pageSize=当前页大小
+        请求方法：get-->
+    <string name="GetAllOrder">/api/Order/OrderList</string>
+
+    <!--创建订单-->
+    <string name="AddOrder">/api/Order/AddOrder</string>
+
+
+    <!--接口名称：订单详情
+        说明：订单详情
+        地址：/Order/OrderDetails?orderId=订单id
+        参数：无
+        返回结果：-->
+    <string name="GetSomeOneOrder">/api/Order/OrderDetails</string>
+
+    <!--接口名称：确认收货
+        请求方法：post
+        参数：
+        userName:当前用户名
+        orderId:订单id -->
+    <string name="ConfirmOrder">/api/Order/ConfirmOrder/</string>
+
+    <!--接口名称：取消订单
+        说明：各状态订单列表
+        地址：SubmitOrder/MemberCloseOrder?orderId=订单号&userName=当前用户名
+        请求方法：get-->
+    <string name="MemberCloseOrder">/api/SubmitOrder/MemberCloseOrder</string>
+
+    <!--接口名称：加入购物车
+        说明：加入购物车
+        地址：/ShopCart/AddProductToCart?skuId=商品sku属性&&userId=用户id&&count=商品数量
+        请求方法：get-->
+    <string name="AddProductToCart">/api/ShopCart/AddProductToCart</string>
+
+    <!--接口名称：查询指定用户的购物车商品列表
+        说明：查询指定用户的购物车商品列表
+        地址：/ShopCart/GetCartList/?userId=当前用户id
+        请求方法：get-->
+    <string name="GetCartList">/api/ShopCart/GetCartList</string>
+
+    <!--接口名称： 从购物车删除商品
+        说明： 从购物车删除商品
+        地址：/ShopCart/RemoveFromCart/?userId=当前用户id&&skuId=商品sku属性
+        请求方法：get-->
+    <string name="RemoveFromCart">/api/ShopCart/RemoveFromCart</string>
+
+    <!--接口名称： 更新购物车信息
+        说明： 更新购物车信息
+        地址：/ShopCart/UpdateCartItem/?skuId=商品sku属性&&count=商品数量&&userId=当前用户id
+        请求方法：get-->
+    <string name="UpdateCartItem">/api//ShopCart/UpdateCartItem</string>
+
+    <!--接口名称： 购物车提交
+        说明： 购物车提交
+        地址：/ShopCart/SubmitByCart/?cartItemIds=购物车itemid组合&&userId=当前用户id
+        请求方法：get-->
+    <string name="SubmitByCart">/api/ShopCart/SubmitByCart</string>
+
+
+
+    <string name="Pay">/api/BuyCar/GetAllCar</string>
+
+
+
+
+</resources>

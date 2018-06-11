@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/common_title"/>
+
+    <LinearLayout
+        android:id="@+id/ll_tv_clear_cache"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dm_15"
+        android:background="@color/withe"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dm_12">
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clean cache"
+            android:textColor="@color/normal_gray"
+            android:textSize="@dimen/dm_15"/>
+
+        <TextView
+            android:id="@+id/tv_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_10"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dm_15"
+            android:drawablePadding="@dimen/dm_10"
+            android:drawableRight="@mipmap/more"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:lines="1"
+            android:text="43.11M"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="-6dp"
+        android:id="@+id/ll_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginRight="@dimen/dm_15"
+        android:background="@color/withe"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dm_12">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About FLYMALL"
+            android:textColor="@color/normal_gray"
+            android:textSize="@dimen/dm_15"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_10"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/dm_10"
+            android:drawableRight="@mipmap/more"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:lines="1"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginRight="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_44"
+        android:id="@+id/tv_sign_out"
+        android:textSize="@dimen/dm_16"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_text_color"
+        android:gravity="center"
+        android:text="SIGN OUT"
+        android:textColor="@color/black"/>
+</LinearLayout>

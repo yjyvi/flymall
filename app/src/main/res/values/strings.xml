@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">flymall</string>
+    <string name="login">LOG IN</string>
+    <string name="commit">Commit</string>
+    <string name="input_tel">Please enter phone number</string>
+    <string name="input_password">Please enter your password</string>
+    <string name="input_email">please enter your vaild email</string>
+    <string name="empty_hint">There is nothing here</string>
+    <string name="money_icon">$%1$2.2f</string>
+    <string name="get_code">get code</string>
+    <string name="facebook_app_id">168961090621130</string>
+    <string name="fb_login_protocol_scheme">fb168961090621130</string>
+
+</resources>

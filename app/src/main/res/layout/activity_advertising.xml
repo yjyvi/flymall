@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/iv_advertising"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:id="@+id/iv_jump_home"
+            android:background="@drawable/shape_advertising_jump_bg"
+            android:layout_width="wrap_content"
+            android:padding="@dimen/dm_6"
+            android:layout_height="wrap_content"
+            android:textColor="@color/withe"
+            android:textSize="@dimen/dm_12"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/dm_15"
+            android:layout_marginRight="@dimen/dm_15"
+            android:text="JUMP OVER"/>
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/withe"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/dm_18"
+        android:paddingTop="@dimen/dm_18">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dm_75"
+            android:src="@mipmap/icon_logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm_5"
+
+            android:text="Copyright©2018 FLYMALL"
+            android:textSize="@dimen/dm_10"/>
+    </LinearLayout>
+
+</LinearLayout>

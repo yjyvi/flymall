@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/translate"
+                android:orientation="vertical">
+    <!--主页面-->
+    <FrameLayout
+        android:id="@+id/fragment_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dm_50"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_1"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dm_50"
+        android:background="@color/normal_gray_line"/>
+    <!--首页-->
+    <RadioGroup
+        android:id="@+id/rg_home_table_groups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/withe"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <RadioButton
+            android:id="@+id/rb_home"
+            style="@style/Main_RadioGroup"
+            android:checked="true"
+            android:drawableTop="@drawable/tab_home"
+            android:text="HOME"
+            />
+
+        <RadioButton
+            android:id="@+id/rb_brands"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_brands"
+            android:text="BRANDS"/>
+
+        <RadioButton
+            android:id="@+id/rb_shop"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_shop"
+            android:text="SHOP"/>
+
+        <RadioButton
+            android:id="@+id/rb_mine"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_mine"
+            android:text="ME"/>
+    </RadioGroup>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/withe"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_table_home"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_home"
+            android:text="HOME"/>
+
+
+        <TextView
+            android:clickable="true"
+            android:id="@+id/tv_table_brands"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_brands"
+            android:text="BRANDS"/>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_table_shop"
+                style="@style/Main_RadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/tab_shop"
+                android:text="SHOP"/>
+
+            <TextView
+                android:id="@+id/tv_cart_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/dm_10"
+                android:layout_marginTop="@dimen/dm_2"
+                android:background="@drawable/shape_red_circle"
+                android:paddingLeft="@dimen/dm_4"
+                android:paddingRight="@dimen/dm_4"
+                android:text="0"
+                android:textColor="@color/withe"
+                android:textSize="@dimen/dm_8"/>
+        </FrameLayout>
+
+
+        <TextView
+            android:id="@+id/tv_table_mine"
+            style="@style/Main_RadioGroup"
+            android:drawableTop="@drawable/tab_mine"
+            android:text="ME"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

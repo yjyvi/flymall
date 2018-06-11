@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:background="@color/withe"
+              android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_goods_img"
+        android:src="@color/normal_gray"
+        android:layout_width="@dimen/dm_168"
+        android:scaleType="center"
+        android:layout_height="@dimen/dm_168"/>
+
+    <TextView
+        android:padding="@dimen/dm_8"
+        android:id="@+id/tv_goods_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:lines="2"
+        android:text="Converse Chuck Taylor All Star Canvas Low Top Sneaker"
+        android:textSize="@dimen/dm_14"/>
+
+    <LinearLayout
+        android:paddingTop="@dimen/dm_10"
+        android:paddingBottom="@dimen/dm_10"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_add_cart"
+            android:src="@mipmap/icon_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/iv_del_collection"
+            android:layout_marginLeft="@dimen/dm_45"
+            android:src="@mipmap/icon_del"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normal_color"
+    android:orientation="vertical"
+    tools:context="com.whmnrc.flymall.ui.login.LoginActivity"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_60"
+            android:paddingTop="@dimen/dm_20">
+
+
+            <RelativeLayout
+                android:id="@+id/common_title_back"
+                android:layout_width="@dimen/dm_100"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dm_13"
+                android:gravity="bottom"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/iv_back"
+                    android:layout_width="@dimen/dm_11"
+                    android:layout_height="@dimen/dm_19"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dm_10"
+                    android:src="@mipmap/back"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/common_title"
+                android:layout_width="@dimen/dm_150"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:gravity="bottom|center">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:text="@string/login"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/dm_16"
+
+                    />
+            </RelativeLayout>
+        </FrameLayout>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm_50"
+            android:paddingLeft="@dimen/dm_15"
+            android:paddingRight="@dimen/dm_15"
+            android:text="@string/login"
+            android:textSize="@dimen/dm_30"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm_5"
+            android:paddingLeft="@dimen/dm_15"
+            android:paddingRight="@dimen/dm_15"
+            android:text="If you log in for the first time, the system will automatically create an account"
+            android:textSize="@dimen/dm_12"/>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm_50"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dm_15"
+            android:paddingRight="@dimen/dm_15">
+
+            <ImageView
+                android:id="@+id/iv_tel"
+                android:layout_width="@dimen/dm_21"
+                android:layout_height="@dimen/dm_16"
+                android:src="@mipmap/icon_mail"/>
+
+            <EditText
+                android:id="@+id/et_mail"
+                style="@style/text_back_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_20"
+                android:background="@null"
+                android:hint="@string/input_tel"
+                android:inputType="textEmailAddress"
+                android:lines="1"
+                android:paddingBottom="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_15"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_1"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginRight="@dimen/dm_15"
+            android:background="#FFC700"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dm_15"
+            android:paddingRight="@dimen/dm_15">
+
+            <ImageView
+                android:id="@+id/iv_pwd"
+                android:layout_width="@dimen/dm_22"
+                android:layout_height="@dimen/dm_23"
+                android:src="@mipmap/icon_pwd"/>
+
+            <EditText
+                android:id="@+id/et_pwd"
+                style="@style/text_back_16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_18"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/input_password"
+                android:inputType="textPassword"
+                android:lines="1"
+                android:paddingBottom="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_15"/>
+
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_1"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginRight="@dimen/dm_15"
+            android:background="#FFC700"/>
+
+
+        <TextView
+            android:id="@+id/tv_login"
+            style="@style/text_back_16"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_45"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginRight="@dimen/dm_15"
+            android:layout_marginTop="34dp"
+            android:background="@color/normal_333"
+            android:gravity="center"
+            android:text="@string/login"
+            android:textColor="@color/normal_text_color"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dm_20"
+        android:id="@+id/tv_agreement"
+        android:layout_width="wrap_content"
+        android:padding="@dimen/dm_10"
+        android:layout_height="wrap_content"
+        android:text="*By signing in, you agree to the “User Agreement”"
+        android:textSize="@dimen/dm_12"/>
+</RelativeLayout>

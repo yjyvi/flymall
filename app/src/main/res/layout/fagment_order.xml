@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ViewStub
+                    android:id="@+id/vs_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="54dp"
+                    android:layout="@layout/layout_empty"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_order_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/back_gray"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_empty_goods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_to_home"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dm_50"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginLeft="@dimen/dm_80"
+                        android:layout_marginRight="@dimen/dm_80"
+                        android:layout_marginTop="@dimen/dm_10"
+                        android:background="@color/normal_text_color"
+                        android:gravity="center"
+                        android:text="Go to home to see"
+                        android:textColor="@color/black"/>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <View
+                            android:layout_width="@dimen/dm_40"
+                            android:layout_height="@dimen/dm_1"
+                            android:background="@color/normal_gray_line"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/dm_10"
+                            android:paddingLeft="@dimen/dm_8"
+                            android:paddingRight="@dimen/dm_8"
+                            android:paddingTop="@dimen/dm_10"
+                            android:text="YOU MAY ALSO LIKE"/>
+
+                        <View
+                            android:layout_width="@dimen/dm_40"
+                            android:layout_height="@dimen/dm_1"
+                            android:background="@color/normal_gray_line"/>
+
+                    </LinearLayout>
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_goods_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/back_gray"/>
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>

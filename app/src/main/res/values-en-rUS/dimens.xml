@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="dm_57">57dp</dimen>
+    <dimen name="dm_49">49dp</dimen>
+    <dimen name="dm_96">96dp</dimen>
+    <dimen name="dm_185">185dp</dimen>
+    <dimen name="dm_161">161dp</dimen>
+    <dimen name="dm_106">106dp</dimen>
+    <dimen name="dm_86">86dp</dimen>
+    <dimen name="dm_350">350dp</dimen>
+    <dimen name="dm_190">190dp</dimen>
+    <dimen name="dm_95">95dp</dimen>
+    <dimen name="dm_192">192dp</dimen>
+    <dimen name="dm_56">56dp</dimen>
+    <dimen name="dm_191">191dp</dimen>
+    <dimen name="dm_42">42dp</dimen>
+    <dimen name="dm_111">111dp</dimen>
+    <dimen name="dm_28">28dp</dimen>
+    <dimen name="dm_420">420dp</dimen>
+    <dimen name="dm_141">141dp</dimen>
+    <dimen name="dm_250">250dp</dimen>
+    <dimen name="dm_440">440dp</dimen>
+    <dimen name="dm_400">400dp</dimen>
+    <dimen name="dm_82">82dp</dimen>
+    <dimen name="dm_283">283dp</dimen>
+    <dimen name="dm_168">168dp</dimen>
+    <dimen name="dm_165">165dp</dimen>
+    <dimen name="dm_85">85dp</dimen>
+    <dimen name="dm_196">196dp</dimen>
+    <dimen name="dm_284">284dp</dimen>
+    <dimen name="dm_210">210dp</dimen>
+    <dimen name="dm_188">188dp</dimen>
+    <dimen name="dm_376">376dp</dimen>
+    <dimen name="dm_290">290dp</dimen>
+    <dimen name="dm_300">300dp</dimen>
+</resources>

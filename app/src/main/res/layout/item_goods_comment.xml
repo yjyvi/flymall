@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/dm_10"
+    android:background="@color/withe"
+    android:orientation="vertical"
+    android:padding="@dimen/dm_10">
+
+
+    <ImageView
+
+        android:id="@+id/iv_user_img"
+        android:layout_width="@dimen/dm_36"
+        android:layout_height="@dimen/dm_36"
+        android:src="@color/normal_gray"/>
+
+
+    <TextView
+        android:id="@+id/tv_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dm_9"
+        android:layout_toRightOf="@id/iv_user_img"
+        android:text="Amazon Customer"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_15"/>
+
+
+    <TextView
+        android:id="@+id/tv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_user_name"
+        android:layout_marginLeft="@dimen/dm_9"
+        android:layout_toRightOf="@id/iv_user_img"
+        android:text="January 21, 2018"
+        android:textColor="@color/normal_gray"
+        android:textSize="@dimen/dm_12"/>
+
+
+    <com.whmnrc.flymall.views.RatingBarView
+        android:id="@+id/rb_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="16px"
+        android:layout_toRightOf="@id/tv_title"
+        android:clickable="false"
+        app:starCount="5"
+        app:starEmpty="@mipmap/icon_star_false"
+        app:starFill="@mipmap/icon_star_true"
+        app:starImageSize="@dimen/dm_20"/>
+
+
+    <TextView
+        android:id="@+id/tv_goods_spec"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_user_img"
+        android:layout_marginTop="@dimen/dm_7"
+        android:text="Chosen“S”“Black”"
+        android:textSize="@dimen/dm_12"/>
+
+    <TextView
+        android:id="@+id/tv_goods_comment_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_goods_spec"
+        android:layout_marginTop="@dimen/dm_15"
+        android:text="I like it except it is band too small but I called them and they are sending more links for the band"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_12"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_goods_comment_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_goods_comment_content"
+        android:layout_marginTop="@dimen/dm_10"/>
+
+
+</RelativeLayout>

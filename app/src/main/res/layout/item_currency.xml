@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_margin="@dimen/dm_10"
+        android:text="USD"
+        android:gravity="center"
+        android:background="@drawable/item_currency_selector"
+        android:textColor="@drawable/item_buy_text_color"
+        android:textSize="@dimen/dm_16"
+        android:layout_width="@dimen/dm_108"
+        android:layout_height="@dimen/dm_50"/>
+
+
+</LinearLayout>

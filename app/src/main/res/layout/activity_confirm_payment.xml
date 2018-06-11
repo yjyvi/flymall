@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dm_50"
+        android:layout_marginTop="@dimen/dm_60">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_add_address"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_60"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10">
+
+                <ImageView
+                    android:id="@+id/img_1"
+                    android:layout_width="@dimen/dm_14"
+                    android:layout_height="@dimen/dm_16"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/order_lock"/>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dm_8"
+                    android:layout_toRightOf="@id/img_1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_total_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="Total merchandise：$9832"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/dm_15"/>
+
+                    <TextView
+                        android:id="@+id/tv_order_no"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/dm_10"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:text="Order number：0000098956"
+                        android:textColor="#999999"
+                        android:textSize="@dimen/dm_15"/>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+            <!--有地址的-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/withe"
+                android:orientation="vertical"
+                android:padding="@dimen/dm_10">
+
+                <ImageView
+                    android:id="@+id/img_2"
+                    android:layout_width="@dimen/dm_14"
+                    android:layout_height="@dimen/dm_17"
+                    android:background="@mipmap/icon_location_gray"/>
+
+                <TextView
+                    android:id="@+id/tv_address_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_8"
+                    android:layout_toRightOf="@id/img_2"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="Receiver：Amazon Customer"
+                    android:textSize="@dimen/dm_15"/>
+
+                <TextView
+                    android:id="@+id/tv_address_tel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_address_name"
+                    android:layout_marginLeft="@dimen/dm_100"
+                    android:text="13999998888"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <TextView
+                    android:id="@+id/tv_address_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_address_tel"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:ellipsize="end"
+                    android:lines="2"
+                    android:text="No.16, Basic Surface of Jianghan Road, Qiaokou District, Wuhan City, Hubei Province"
+                    android:textColor="@color/normal_gray"
+                    android:textSize="@dimen/dm_15"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_pay_pp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_pp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="Pay Pal"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_pp"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"/>
+
+            <LinearLayout
+                android:id="@+id/ll_pay_tt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_payt_tt"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="T/T Reimbursement Clause"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_tt"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"/>
+
+            <LinearLayout
+                android:id="@+id/ll_pay_zfb"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_zfb"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="ALIPAY"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_zfb"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"/>
+
+            <LinearLayout
+                android:id="@+id/ll_pay_wx"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_wxpay"/>
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="WeChat Pay"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_wx"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ll_pay_up"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_unionpay"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="Union Pay"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_up"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_pay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_text_color"
+        android:gravity="center"
+        android:text="Pay Pal $9832"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_16"/>
+
+
+    <include layout="@layout/common_title"/>
+
+</RelativeLayout>

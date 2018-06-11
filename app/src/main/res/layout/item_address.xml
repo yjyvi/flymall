@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginRight="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_10"
+        android:background="@color/withe"
+        android:orientation="vertical"
+        android:padding="@dimen/dm_10">
+
+
+        <TextView
+            android:id="@+id/tv_address_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="Receiver：Amazon Customer"
+            android:textSize="@dimen/dm_15"/>
+
+        <TextView
+            android:id="@+id/tv_address_tel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_address_name"
+            android:layout_marginLeft="@dimen/dm_70"
+            android:text="13999998888"
+            android:textSize="@dimen/dm_15"/>
+
+        <TextView
+            android:id="@+id/tv_address_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_address_tel"
+            android:text="No.16, Basic Surface of Jianghan Road, Qiaokou District, Wuhan City, Hubei Province"
+            android:textSize="@dimen/dm_15"/>
+
+        <ImageView
+            android:id="@+id/iv_address_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_address_edit"/>
+    </RelativeLayout>
+
+    <View
+        android:visibility="gone"
+        android:id="@+id/v_isDefault"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/rl_item"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:background="@color/normal_color"
+        android:layout_marginRight="@dimen/dm_15"/>
+</RelativeLayout>

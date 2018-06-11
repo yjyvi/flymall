@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:fitsSystemWindows="true"
+                android:layout_marginTop="-30dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dm_50"
+        android:layout_marginTop="@dimen/dm_65">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/dm_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+
+                android:id="@+id/ll_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:orientation="vertical"
+                android:padding="@dimen/dm_10">
+
+                <TextView
+                    android:id="@+id/tv_indicates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Indicates required fidles."
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_8"
+                    android:lines="1"
+                    android:text="Name:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/dm_5"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:layout_width="wrap_content"
+                            android:id="@+id/et_first_name"
+                            android:paddingLeft="@dimen/dm_10"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Please enter"
+                            android:paddingBottom="@dimen/dm_5"
+                            android:paddingTop="@dimen/dm_5"
+                            android:textSize="@dimen/dm_15"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/common_line"/>
+
+                        <TextView
+                            android:id="@+id/tv_first_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="* First Name"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dm_12"/>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dm_5"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/et_last_name"
+                            android:paddingLeft="@dimen/dm_10"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Please enter"
+                            android:paddingBottom="@dimen/dm_5"
+                            android:paddingTop="@dimen/dm_5"
+                            android:textSize="@dimen/dm_15"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/common_line"/>
+
+                        <TextView
+                            android:id="@+id/tv_last_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="* Last Name"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/dm_12"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/tv_shipping_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* Shipping Address:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <EditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Please enter"
+                    android:lines="1"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="House name/number and stret,company name,c/o"
+                    android:textColor="@color/normal_gray"
+                    android:textSize="@dimen/dm_12"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="Shipping Address Continued:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <EditText
+                    android:id="@+id/et_address_continued"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:hint="Please enter"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Apartment,suite,unit,building,floor,etc."
+                    android:textColor="@color/normal_gray"
+                    android:textSize="@dimen/dm_12"/>
+
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* City:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <EditText
+                    android:id="@+id/et_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Please enter"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:lines="1"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+                <TextView
+                    android:id="@+id/tv_destination_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* Destination Country:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <TextView
+                    android:id="@+id/tv_country"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_32"
+                    android:background="@null"
+                    android:drawableRight="@mipmap/more"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:text="United States"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+
+                <TextView
+                    android:id="@+id/tv_state_province_region"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* State / Province / Region:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <TextView
+                    android:id="@+id/tv_province"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_32"
+                    android:background="@null"
+                    android:drawableRight="@mipmap/more"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:text="Please Select---"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+                <TextView
+                    android:id="@+id/tv_zip_postal_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* ZIP / Postal Code:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <EditText
+                    android:id="@+id/et_postal_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="Please enter"
+                    android:lines="1"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:paddingBottom="@dimen/dm_5"
+                    android:paddingTop="@dimen/dm_5"
+                    android:textSize="@dimen/dm_15"/>
+
+                <include layout="@layout/common_line"/>
+
+                <TextView
+                    android:id="@+id/tv_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm_10"
+                    android:text="* Phone Number:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_15"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_tel"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/dm_15"
+                        android:text="+999"
+                        android:layout_height="wrap_content"/>
+
+
+                    <EditText
+                        android:id="@+id/et_tel"
+                        android:layout_marginLeft="@dimen/dm_24"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Please enter"
+                        android:inputType="number"
+                        android:lines="1"
+                        android:paddingBottom="@dimen/dm_5"
+                        android:paddingTop="@dimen/dm_5"
+                        android:textSize="@dimen/dm_15"/>
+                </LinearLayout>
+
+                <include layout="@layout/common_line"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_is_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_10"
+                android:layout_marginBottom="@dimen/dm_20"
+                android:background="@color/withe"
+                android:drawableRight="@drawable/select_cart"
+                android:padding="@dimen/dm_15"
+                android:text="Set to the default address."/>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <include layout="@layout/common_title"/>
+
+
+    <TextView
+        android:id="@+id/tv_save"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_text_color"
+        android:gravity="center"
+        android:text="SAVE"
+        android:textColor="@color/black"/>
+</RelativeLayout>

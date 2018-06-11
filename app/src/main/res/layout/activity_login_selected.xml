@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/normal_color"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dm_20"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_50"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/login"
+            android:textSize="@dimen/dm_16"/>
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:padding="@dimen/dm_10"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/dm_10"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_close"/>
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dm_30"
+        android:src="@mipmap/icon_logo"/>
+
+    <LinearLayout
+        android:id="@+id/ll_mail_login"
+        android:clickable="true"
+        android:background="@drawable/selector_login_bg"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dm_35"
+        android:layout_marginRight="@dimen/dm_35"
+        android:layout_height="@dimen/dm_49"
+        android:layout_marginTop="@dimen/dm_60">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_login_mail"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/dm_49"
+            android:textColor="@drawable/selector_login_text"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="MAILBOX"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_facebook_login"
+        android:layout_marginTop="@dimen/dm_10"
+        android:background="@drawable/selector_login_bg"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dm_35"
+        android:layout_marginRight="@dimen/dm_35"
+        android:paddingTop="@dimen/dm_12"
+        android:paddingBottom="@dimen/dm_12"
+        android:layout_height="@dimen/dm_49">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_login_facebook"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@drawable/selector_login_text"
+            android:layout_marginLeft="@dimen/dm_49"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="FACEBOOK"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_twitter_login"
+        android:layout_marginTop="@dimen/dm_10"
+        android:background="@drawable/selector_login_bg"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dm_35"
+        android:layout_marginRight="@dimen/dm_35"
+        android:paddingTop="@dimen/dm_12"
+        android:paddingBottom="@dimen/dm_12"
+        android:layout_height="@dimen/dm_49">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_login_twitter"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@drawable/selector_login_text"
+            android:layout_marginLeft="@dimen/dm_49"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="TWITTER"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ll_wechat_login"
+        android:layout_marginTop="@dimen/dm_10"
+        android:background="@drawable/selector_login_bg"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dm_35"
+        android:layout_marginRight="@dimen/dm_35"
+        android:paddingTop="@dimen/dm_12"
+        android:paddingBottom="@dimen/dm_12"
+        android:layout_height="@dimen/dm_49">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/selector_login_wx"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textColor="@drawable/selector_login_text"
+            android:layout_marginLeft="@dimen/dm_49"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="WECHAT"/>
+    </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dm_20"
+        android:id="@+id/tv_agreement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dm_10"
+        android:text="*By signing in, you agree to the “User Agreement”"
+        android:textSize="@dimen/dm_12"/>
+
+</RelativeLayout>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:background="@color/withe"
+        android:layout_width="match_parent"
+        android:paddingTop="@dimen/dm_20"
+        android:layout_height="@dimen/dm_60"
+        android:gravity="center_vertical">
+
+
+
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dm_10"
+            android:src="@mipmap/back"/>
+
+        <EditText
+            android:singleLine="true"
+            android:id="@+id/et_search"
+            android:hint="Search product name/brand"
+            android:textSize="@dimen/dm_15"
+            android:imeOptions="actionSearch"
+            android:lines="1"
+            android:layout_width="match_parent"
+            android:inputType="text"
+            android:layout_height="@dimen/dm_30"
+            android:layout_margin="@dimen/dm_10"
+            android:layout_weight="1"
+            android:background="@drawable/shape_search_bg"
+            android:drawableLeft="@mipmap/icon_search"
+            android:paddingRight="@dimen/dm_8"
+            android:paddingLeft="@dimen/dm_8"/>
+
+        <FrameLayout
+            android:id="@+id/ll_to_cart"
+            android:layout_marginLeft="@dimen/dm_10"
+            android:layout_marginRight="@dimen/dm_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginTop="@dimen/dm_5"
+                android:layout_width="@dimen/dm_20"
+                android:layout_height="@dimen/dm_20"
+                android:layout_marginRight="@dimen/dm_12"
+                android:src="@mipmap/icon_cart"/>
+
+            <TextView
+                android:id="@+id/tv_cart_num"
+                android:background="@drawable/shape_red_circle"
+                android:paddingLeft="@dimen/dm_4"
+                android:paddingRight="@dimen/dm_4"
+                android:layout_marginRight="@dimen/dm_5"
+                android:textSize="@dimen/dm_8"
+                android:textColor="@color/withe"
+                android:layout_gravity="right"
+                android:text="99"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/normal_gray"
+        android:layout_height="1dp"/>
+
+    <!--切换标签-->
+    <LinearLayout
+        android:id="@+id/ll_tab"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_36"
+        android:background="@color/withe"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_tab_synthesize"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="Synthesis"
+            android:textColor="@color/normal_red"
+            android:textSize="@dimen/dm_14"
+            />
+
+        <TextView
+            android:id="@+id/tv_tab_sales_volume"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text="Sales volume"
+            android:textColor="@color/normal_gray"
+            android:textSize="@dimen/dm_14"/>
+
+        <TextView
+
+            android:id="@+id/tv_tab_new"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="New"
+            android:textColor="@color/normal_gray"
+            android:textSize="@dimen/dm_14"/>
+
+        <LinearLayout
+            android:id="@+id/tab_price"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_tab_price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Price"
+                android:textColor="@color/normal_gray"
+                android:textSize="@dimen/dm_14"/>
+
+            <ImageView
+                android:id="@+id/iv_arrow"
+                android:layout_width="@dimen/dm_10"
+                android:layout_height="@dimen/dm_20"
+                android:layout_marginLeft="@dimen/dm_2"
+                android:src="@drawable/selecter_arrow_price_"/>
+        </LinearLayout>
+
+
+        <View
+            android:layout_width="1dp"
+            android:background="@color/normal_gray"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/iv_filter_layout"
+            android:layout_width="@dimen/dm_40"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@mipmap/icon_more"
+            />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_margin="@dimen/dm_6"
+        android:id="@+id/rv_tga_list"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_30"/>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ViewStub
+                android:id="@+id/vs_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout="@layout/layout_empty"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_goods_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+
+        </LinearLayout>
+
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+</LinearLayout>

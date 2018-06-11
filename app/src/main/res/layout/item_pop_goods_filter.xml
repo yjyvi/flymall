@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/translate_5"
+    android:gravity="right"
+    android:orientation="vertical"
+
+    >
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="@dimen/dm_250"
+        android:background="@color/withe"
+        android:padding="@dimen/dm_10"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dm_50"
+        >
+
+
+        <LinearLayout
+            android:layout_gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Materials"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dm_16"/>
+
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tag_flow_layout1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:layout_marginTop="@dimen/dm_10"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                app:max_select="1"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Materials"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dm_16"/>
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/tag_flow_layout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dm_10"
+                android:layout_marginTop="@dimen/dm_10"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                app:max_select="1"
+                />
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:background="@color/withe"
+        android:layout_width="@dimen/dm_250"
+        android:layout_height="@dimen/dm_50"
+        android:layout_alignParentBottom="true"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/normal_back_black_rect"
+            android:paddingBottom="@dimen/dm_5"
+            android:paddingLeft="@dimen/dm_10"
+            android:paddingRight="@dimen/dm_10"
+            android:paddingTop="@dimen/dm_5"
+            android:text="Cancel"
+            android:textColor="#FFF465"
+            android:textSize="@dimen/dm_15"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_20"
+            android:layout_marginRight="@dimen/dm_15"
+            android:background="@drawable/normal_rect"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingBottom="@dimen/dm_5"
+            android:paddingLeft="@dimen/dm_10"
+            android:paddingRight="@dimen/dm_10"
+            android:paddingTop="@dimen/dm_5"
+            android:text="Determine"
+            android:textSize="@dimen/dm_15"/>
+    </LinearLayout>
+
+</RelativeLayout>

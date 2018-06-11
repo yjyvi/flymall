@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/tv_achievement_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_16"
+        android:text="2017-11-11 12:12:12"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_15"/>
+
+    <TextView
+        android:id="@+id/tv_achievement_nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_achievement_time"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_8"
+        android:text="加油用户李子酱"
+        android:textColor="@color/normal_gray"
+        android:textSize="@dimen/dm_13"/>
+
+    <TextView
+        android:id="@+id/tv_achievement_litre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/line"
+        android:layout_marginRight="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_25"
+        android:text="99L"
+        android:textColor="@color/normal_red"
+        android:textSize="@dimen/dm_18"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_1"
+        android:layout_below="@id/tv_achievement_nickname"
+        android:layout_marginLeft="@dimen/dm_15"
+        android:layout_marginRight="@dimen/dm_15"
+        android:layout_marginTop="@dimen/dm_14"
+        android:background="@color/common_line"/>
+
+
+</RelativeLayout>

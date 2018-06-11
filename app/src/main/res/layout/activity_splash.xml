@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/normal_color">
+
+    <ImageView
+        android:layout_marginTop="@dimen/dm_80"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/icon_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:textScaleX="0.7"
+        android:typeface="monospace"
+        android:textColor="#BFB53A"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dm_100"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/dm_20"
+        android:layout_width="wrap_content"
+        android:text="HELP YOU PICK FASHION GOODIES"
+
+        android:layout_height="wrap_content"/>
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dm_25"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/dm_9"
+        android:text="Copyright©2018 FLYMALL"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

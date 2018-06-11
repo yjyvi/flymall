@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="withe">#FFF</color>
+    <color name="black">#000</color>
+    <color name="translate">#00000000</color>
+    <color name="translate_5">#50000000</color>
+    <color name="normal_color">#FFF034</color>
+    <color name="normal_gray">#999999</color>
+    <color name="normal_gray_back">#F5F5F5</color>
+    <color name="back_gray">#EEEEEE</color>
+    <color name="gray_line">#FFC700</color>
+    <color name="normal_gray_line">#CCCCCC</color>
+    <color name="normal_red">#F23030</color>
+    <color name="good_price_red">#F23030</color>
+    <color name="normal_333">#333333</color>
+    <color name="normal_text_color">#FFF465</color>
+    <color name="login_selected_text_color">#FFF034</color>
+
+
+    <!--线条-->
+    <color name="common_line">#E7E7E7</color>
+    <color name="type_text_bg">#f5f5f5</color>
+
+
+</resources>

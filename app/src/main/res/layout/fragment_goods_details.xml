@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_20">
+
+
+                <TextView
+                    android:layout_width="@dimen/dm_2"
+                    android:layout_height="@dimen/dm_10"
+                    android:background="@color/good_price_red"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_8"
+                    android:layout_weight="1"
+                    android:text="Product detailed parameters"/>
+
+            </LinearLayout>
+
+
+            <WebView
+                android:id="@+id/web"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingTop="@dimen/dm_20">
+
+
+                <TextView
+                    android:layout_width="@dimen/dm_2"
+                    android:layout_height="@dimen/dm_10"
+                    android:background="@color/good_price_red"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_8"
+                    android:layout_weight="1"
+                    android:text="Top reviews"/>
+
+                <TextView
+                    android:id="@+id/tv_more_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:paddingRight="@dimen/dm_15"
+                    android:text="+ More"
+                    android:textColor="@color/normal_gray"
+                    android:textSize="@dimen/dm_11"/>
+
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_goods_comment"
+                android:background="@color/back_gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dm_10"
+                android:background="@color/withe"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="@dimen/dm_40"
+                    android:layout_height="@dimen/dm_1"
+                    android:background="@color/normal_gray_line"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/dm_3"
+                    android:paddingLeft="@dimen/dm_8"
+                    android:paddingRight="@dimen/dm_8"
+                    android:paddingTop="@dimen/dm_3"
+                    android:text="See more reviews"
+                    android:textColor="@color/normal_gray"
+                    android:textSize="@dimen/dm_12"/>
+
+                <View
+                    android:layout_width="@dimen/dm_40"
+                    android:layout_height="@dimen/dm_1"
+                    android:background="@color/normal_gray_line"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

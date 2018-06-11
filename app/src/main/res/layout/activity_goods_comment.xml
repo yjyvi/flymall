@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_title"/>
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/withe"
+            android:padding="@dimen/dm_15">
+
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="Evaluation of products"/>
+
+
+            <com.whmnrc.flymall.views.RatingBarView
+                android:id="@+id/rb_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/dm_8"
+                app:starEmpty="@mipmap/icon_star_false"
+                app:starFill="@mipmap/icon_star_true"
+                app:starImageSize="@dimen/dm_20"/>
+
+
+            <View
+
+                android:id="@+id/v_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/tv_title"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/common_line"/>
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_line"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="Please enter your opinion on the product..."
+                android:minHeight="@dimen/dm_200"
+                android:padding="@dimen/dm_5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dm_14"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_content"
+                android:background="@color/white"
+                android:clipChildren="false"
+                android:nestedScrollingEnabled="false"/>
+
+
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_photo"
+                android:layout_marginTop="@dimen/dm_5"
+                android:src="@mipmap/icon_img"/>
+
+            <ImageView
+                android:id="@+id/iv_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_photo"
+                android:layout_marginLeft="@dimen/dm_32"
+                android:layout_marginTop="@dimen/dm_5"
+                android:layout_toRightOf="@id/iv_img"
+                android:src="@mipmap/icon_video"/>
+
+            <TextView
+                android:id="@+id/tv_submit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_40"
+                android:layout_below="@id/iv_video"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/normal_text_color"
+                android:gravity="center"
+                android:text="CONFIRMATION EVALUATION"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+
+    <!--头部标题-->
+    <LinearLayout
+        android:id="@+id/ll_header"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_80"
+        android:background="@color/normal_color"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/dm_40">
+
+        <TextView
+            android:id="@+id/tv_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm_15"
+            android:layout_marginRight="@dimen/dm_15"
+            android:layout_weight="1"
+            android:background="@color/withe"
+            android:drawableLeft="@mipmap/home_serach"
+            android:drawablePadding="@dimen/dm_10"
+            android:hint="TREND NEW PRODUCT SALE"
+            android:padding="@dimen/dm_7"
+            android:textSize="@dimen/dm_12"/>
+
+        <ImageView
+            android:id="@+id/iv_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dm_15"
+            android:paddingBottom="@dimen/dm_7"
+            android:paddingRight="@dimen/dm_7"
+            android:paddingTop="@dimen/dm_7"
+            android:src="@mipmap/icon_cart"/>
+
+    </LinearLayout>
+
+    <!--Limited time sale商品-->
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ViewStub
+                    android:id="@+id/vs_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout="@layout/layout_empty"/>
+
+                <!--Banner-->
+                <com.youth.banner.Banner
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_188"
+                    app:indicator_height="@dimen/dm_6"
+                    app:indicator_margin="@dimen/dm_5"
+                    app:indicator_width="@dimen/dm_6"/>
+
+                <!--VIDEO DISPLAY-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/withe"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dm_15">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dm_14"
+                        android:paddingLeft="@dimen/dm_15"
+                        android:paddingTop="@dimen/dm_14"
+                        android:text="VIDEO DISPLAY"
+                        android:textSize="@dimen/dm_16"
+                        android:textStyle="bold"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_video_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dm_15"/>
+
+                </LinearLayout>
+
+                <!--HOT BRANDS-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_210"
+                    android:layout_marginTop="@dimen/dm_9"
+                    android:background="@color/withe"
+                    android:paddingBottom="@dimen/dm_10">
+
+                    <TextView
+                        android:id="@+id/tv_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/dm_14"
+                        android:paddingLeft="@dimen/dm_15"
+                        android:paddingTop="@dimen/dm_14"
+                        android:text="HOT BRANDS"
+                        android:textSize="@dimen/dm_16"
+                        android:textStyle="bold"/>
+
+
+                    <android.support.v4.view.ViewPager
+                        android:id="@+id/vp_brands"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@id/tv_title"/>
+
+                    <!--滑动点-->
+                    <LinearLayout
+                        android:id="@+id/ll_point"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dm_5"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="@dimen/dm_5"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal"/>
+
+                </RelativeLayout>
+
+                <!--折扣区域-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_284"
+                    android:layout_marginTop="@dimen/dm_9"
+                    android:orientation="horizontal">
+
+                    <!--左边两个的-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <ImageView
+                            android:id="@+id/iv_activity_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="2"
+                            android:scaleType="fitXY"
+                            android:src="@color/normal_gray"/>
+
+
+                        <ImageView
+                            android:id="@+id/iv_activity_4"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/dm_1"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@color/normal_gray"/>
+
+
+                    </LinearLayout>
+
+                    <!--右边三个的-->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/dm_1"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/iv_activity_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@color/normal_gray"/>
+
+
+                        <ImageView
+                            android:id="@+id/iv_activity_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/dm_1"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@color/normal_gray"/>
+
+                        <ImageView
+                            android:id="@+id/iv_activity_5"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginTop="@dimen/dm_1"
+                            android:layout_weight="1"
+                            android:scaleType="fitXY"
+                            android:src="@color/normal_gray"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_sale_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/back_gray"/>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+
+</LinearLayout>
+

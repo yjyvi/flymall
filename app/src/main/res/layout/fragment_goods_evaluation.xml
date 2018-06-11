@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical">
+
+        <com.scwang.smartrefresh.layout.SmartRefreshLayout
+            android:id="@+id/refresh_like"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/dm_15"
+                    android:paddingLeft="@dimen/dm_10"
+                    android:paddingRight="@dimen/dm_10"
+                    android:background="@color/withe"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm_30">
+
+                    <TextView
+                        android:id="@+id/tv_type_all"
+                        android:clickable="true"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dm_2"
+                        android:minWidth="@dimen/dm_30"
+                        android:text="All"
+                        android:background="@drawable/item_goods_evaluation_selector"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dm_3"
+                        android:paddingBottom="@dimen/dm_3"
+                        android:paddingLeft="@dimen/dm_5"
+                        android:paddingRight="@dimen/dm_5"
+                        android:textColor="@drawable/item_buy_text_color"
+                        android:textSize="@dimen/dm_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_type_praise"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dm_2"
+                        android:minWidth="@dimen/dm_30"
+                        android:text="Praise"
+                        android:background="@drawable/item_goods_evaluation_selector"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dm_3"
+                        android:paddingBottom="@dimen/dm_3"
+                        android:paddingLeft="@dimen/dm_5"
+                        android:paddingRight="@dimen/dm_5"
+                        android:textColor="@drawable/item_buy_text_color"
+                        android:textSize="@dimen/dm_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_average"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dm_2"
+                        android:minWidth="@dimen/dm_30"
+                        android:text="Average"
+                        android:background="@drawable/item_goods_evaluation_selector"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dm_3"
+                        android:paddingBottom="@dimen/dm_3"
+                        android:paddingLeft="@dimen/dm_5"
+                        android:paddingRight="@dimen/dm_5"
+                        android:textColor="@drawable/item_buy_text_color"
+                        android:textSize="@dimen/dm_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_bad_review"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dm_2"
+                        android:minWidth="@dimen/dm_30"
+                        android:text="Bad review"
+                        android:background="@drawable/item_goods_evaluation_selector"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dm_3"
+                        android:paddingBottom="@dimen/dm_3"
+                        android:paddingLeft="@dimen/dm_5"
+                        android:paddingRight="@dimen/dm_5"
+                        android:textColor="@drawable/item_buy_text_color"
+                        android:textSize="@dimen/dm_13"/>
+
+                    <TextView
+                        android:id="@+id/tv_images"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/dm_2"
+                        android:minWidth="@dimen/dm_30"
+                        android:text="Images"
+                        android:background="@drawable/item_goods_evaluation_selector"
+                        android:gravity="center"
+                        android:paddingTop="@dimen/dm_3"
+                        android:paddingBottom="@dimen/dm_3"
+                        android:paddingLeft="@dimen/dm_5"
+                        android:paddingRight="@dimen/dm_5"
+                        android:textColor="@drawable/item_buy_text_color"
+                        android:textSize="@dimen/dm_13"/>
+                </LinearLayout>
+
+                <ViewStub
+                    android:id="@+id/vs_empty"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout="@layout/layout_empty"/>
+
+
+
+
+                <com.whmnrc.flymall.views.MyRecyclerView
+                    android:id="@+id/rv_evaluation_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/back_gray"/>
+
+            </LinearLayout>
+
+
+        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

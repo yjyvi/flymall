@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_coupons_bg"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dm_110"
+    android:layout_marginLeft="@dimen/dm_15"
+    android:layout_marginRight="@dimen/dm_15"
+    android:layout_marginTop="@dimen/dm_10"
+    android:background="@drawable/selecter_coupon_bg"
+    android:orientation="vertical"
+    android:padding="@dimen/dm_7">
+
+
+    <TextView
+        android:id="@+id/tv_coupons_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dm_140"
+        android:layout_marginRight="@dimen/dm_15"
+        android:text="100 coupons can be used"
+        android:textColor="@color/normal_gray"
+        android:textSize="@dimen/dm_13"/>
+
+    <TextView
+        android:id="@+id/tv_coupons_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_coupons_title"
+        android:layout_marginLeft="@dimen/dm_140"
+        android:text="$50.5669"
+        android:textColor="@color/good_price_red"
+        android:textSize="@dimen/dm_24"/>
+
+    <TextView
+        android:id="@+id/tv_coupons_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_coupons_money"
+        android:layout_marginLeft="@dimen/dm_140"
+        android:paddingBottom="@dimen/dm_5"
+        android:text="Voucher"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_12"/>
+
+    <TextView
+        android:id="@+id/tv_coupons_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dm_3"
+        android:layout_marginLeft="@dimen/dm_3"
+        android:text="Please use before May 5, 2017"
+        android:textColor="@color/normal_gray"
+        android:textSize="@dimen/dm_11"/>
+
+
+</RelativeLayout>
