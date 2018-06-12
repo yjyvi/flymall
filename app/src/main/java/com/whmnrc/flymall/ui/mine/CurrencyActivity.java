@@ -20,7 +20,6 @@ import com.whmnrc.flymall.beans.AllCurrencyBean;
 import com.whmnrc.flymall.presener.GetAllCurrencyPresenter;
 import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 
@@ -109,7 +108,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
             ToastUtils.showToast("Please Select Currency");
             return;
         }
-        mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(mCurrencyId, UserManager.getUser().getId());
+        mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(mCurrencyId);
     }
 
     @Override

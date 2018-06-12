@@ -31,6 +31,7 @@ public abstract class CommonCallBack<T> implements OKHttpManager.ObjectCallback 
             }
         }
         ToastUtils.showToast("Network request error! Please try again");
+        onError("Network request error! Please try again");
     }
 
     @Override

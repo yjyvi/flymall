@@ -64,6 +64,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     private PayPPPresenter mPayPPPresenter;
     public String mOrderId;
     private String mPaymentId;
+    public String mTotalPrice;
     //    @BindView(R.id.iv_pay_up)
 //    ImageView mIvPayUp;
 
@@ -73,14 +74,14 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         selectedView(mIvPayPp);
 
         mOrderId = getIntent().getStringExtra("orderId");
-        String totalPrice = getIntent().getStringExtra("totalPrice");
+        mTotalPrice = getIntent().getStringExtra("totalPrice");
         String addressBean = getIntent().getStringExtra("addressBean");
         AddressBean.ResultdataBean confirmAddressBean = JSON.parseObject(addressBean, AddressBean.ResultdataBean.class);
         mPayUtils = new PayUtils(this);
         mPayPPPresenter = new PayPPPresenter(this);
 
         mTvOrderNo.setText(String.format("Order number：%s", mOrderId));
-        mTvTotalPrice.setText(String.format("Total merchandise：%s", totalPrice));
+        mTvTotalPrice.setText(String.format("Total merchandise：%s", mTotalPrice));
 
         if (confirmAddressBean != null) {
             mTvAddressDesc.setText(confirmAddressBean.getAddress_Address2());
@@ -161,7 +162,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         switch (payType) {
             case PAY_METHOD_PP:
                 PayPalUtils payPalUtils = new PayPalUtils();
-                payPalUtils.initPayPalUtils(ConfirmPaymentActivity.this);
+                payPalUtils.initPayPalUtils(ConfirmPaymentActivity.this,mOrderId,mTotalPrice);
 //                mPayPPPresenter.getPayPPToken();
                 break;
             case PAY_METHOD_TT:

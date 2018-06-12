@@ -1,14 +1,18 @@
 package com.whmnrc.flymall.presener;
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
+import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.File;
 
 import okhttp3.Call;
 
@@ -18,21 +22,26 @@ import okhttp3.Call;
  * 上传头像
  */
 
-public class UpdateHeadImgPresenter extends PresenterBase {
+public class UpdateImgFile extends PresenterBase {
 
     private UpdateHeadImgListener mUpdateHeadImgListener;
 
-    public UpdateHeadImgPresenter(UpdateHeadImgListener updateUpdateHeadImgListener) {
+    public UpdateImgFile(UpdateHeadImgListener updateUpdateHeadImgListener) {
         this.mUpdateHeadImgListener = updateUpdateHeadImgListener;
     }
 
-    public void updateHeadImg(String imgData) {
+    public void updateHeadImg(File imgData) {
 
-        Map<String, String> params = new HashMap<>(2);
-        params.put("Type", "1");
-        params.put("FileData", imgData);
+        if (OKHttpManager.getIsConnected()) {
+            return;
+        }
 
-        OKHttpManager.uploadFile(params, new StringCallback() {
+        OkHttpUtils.post()
+                .addFile("photo", imgData.getName(), imgData)
+                .addParams("userId", UserManager.getUser().getId())
+                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getNick()) ? "img" : UserManager.getUser().getNick())
+                .url(getUrl(R.string.UploadFile))
+                .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
 
@@ -42,6 +51,7 @@ public class UpdateHeadImgPresenter extends PresenterBase {
             public void onResponse(String response, int id) {
                 BaseBean<String> netBaseBean = JSON.parseObject(response, BaseBean.class);
                 if (netBaseBean.getType() == 1) {
+
                     mUpdateHeadImgListener.loadSuccess(netBaseBean.getResultdata());
                 } else {
                     ToastUtils.showToast(netBaseBean.getMessage());

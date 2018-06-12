@@ -5,6 +5,7 @@ import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
@@ -22,10 +23,10 @@ public class UpdateDefaultCurrencyPresenter extends PresenterBase {
         this.mUpdateDefaultCurrencyListener = updateDefaultCurrencyListener;
     }
 
-    public void updateDefaultCurrency(String currencyID, String userId) {
+    public void updateDefaultCurrency(String currencyID) {
         HashMap<String, String> paramters = new HashMap<>(2);
         paramters.put("Currency_ID", currencyID);
-        paramters.put("UserInfo_ID", userId);
+        paramters.put("UserInfo_ID", UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.UpdateDefaultCurrency), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

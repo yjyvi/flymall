@@ -12,26 +12,27 @@ import java.util.TreeMap;
 
 /**
  * @author yjyvi
- * @data 2018/6/11.
+ * @data 2018/6/12.
  */
 
-public class GoodsIsCollectionPresenter extends PresenterBase {
+public class ShopCartListIsAddPresenter extends PresenterBase {
 
-    private GoodsIsCollectionListener mGoodsIsCollectionListener;
+    private AddCartItemNumListener mAddCartItemNumListener;
 
-    public GoodsIsCollectionPresenter(GoodsIsCollectionListener goodsIsCollectionListener) {
-        this.mGoodsIsCollectionListener = goodsIsCollectionListener;
+    public ShopCartListIsAddPresenter(AddCartItemNumListener addCartItemNumListener) {
+        this.mAddCartItemNumListener = addCartItemNumListener;
     }
 
-    public void getIsCollection(String productId) {
+    public void addCartItemNum(String skuId, String count) {
         TreeMap<String, String> paramters = new TreeMap<>();
-        paramters.put("productId", productId);
         paramters.put("userId", UserManager.getUser().getId());
-        OKHttpManager.get(getUrl(R.string.IsFavorite), paramters, new CommonCallBack<BaseBean>() {
+        paramters.put("skuId", skuId);
+        paramters.put("count", count);
+        OKHttpManager.get(getUrl(R.string.UpdateCartItem), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {
-                    mGoodsIsCollectionListener.isCollection((Integer) data.getResultdata());
+                    mAddCartItemNumListener.addSuceess();
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -39,7 +40,7 @@ public class GoodsIsCollectionPresenter extends PresenterBase {
         });
     }
 
-    public interface GoodsIsCollectionListener {
-        void isCollection(int isCollection);
+    public interface AddCartItemNumListener {
+        void addSuceess();
     }
 }

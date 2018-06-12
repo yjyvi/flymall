@@ -71,8 +71,7 @@ dependencies {
 
 
 
-    //paypay支付
-    compile('com.paypal.sdk:paypal-android-sdk:2.16.0')
-    compile 'com.google.android.gms:play-services-wallet:8.4.0'
+
+//    compile 'com.google.android.gms:play-services-wallet:8.4.0'
 
 }

@@ -73,8 +73,10 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                 resultdataBean.setCount(buyCarNum);
                 goodsNum.setText(String.valueOf(buyCarNum));
                 if (resultdataBean.isSelect()) {
-                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getSkuId()));
+                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getCartItemId()));
                 }
+                mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
+
             }
         });
 
@@ -87,8 +89,10 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                     goodsNum.setText(String.valueOf(buyCarNum));
                     resultdataBean.setCount(buyCarNum);
                     if (resultdataBean.isSelect()) {
-                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getSkuId()));
+                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getCartItemId()));
                     }
+
+                    mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
                 }
             }
         });
@@ -99,6 +103,8 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         void delItem(int position);
 
         void selectToPrice(int position, double goodsPrice, boolean isAdd, String cartId);
+
+        void addOrMinus(String skuId, String count);
     }
 
 
@@ -106,11 +112,11 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         if (!resultdataBean.isSelect()) {
             view.setSelected(true);
             resultdataBean.setSelect(true);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, resultdataBean.getSkuId());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, String.valueOf(resultdataBean.getCartItemId()));
         } else {
             view.setSelected(false);
             resultdataBean.setSelect(false);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, resultdataBean.getSkuId());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getCartItemId()));
         }
 
     }

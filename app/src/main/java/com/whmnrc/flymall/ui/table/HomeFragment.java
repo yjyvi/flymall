@@ -33,7 +33,7 @@ import com.whmnrc.flymall.presener.HomePageDataPresenter;
 import com.whmnrc.flymall.presener.HomePageSaleGoodsPresenter;
 import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
-import com.whmnrc.flymall.ui.UserManager;
+import com.whmnrc.flymall.ui.home.ActivityGoodsListActivity;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.home.GoodsListActivity;
 import com.whmnrc.flymall.ui.home.homebrands.HomeBrandsFragment;
@@ -134,16 +134,11 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mRvSaleList.setNestedScrollingEnabled(false);
         mRvVideoList.setNestedScrollingEnabled(false);
 
-
         mRvSaleList.setFocusableInTouchMode(false);
         mRvVideoList.setFocusableInTouchMode(false);
-        mVpBrands.setFocusableInTouchMode(false);
-        mBanner.setFocusableInTouchMode(false);
 
         mRvSaleList.requestFocus();
         mRvVideoList.requestFocus();
-        mVpBrands.requestFocus();
-        mBanner.requestFocus();
 
 
         initVideoList();
@@ -187,7 +182,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                GoodsDetailsActivity.start(view.getContext(), String.valueOf(mAdapter.getDatas().get(position).getId()));
+                GoodsDetailsActivity.start(view.getContext(), String.valueOf(mAdapter.getDatas().get(position).getProductId()));
             }
 
             @Override
@@ -334,7 +329,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
     @Override
     public void loadHomeData(HomeDataBean homeDataBean) {
-        mLoadingDialog.dismiss();
+
 
         mBanner.setDelayTime(3000).setImages(homeDataBean.getResultdata().getBanners()).setImageLoader(new ImageLoader() {
             @Override
@@ -416,6 +411,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             }
         });
         pointChange(0);
+
+
     }
 
 
@@ -434,38 +431,33 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mIvActivity1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(0).getId());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(0).getId()));
             }
         });
-
         mIvActivity2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(1).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(1).getId()));
             }
         });
-
         mIvActivity3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(2).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(2).getId()));
             }
         });
-
         mIvActivity4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(3).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(3).getId()));
             }
         });
-
         mIvActivity5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(4).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(4).getId()));
             }
         });
-
     }
 
     @Override
@@ -481,6 +473,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             mGoodListAdapter.setDataArray(datas);
         }
         mGoodListAdapter.notifyDataSetChanged();
+
+        mLoadingDialog.dismiss();
     }
 
 
@@ -497,7 +491,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
                     return;
                 }
 
-                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId, UserManager.getUser().getId());
+                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId);
                 mCurrencyPrice = currencyPrice;
                 mPopCurrenty.dismiss();
             }

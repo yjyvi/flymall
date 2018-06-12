@@ -17,6 +17,7 @@ import com.whmnrc.flymall.adapter.GoodListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.CouponBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.presener.AddressListPresenter;
 import com.whmnrc.flymall.presener.CreateOrderPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
@@ -75,7 +76,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     @BindView(R.id.et_remark)
     EditText mEtRemark;
     private GoodListAdapter mGoodListAdapter;
-    public StringBuffer mPriceIds = new StringBuffer();
+    public StringBuffer mSkuIds = new StringBuffer();
     public CreateOrderPresenter mCreateOrderPresenter;
     public AddressListPresenter mAddressListPresenter;
     private String mAddressId;
@@ -88,6 +89,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
      * 优惠券的金额
      */
     public double mCouponFullQuota;
+    public boolean mIsGoodsDetails;
 
     @Override
     protected void initViewData() {
@@ -97,6 +99,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
 
         mGoodsBean = getIntent().getParcelableArrayListExtra("goodsBean");
+        mIsGoodsDetails = getIntent().getBooleanExtra("isGoodsDetails", false);
 
         mCreateOrderPresenter = new CreateOrderPresenter(this);
 
@@ -112,12 +115,13 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 currentPrice += confirmBean.getGoodsPrice_Price();
                 mGoodsNum += confirmBean.getGoodsNUm();
                 if (mGoodsBean.size() == 1) {
-                    mPriceIds.append(confirmBean.getPriceIds());
+                    mSkuIds.append(confirmBean.getPriceIds());
                 } else {
-                    mPriceIds.append(confirmBean.getPriceIds()).append("|");
+                    mSkuIds.append(confirmBean.getPriceIds()).append(",");
                 }
             }
 
+            sourcePrice = sourcePrice * mGoodsNum;
 
             mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(sourcePrice));
             mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
@@ -145,9 +149,8 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 mFlGoodsImg.addView(imageView);
             } else if (i == 2) {
                 ImageView imageView = new ImageView(this);
-                imageView.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.dm_5), 0);
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.dm_75), getResources().getDimensionPixelOffset(R.dimen.dm_75)));
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setBackgroundResource(R.color.normal_gray);
                 GlideUtils.LoadImage(this, R.mipmap.icon_order_normal, imageView);
                 mFlGoodsImg.addView(imageView);
@@ -162,9 +165,10 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     }
 
 
-    public static void start(Context context, ArrayList<ConfirmBean> goodsBean) {
+    public static void start(Context context, ArrayList<ConfirmBean> goodsBean, boolean isGoodsDetails) {
         Intent starter = new Intent(context, ConfirmOrderActivity.class);
         starter.putParcelableArrayListExtra("goodsBean", goodsBean);
+        starter.putExtra("isGoodsDetails", isGoodsDetails);
         context.startActivity(starter);
     }
 
@@ -194,8 +198,11 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                     ToastUtils.showToast("地址不能为空");
                     return;
                 }
-
-                mCreateOrderPresenter.createOrder(mPriceIds.toString(), mAddressId, mCouponId, mEtRemark.getText().toString().trim());
+                if (mIsGoodsDetails) {
+                    mCreateOrderPresenter.goodsDetailsCreateOrder(mSkuIds.toString(), mAddressId, mCouponId, String.valueOf(mGoodsNum), mGoodsBean.get(0).getGoods_Name(), mEtRemark.getText().toString().trim());
+                } else {
+                    mCreateOrderPresenter.shopCartCreateOrder(mSkuIds.toString(), mAddressId, mCouponId, mEtRemark.getText().toString().trim());
+                }
                 break;
             case R.id.ll_to_order_img:
                 VerticalGoodsListActivity.start(view.getContext(), mGoodsBean);
@@ -206,9 +213,14 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     }
 
     @Override
-    public void createOrderSuccess(String orderId) {
-        ConfirmPaymentActivity.start(this, orderId, PlaceholderUtils.pricePlaceholder(mMoney), JSON.toJSONString(addressEventData));
+    public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean  resultdataBean) {
+        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(mMoney), JSON.toJSONString(addressEventData));
         finish();
+    }
+
+    @Override
+    public void createMutOrderSuccess(OrderDeitalsBean.ResultdataBean orderId) {
+
     }
 
     @Override

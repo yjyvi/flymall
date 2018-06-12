@@ -53,6 +53,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
 
     }
 
+
     private void initWeb(final String contUrl) {
         web.post(new Runnable() {
             @Override
@@ -66,6 +67,8 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
                 settings.setDefaultTextEncodingName("utf-8");
             }
         });
+
+
     }
 
     /**
@@ -75,9 +78,6 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
      * @return
      */
     public static String getHtmlData(String bodyHTML) {
-
-
-        String css = "@font-face {font-family:myWebFont; src: url(PingFang Light_0.ttf)}";
         String head = "<head><style>* {\n" +
                 "        margin: 0;\n" +
                 "        padding: 0;\n" +
@@ -85,7 +85,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
                 "\n" +
                 "    img {\n" +
                 "        width: 100%;\n" +
-                "    }\n" + css + "</style></head>";
+                "    }\n" + "</style></head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 

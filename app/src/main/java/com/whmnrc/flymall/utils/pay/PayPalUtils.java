@@ -2,14 +2,17 @@ package com.whmnrc.flymall.utils.pay;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 
 import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalItem;
 import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalPaymentDetails;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author yjyvi
@@ -28,68 +31,99 @@ public class PayPalUtils {
      * - Set to PayPalConfiguration.ENVIRONMENT_NO_NETWORK to kick the tires
      * without communicating to PayPal's servers.
      */
-    //正式环境
-//    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
-    //测试环境
-    private static final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
 
-    // note that these credentials will differ between live & sandbox environments.
-    private static final String CONFIG_CLIENT_ID = "AUY01sO4jBJWL-fk8K0M55Zq_syV_9PTGlsMaJSydTMZ9yHJZ1V4kn7WguQSwuU9599lndppg_jjn2fS";
 
+    private static PayPalConfiguration paypalConfig = new PayPalConfiguration()
+            .environment(Config.PAYPAL_ENVIRONMENT)
+            .defaultUserEmail("sql_316-buyer@163.com")
+            .merchantName("sql_316-facilitator@163.com")
+            .clientId(Config.PAYPAL_CLIENT_ID);
+
+    private Activity mContext;
+    private String orderMoney;
+    private String orderId;
     public static final int REQUEST_CODE_PAYMENT = 1;
 
 
-    private static PayPalConfiguration config = new PayPalConfiguration()
-            .environment(CONFIG_ENVIRONMENT)
-            .clientId(CONFIG_CLIENT_ID)
-            // The following are only used in PayPalFuturePaymentActivity.
-            .merchantName("Sandbox")
-            .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
-            .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
-    private Activity mContext;
+    public class Config {
+        // PayPal app configuration
+        public static final String PAYPAL_CLIENT_ID = "AUY01sO4jBJWL-fk8K0M55Zq_syV_9PTGlsMaJSydTMZ9yHJZ1V4kn7WguQSwuU9599lndppg_jjn2fS";
+        public static final String PAYPAL_CLIENT_SECRET = "secret 前端用不到";
+        //正式环境
+        // private public final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
+        public static final String PAYPAL_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+        public static final String PAYMENT_INTENT = PayPalPayment.PAYMENT_INTENT_SALE;
+        public static final String DEFAULT_CURRENCY = "USD";//美元
 
-
-    public  void initPayPalUtils(Activity context) {
-        this.mContext = context;
-        Intent intent = new Intent(context, PayPalService.class);
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-        context.startService(intent);
-
-        onBuyPressed();
     }
 
+    public  void initPayPalUtils(Activity context,String orderId,String orderMoney) {
+        this.mContext = context;
+        this.orderId = orderId;
+        this.orderMoney= orderMoney;
 
-    private void onBuyPressed() {
-        /*
-         * PAYMENT_INTENT_SALE will cause the payment to complete immediately.
-         * Change PAYMENT_INTENT_SALE to
-         *   - PAYMENT_INTENT_AUTHORIZE to only authorize payment and capture funds later.
-         *   - PAYMENT_INTENT_ORDER to create a payment for authorization and capture
-         *     later via calls from your server.
-         *
-         * Also, to include additional payment details and an item list, see getStuffToBuy() below.
-         */
-        PayPalPayment thingToBuy = getThingToBuy(PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(context, PayPalService.class);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypalConfig);
+        context.startService(intent);
 
-        /*
-         * See getStuffToBuy(..) for examples of some available payment options.
-         */
+        launchPayPalPayment();
+    }
+
+    private List<PayPalItem> productsInCart = new ArrayList<PayPalItem>();
+
+    /**
+     * 启动支付界面
+     * Launching PalPay payment activity to complete the payment
+     */
+    private void launchPayPalPayment() {
+
+//        PayPalPayment thingsToBuy = prepareFinalCart();
+
+        PayPalPayment payment = new PayPalPayment(new BigDecimal("1.75"), "USD", "sample item",
+                PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent intent = new Intent(mContext, PaymentActivity.class);
 
-        // send the same configuration for restart resiliency
-        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, paypalConfig);
 
-        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, thingToBuy);
+        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
 
         mContext.startActivityForResult(intent, REQUEST_CODE_PAYMENT);
     }
 
-    private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal("0.01"), "USD", "sample item", paymentIntent);
+
+    /**
+     * 添加商品信息
+     * Preparing final cart amount that needs to be sent to PayPal for payment
+     */
+    private PayPalPayment prepareFinalCart() {
+        PayPalItem[] items = new PayPalItem[productsInCart.size()];
+        items = productsInCart.toArray(items);
+
+        // Total amount
+        BigDecimal subtotal = PayPalItem.getItemTotal(items);
+        // If you have shipping cost, add it here
+        BigDecimal shipping = new BigDecimal("0");
+        // If you have tax, add it here赋税
+        BigDecimal tax = new BigDecimal("0");
+        PayPalPaymentDetails paymentDetails = new PayPalPaymentDetails(
+                shipping, subtotal, tax);
+
+        BigDecimal amount = subtotal.add(shipping).add(tax);
+
+        PayPalPayment payment = new PayPalPayment(
+                amount,
+                Config.DEFAULT_CURRENCY,
+                "Description about transaction. This will be displayed to the user.",
+                Config.PAYMENT_INTENT);
+
+        payment.items(items).paymentDetails(paymentDetails);
+
+        // Custom field like invoice_number etc.,
+        payment.custom("This is text that will be associated with the payment that the app can use.");
+
+        return payment;
     }
-
-
 
 
 }

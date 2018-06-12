@@ -16,12 +16,13 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.TableViewPagerAdapter;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
-import com.whmnrc.flymall.beans.GoodsSpecificationsBean;
+import com.whmnrc.flymall.beans.GoodsNoAttrBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.AddOrDelCollectionGoodsPresenter;
 import com.whmnrc.flymall.presener.AddShoppingCartPresenter;
+import com.whmnrc.flymall.presener.GoodsCommitOrderPresenter;
 import com.whmnrc.flymall.presener.GoodsDetailsPresenter;
-import com.whmnrc.flymall.presener.GoodsSpecificationsPresenter;
+import com.whmnrc.flymall.presener.GoodsIsCollectionPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.UserManager;
@@ -64,7 +65,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener {
+public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener, GoodsIsCollectionPresenter.GoodsIsCollectionListener, GoodsCommitOrderPresenter.GoodsNoAttrCommitListener {
 
 
     @BindView(R.id.ptlm_specialist_tour_detail)
@@ -109,8 +110,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     private int type;
     public String mGoodsId;
     public GoodsDetailsPresenter mGoodsDetailsPresenter;
-    private List<GoodsSpecificationsBean.ResultdataBean> mGoodsSpecificationBean;
-    public GoodsSpecificationsPresenter mGoodsSpecificationsPresenter;
     private String mGoodsImg;
     public GoodSpecificationsPop mGoodSpecificationsPop;
     private LoadingDialog mLoadingDialog;
@@ -118,6 +117,8 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     private GoodsDetailsBean.ResultdataBean mGoodsBean;
     private boolean isAddCart;
     public AddShoppingCartPresenter mAddShoppingCartPresenter;
+    public GoodsIsCollectionPresenter mGoodsIsCollectionPresenter;
+    public GoodsCommitOrderPresenter mGoodsCommitOrderPresenter;
 
     @Override
     protected int setLayoutId() {
@@ -131,11 +132,13 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mLoadingDialog = new LoadingDialog(this);
         mLoadingDialog.show();
         mGoodsDetailsPresenter = new GoodsDetailsPresenter(this);
+        mGoodsCommitOrderPresenter = new GoodsCommitOrderPresenter(this);
         mAddOrDelCollectionGoodsPresenter = new AddOrDelCollectionGoodsPresenter(this);
-
+        mGoodsIsCollectionPresenter = new GoodsIsCollectionPresenter(this);
         mAddShoppingCartPresenter = new AddShoppingCartPresenter(this);
         mGoodsId = getIntent().getStringExtra("goodsId");
 
+        mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
         mAddOrDelCollectionGoodsPresenter.addCollection(mGoodsId, 2);
 
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
@@ -270,18 +273,12 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 ShoppingCartActivity.start(view.getContext());
                 break;
             case R.id.tv_add_cart:
-
                 isAddCart = true;
                 if (mGoodSpecificationsPop != null) {
-                    if (mGoodsBean.getColor().size() == 0 || mGoodsBean.getSize().size() == 0 || mGoodsBean.getVersion().size() == 0) {
-                        mAddShoppingCartPresenter.addShoppingCartList(mGoodsId + "_0_0_0", "1");
-                    } else {
-                        mGoodSpecificationsPop.show();
-                    }
+                    mGoodSpecificationsPop.show();
                 }
                 break;
             case R.id.tv_buy:
-
                 isAddCart = false;
                 if (mGoodSpecificationsPop != null) {
                     mGoodSpecificationsPop.show();
@@ -337,12 +334,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
             initBanner(goodsDetailsBean.getBannners());
 
-            //是否收藏
-//            if (TextUtils.equals(goodsDetailsBean.getCollection(), "1")) {
-//                isCollection(true, false);
-//            } else {
-//                isCollection(false, false);
-//            }
 
             initTab(goodsDetailsBean.getProductDescription(), goodsDetailsBean, String.valueOf(goodsDetailsBean.getProduct().getId()));
 
@@ -367,27 +358,29 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         if (!UserManager.getIsLogin(this)) {
             return;
         }
-        if (isAddCart) {
-            mAddShoppingCartPresenter.addShoppingCartList(goodSpe, String.valueOf(number));
+        if (mGoodsBean.getColor().size() == 0 && mGoodsBean.getSize().size() == 0 && mGoodsBean.getVersion().size() == 0) {
+            mGoodsCommitOrderPresenter.getGoodsNoAttrCommit(mGoodsId + "_0_0_0", String.valueOf(number), "0");
         } else {
-            ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
-            ConfirmBean confirmBean = new ConfirmBean();
-            confirmBean.setGoods_Describe(mGoodsBean.getProduct().getShortDescription());
-            confirmBean.setGoods_ImaPath(mGoodsImg);
-            confirmBean.setGoods_Name(mGoodsBean.getProduct().getProductName());
-            confirmBean.setGoodsNUm(number);
-            if (mGoodsSpecificationBean != null) {
+            if (isAddCart) {
+                mAddShoppingCartPresenter.addShoppingCartList(goodSpe, String.valueOf(number));
+            } else {
+                ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
+                ConfirmBean confirmBean = new ConfirmBean();
+                confirmBean.setGoods_Describe(mGoodsBean.getProduct().getShortDescription());
+                confirmBean.setGoods_ImaPath(mGoodsImg);
+                confirmBean.setGoods_Name(mGoodsBean.getProduct().getProductName());
+                confirmBean.setGoodsNUm(number);
                 confirmBean.setGoods_spec(goodsAttr);
-            }
-            confirmBean.setPriceIds(goodSpe);
-            confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
-            confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
-            confirmBeans.add(confirmBean);
+                confirmBean.setPriceIds(goodSpe);
+                confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
+                confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
+                confirmBeans.add(confirmBean);
 
-            ConfirmOrderActivity.start(this, confirmBeans);
+                ConfirmOrderActivity.start(this, confirmBeans, true);
 
-            if (mGoodSpecificationsPop != null && mGoodSpecificationsPop.isShow()) {
-                mGoodSpecificationsPop.dissmiss();
+                if (mGoodSpecificationsPop != null && mGoodSpecificationsPop.isShow()) {
+                    mGoodSpecificationsPop.dissmiss();
+                }
             }
         }
     }
@@ -412,6 +405,60 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     public void tabChangeEvent(HomeTableChangeEvent homeTableChangeEvent) {
         if (homeTableChangeEvent.getEventType() == HomeTableChangeEvent.GO_TO_HOME) {
             finish();
+        }
+    }
+
+    @Override
+    public void isCollection(int isCollection) {
+        //是否收藏
+        if (isCollection == 1) {
+            isCollection(true, false);
+        } else {
+            isCollection(false, false);
+        }
+
+    }
+
+    @Override
+    public void commitSuccess(GoodsNoAttrBean.ResultdataBean resultdata) {
+        if (resultdata.getShopCartItemModel() == null) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().size() <= 0) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().get(0).getCartItemModels() == null) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().get(0).getCartItemModels().size() <= 0) {
+            return;
+        }
+
+
+        GoodsNoAttrBean.ResultdataBean.ShopCartItemModelBean.CartItemModelsBean cartItemModelsBean = resultdata.getShopCartItemModel().get(0).getCartItemModels().get(0);
+        if (isAddCart) {
+            mAddShoppingCartPresenter.addShoppingCartList(cartItemModelsBean.getSkuId(), String.valueOf(cartItemModelsBean.getCount()));
+        } else {
+            ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
+            ConfirmBean confirmBean = new ConfirmBean();
+            confirmBean.setGoods_Describe("");
+            confirmBean.setGoods_ImaPath(cartItemModelsBean.getImgUrl());
+            confirmBean.setGoods_Name(cartItemModelsBean.getName());
+            confirmBean.setGoodsNUm(cartItemModelsBean.getCount());
+            confirmBean.setGoods_spec("");
+            confirmBean.setPriceIds(cartItemModelsBean.getSkuId());
+            confirmBean.setGoods_SourcePrice(cartItemModelsBean.getPrice());
+            confirmBean.setGoodsPrice_Price(0);
+            confirmBeans.add(confirmBean);
+
+            ConfirmOrderActivity.start(this, confirmBeans, true);
+
+            if (mGoodSpecificationsPop != null && mGoodSpecificationsPop.isShow()) {
+                mGoodSpecificationsPop.dissmiss();
+            }
         }
     }
 }

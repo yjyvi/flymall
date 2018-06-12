@@ -13,6 +13,7 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.CouponBean;
 import com.whmnrc.flymall.presener.CouponListPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.evntBusBean.CouponsEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -86,21 +87,17 @@ public class SelectCouponsActivity extends BaseActivity implements CouponListPre
     }
 
 
-    public static void start(Context context,String money) {
+    public static void start(Context context, String money) {
         Intent starter = new Intent(context, SelectCouponsActivity.class);
-        starter.putExtra("money",money);
+        starter.putExtra("money", money);
         context.startActivity(starter);
     }
 
     @Override
     public void getCouponListSuccess(List<CouponBean.ResultdataBean> resultdataBeans) {
-//        for (CouponBean.ResultdataBean resultdataBean : resultdataBeans) {
-//            if (resultdataBean.getCoupon_State() !=0) {
-//                resultdataBeans.remove(resultdataBean);
-//            }
-//        }
         mCouponsAdapter.setDataArray(resultdataBeans);
         mCouponsAdapter.notifyDataSetChanged();
+        showEmpty();
     }
 
     @Override
@@ -115,4 +112,14 @@ public class SelectCouponsActivity extends BaseActivity implements CouponListPre
 
     }
 
+
+    public void showEmpty() {
+        if (mCouponsAdapter != null && mCouponsAdapter.getDatas().size() == 0) {
+            EmptyListUtils.loadEmpty(true, mVsEmpty);
+        } else {
+            if (mVsEmpty != null) {
+                mVsEmpty.setVisibility(View.GONE);
+            }
+        }
+    }
 }

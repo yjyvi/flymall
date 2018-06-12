@@ -39,7 +39,7 @@ import butterknife.BindView;
 public class OrderListActivity extends BaseActivity {
 
     /**
-     * 订单状态：0：待支付；1：已支付；2：待发货；3：已完成；4：已取消；5：已评价；6：已删除；7:待收货 99：所有
+     * 订单状态：0：所有 1：待支付；2：待发货；3：待收货；4：超时未付款关闭；5：完成
      */
 
 
@@ -70,16 +70,16 @@ public class OrderListActivity extends BaseActivity {
         for (int i = 0; i < titles.length; i++) {
             switch (i) {
                 case 0:
-                    fragments.add(OrderFragment.newInstance(0));
+                    fragments.add(OrderFragment.newInstance(1));
                     break;
                 case 1:
                     fragments.add(OrderFragment.newInstance(2));
                     break;
                 case 2:
-                    fragments.add(OrderFragment.newInstance(7));
+                    fragments.add(OrderFragment.newInstance(3));
                     break;
                 case 3:
-                    fragments.add(OrderFragment.newInstance(99));
+                    fragments.add(OrderFragment.newInstance(0));
                     break;
                 default:
                     break;

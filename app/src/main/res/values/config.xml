@@ -6,7 +6,6 @@
     <string name="service_host_image">http://flymall.store</string>
 
 
-
     <!-- [HttpPost]      登录
         Login(LoginEntity Login)
 
@@ -37,14 +36,14 @@
     <!--修改用户信息
     [HttpPost]     修改用户信息
         public AjaxResult UpdateUser(string HeadImg,string NickName,string Sex,int UserInfo_ID = 0)-->
-    <string name="UpdateUser">/api/ApiLogin/UpdateUserr</string>
+    <string name="UpdateUser">/api/ApiLogin/UpdateUser</string>
 
     <!--上传图片文件-->
-    <string name="UploadFile">/api/ApiLogin/UploadFile</string>
+    <!--<string name="UploadFile">/api/ApiLogin/UploadFile</string>-->
     <!--上传视频文件-->
     <string name="UploadMp4File">/api/ApiLogin/UploadMp4File</string>
-
-
+    <!--上传头像-->
+    <string name="UploadFile">/api/ApiLogin/UploadFile</string>
 
 
     <!--接口名称：首页数据 轮播图，热门品牌，视频列表
@@ -70,10 +69,6 @@
         地址：/HomePageAPI/GetCategoryProducts
         请求方法：get-->
     <string name="GetCategoryProducts">/api/HomePageAPI/GetCategoryProducts</string>
-
-
-
-
 
 
     <!--优惠券  get
@@ -104,6 +99,12 @@
         地址：ProductDetails/GetStockBySkuGroup/?skuGroup=商品sku组合(商品id_颜色id_尺寸id_型号id)
         请求方法：get-->
     <string name="GetSpecifications">/api/ProductDetails/GetStockBySkuGroup</string>
+
+    <!-- 接口名称：立即购买
+        说明：商品详情页点击立即购买
+        地址：/ImmediatelyBuy/SubmitOrderByProductId?userId=当前用户id&skuIds=商品sku属性&counts商品数量&collpids = 优惠券id
+        请求方法：get-->
+    <string name="SubmitOrderByProductId">/api/ImmediatelyBuy/SubmitOrderByProductId</string>
 
 
     <!--商品评论-->
@@ -158,7 +159,6 @@
     <string name="Search">/api/SearchAPI/Search</string>
 
 
-
     <!--获取用户的收货地址列表   get GetAllAddress(int UserInfoID = 0)-->
     <string name="GetAllAddress">/api/ApiAddress/GetAllAddress</string>
     <!--添加、修改收货地址信息  [HttpPost]    添加、修改收货地址信息
@@ -193,11 +193,11 @@
         请求方法：get-->
     <string name="GetAllOrder">/api/Order/OrderList</string>
 
-    <!--单个接口名称：立即购买
-        说明：商品详情页点击立即购买
-        地址：/ImmediatelyBuy/SubmitOrderByProductId?userId=当前用户id&skuIds=商品sku属性&counts商品数量&collpids = 优惠券id
-        请求方法：get-->
-    <string name="AddOrder">/api/ImmediatelyBuy/SubmitOrderByProductId</string>
+    <!--&lt;!&ndash;单个接口名称：立即购买-->
+        <!--说明：商品详情页点击立即购买-->
+        <!--地址：/ImmediatelyBuy/SubmitOrderByProductId?userId=当前用户id&skuIds=商品sku属性&counts商品数量&collpids = 优惠券id-->
+        <!--请求方法：get&ndash;&gt;-->
+    <!--<string name="AddOrder">/api/ImmediatelyBuy/SubmitOrderByProductId</string>-->
 
 
     <!--接口名称：订单详情
@@ -206,6 +206,34 @@
         参数：无
         返回结果：-->
     <string name="GetSomeOneOrder">/api/Order/OrderDetails</string>
+
+    <!--接口名称：商品详情页直接提交生成订单
+        说明：商品详情页直接提交生成订单
+        地址：/CreateOrder/CreateOrder
+        请求方法：post参数：
+        long userId //当前用户id
+        string skuIds // 商品sku属性组合
+        string counts // 商品数量
+        long recieveAddressId  // 收货地址id
+        string couponIds //优惠券id
+        int integral  //积分 默认0
+        string productName  //商品名称
+        int platformType  // 平台  2：安卓/3：ios/0：PC -->
+    <string name="CreateOrder">/api/CreateOrder/CreateOrder</string>
+
+    <!--接口名称：购物车提交提交生成订单
+        说明：购物车提交提交生成订单
+        地址：/CreateOrder/CreateOrderFromShopCart
+        请求方法：post
+        参数：
+        long userId //当前用户id
+        string cartItemIds// 购物车项id集合,选择多项用 ","连接
+        long recieveAddressId  // 收货地址id
+        string couponIds //优惠券id
+        int integral  //积分 默认0
+        int platformType  // 平台  2：安卓/3：ios/0：PC-->
+    <string name="CreateOrderFromShopCart">/api/CreateOrder/CreateOrderFromShopCart</string>
+
 
     <!--接口名称：确认收货
         请求方法：post
@@ -244,17 +272,14 @@
         请求方法：get-->
     <string name="UpdateCartItem">/api//ShopCart/UpdateCartItem</string>
 
-    <!--接口名称： 购物车提交
-        说明： 购物车提交
-        地址：/ShopCart/SubmitByCart/?cartItemIds=购物车itemid组合&&userId=当前用户id
-        请求方法：get-->
-    <string name="SubmitByCart">/api/ShopCart/SubmitByCart</string>
-
+    <!--&lt;!&ndash;接口名称： 购物车提交-->
+        <!--说明： 购物车提交-->
+        <!--地址：/ShopCart/SubmitByCart/?cartItemIds=购物车itemid组合&&userId=当前用户id-->
+        <!--请求方法：get&ndash;&gt;-->
+    <!--<string name="SubmitByCart">/api/ShopCart/SubmitByCart</string>-->
 
 
     <string name="Pay">/api/BuyCar/GetAllCar</string>
-
-
 
 
 </resources>

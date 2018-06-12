@@ -12,9 +12,14 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.whmnrc.flymall.CommonConstant;
 import com.whmnrc.flymall.R;
+import com.whmnrc.flymall.beans.UserBean;
+import com.whmnrc.flymall.presener.LoginPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.HomeTableActivity;
+import com.whmnrc.flymall.ui.UserManager;
+import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.TextColorChangeUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 
@@ -34,7 +39,7 @@ import butterknife.OnClick;
  *
  * @author yjyvi
  */
-public class LoginSelectedActivity extends BaseActivity {
+public class LoginSelectedActivity extends BaseActivity implements LoginPresenter.LoginListener {
 
     @BindView(R.id.iv_close)
     ImageView mIvClose;
@@ -49,6 +54,7 @@ public class LoginSelectedActivity extends BaseActivity {
     @BindView(R.id.tv_agreement)
     TextView mTvAgreement;
     private UMShareAPI mShareAPI;
+    public LoginPresenter mLoginPresenter;
 
     @Override
     protected void back() {
@@ -64,6 +70,8 @@ public class LoginSelectedActivity extends BaseActivity {
 
     @Override
     protected void initViewData() {
+
+        mLoginPresenter = new LoginPresenter(this);
         String agreement = mTvAgreement.getText().toString().trim();
         TextColorChangeUtils.changeTextColor(mTvAgreement, agreement, 34, agreement.length() - 1, ContextCompat.getColor(this, R.color.normal_red));
         setTitle(getResources().getString(R.string.login));
@@ -160,7 +168,7 @@ public class LoginSelectedActivity extends BaseActivity {
                     headIcon = data.get("profile_image_url");
                     nikeName = data.get("screen_name");
                     sex = data.get("gender").equals("男") ? "1" : "2";
-                    originate = "1";
+                    originate = "0";
 
                     break;
                 case TWITTER:
@@ -183,8 +191,7 @@ public class LoginSelectedActivity extends BaseActivity {
 //                headIcon = getResources().getString(R.string.service_host_address_photo) + "img/user.jpg";
 //            }
             ToastUtils.showToast("授权成功");
-
-//            mGetThirdLoginP.getThirdLogin(unionid, nikeName, enCode(headIcon), sex, originate, "", "");
+            mLoginPresenter.emailLogin(unionid, "", originate, headIcon, sex, nikeName);
         }
 
 
@@ -205,4 +212,11 @@ public class LoginSelectedActivity extends BaseActivity {
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+    @Override
+    public void loginSuccess(UserBean.ResultdataBean userBean) {
+        SPUtils.put(this, CommonConstant.Common.LAST_LOGIN_ID, userBean.getId());
+        UserManager.saveUser(userBean);
+        HomeTableActivity.startHomeTableView(LoginSelectedActivity.this, 0);
+        finish();
+    }
 }

@@ -1,7 +1,5 @@
 package com.whmnrc.flymall.presener;
 
-import android.text.TextUtils;
-
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -28,13 +26,11 @@ public class UpdateUserInfoPresenter extends PresenterBase {
 
     public void updateUserInfo(String headImgUrl, String nickname, String sex) {
         HashMap<String, String> paramters = new HashMap<>(4);
-        if (!TextUtils.isEmpty(headImgUrl)) {
-            paramters.put("HeadImg", headImgUrl);
-        }
+        paramters.put("HeadImg", headImgUrl);
         paramters.put("NickName", nickname);
         paramters.put("Sex", sex);
-        paramters.put("UserInfo_ID", UserManager.getUser().getId());
-        OKHttpManager.get(getUrl(R.string.UpdateUser), paramters, new CommonCallBack<BaseBean>() {
+        paramters.put("UserInfoID", UserManager.getUser().getId());
+        OKHttpManager.post(getUrl(R.string.UpdateUser), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {

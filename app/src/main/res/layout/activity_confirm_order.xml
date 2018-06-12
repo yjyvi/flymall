@@ -78,7 +78,6 @@
                     android:layout_toRightOf="@id/img_2"
                     android:ellipsize="end"
                     android:lines="1"
-                    android:text="Receiver：Amazon Customer"
                     android:textSize="@dimen/dm_15"/>
 
                 <TextView
@@ -87,7 +86,6 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_address_name"
                     android:layout_marginLeft="@dimen/dm_100"
-                    android:text="13999998888"
                     android:textSize="@dimen/dm_15"/>
 
                 <TextView
@@ -98,7 +96,6 @@
                     android:layout_marginLeft="@dimen/dm_20"
                     android:ellipsize="end"
                     android:lines="2"
-                    android:text="No.16, Basic Surface of Jianghan Road, Qiaokou District, Wuhan City, Hubei Province"
                     android:textSize="@dimen/dm_15"/>
 
                 <ImageView
@@ -158,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_below="@id/tv_total"
-                            android:text="5 items"/>
+                            android:text="1 items"/>
                     </LinearLayout>
 
 
@@ -191,6 +188,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dm_5"
                     android:background="#FAFAFA"
+                    android:maxLength="200"
                     android:hint="Optional: Enter your comment (within 200 words)"
                     android:padding="@dimen/dm_5"
                     android:textColor="@color/normal_gray"
@@ -269,7 +267,7 @@
                         android:id="@+id/tv_order_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$99"
+                        android:text="$0.00"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dm_15"/>
                 </LinearLayout>
@@ -294,7 +292,7 @@
                         android:id="@+id/tv_order_discount_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="-$99"
+                        android:text="-$0.00"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dm_15"/>
                 </LinearLayout>
@@ -319,7 +317,7 @@
                         android:id="@+id/tv_order_freight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Shipping"
+                        android:text="$0.00"
                         android:textColor="@color/black"
                         android:textSize="@dimen/dm_15"/>
                 </LinearLayout>
@@ -344,7 +342,7 @@
                         android:id="@+id/tv_order_total_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Shipping"
+                        android:text="$0.00"
                         android:textColor="@color/good_price_red"
                         android:textSize="@dimen/dm_15"/>
                 </LinearLayout>
@@ -397,7 +395,7 @@
                 android:id="@+id/tv_sum_prices"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="$145.00"
+                android:text="$0.00"
                 android:textColor="@color/good_price_red"
                 android:textSize="@dimen/dm_14"/>
         </LinearLayout>
