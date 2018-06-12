@@ -95,7 +95,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 outRect.bottom = 1;
             }
         });
-        mMOrderListAdapter = new ConfirmOrderGoodListAdapter(this, R.layout.item_goods_list_vertical, true, true);
+        mMOrderListAdapter = new ConfirmOrderGoodListAdapter(this, R.layout.item_goods_list_vertical, false, true);
 
         rvGoodsList.setAdapter(mMOrderListAdapter);
 

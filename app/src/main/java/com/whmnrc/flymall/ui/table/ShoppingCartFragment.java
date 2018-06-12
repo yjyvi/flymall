@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.adapter.ShoppingCartAdapter;
@@ -48,7 +48,7 @@ import butterknife.OnClick;
  * @data 2018/5/8.
  */
 
-public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoodsPresenter.GetLikeGoodsListener, GetShoppingCartListPresenter.GetShoppingCartListListener, DelShoppingCartPresenter.DelShoppingCartListListener, OnRefreshLoadMoreListener {
+public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoodsPresenter.GetLikeGoodsListener, GetShoppingCartListPresenter.GetShoppingCartListListener, DelShoppingCartPresenter.DelShoppingCartListListener, OnRefreshListener {
 
     @BindView(R.id.rl_right_title)
     RelativeLayout mRlRightTitle;
@@ -104,7 +104,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
         setTitle("Shopping Cart");
         rightVisible("Complete");
-        mRefresh.setOnRefreshLoadMoreListener(this);
+        mRefresh.setOnRefreshListener(this);
         mGetLikeGoodsPresenter = new GetLikeGoodsPresenter(this);
         mGetShoppingCartListPresenter = new GetShoppingCartListPresenter(this);
         mGetShoppingCartListPresenter.getShoppingCartList(page);
@@ -320,13 +320,13 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     @Override
     public void getListSuccess(ShoppingCartListBean.ResultdataBean resultdataBeans) {
-        if (page == 1) {
+//        if (page == 1) {
             mShoppingCartAdapter.setDataArray(resultdataBeans.getProducts());
-        } else {
-            List<ShoppingCartListBean.ResultdataBean.ProductsBean> datas = mShoppingCartAdapter.getDatas();
-            datas.addAll(resultdataBeans.getProducts());
-            mShoppingCartAdapter.setDataArray(datas);
-        }
+//        } else {
+//            List<ShoppingCartListBean.ResultdataBean.ProductsBean> datas = mShoppingCartAdapter.getDatas();
+//            datas.addAll(resultdataBeans.getProducts());
+//            mShoppingCartAdapter.setDataArray(datas);
+//        }
         mShoppingCartAdapter.notifyDataSetChanged();
 
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(mShoppingCartAdapter.getDatas().size()));
@@ -367,12 +367,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         mGetShoppingCartListPresenter.getShoppingCartList(page);
     }
 
-    @Override
-    public void onLoadMore(RefreshLayout refreshLayout) {
-        page++;
-        mGetShoppingCartListPresenter.getShoppingCartList(page);
-        refreshLayout.finishLoadMore();
-    }
+
 
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {

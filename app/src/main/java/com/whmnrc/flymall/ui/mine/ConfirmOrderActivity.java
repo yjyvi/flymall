@@ -17,6 +17,7 @@ import com.whmnrc.flymall.adapter.GoodListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.CouponBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.presener.AddressListPresenter;
 import com.whmnrc.flymall.presener.CreateOrderPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
@@ -212,9 +213,14 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     }
 
     @Override
-    public void createOrderSuccess(String orderId) {
-        ConfirmPaymentActivity.start(this, orderId, PlaceholderUtils.pricePlaceholder(mMoney), JSON.toJSONString(addressEventData));
+    public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean  resultdataBean) {
+        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(mMoney), JSON.toJSONString(addressEventData));
         finish();
+    }
+
+    @Override
+    public void createMutOrderSuccess(OrderDeitalsBean.ResultdataBean orderId) {
+
     }
 
     @Override

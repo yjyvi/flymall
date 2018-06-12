@@ -1,5 +1,6 @@
 package com.whmnrc.flymall.presener;
 
+import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -38,7 +39,7 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
         paramters.put("Address_ZipCode", addressZipCode);
         paramters.put("Address_IsDefault", String.valueOf(defaultAddress));
         String url= getUrl(R.string.AddAddress);
-        OKHttpManager.post(url, paramters, new CommonCallBack<AddressBean>() {
+        OKHttpManager.postString(url, JSON.toJSONString(paramters), new CommonCallBack<AddressBean>() {
             @Override
             protected void onSuccess(AddressBean data) {
                 if (data.getType() == 1) {

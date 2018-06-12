@@ -3,7 +3,7 @@ package com.whmnrc.flymall.presener;
 
 import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.beans.BaseBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
@@ -32,11 +32,11 @@ public class CreateOrderPresenter extends PresenterBase {
         paramters.put("recieveAddressId", addressId);
         paramters.put("couponIds", couponId);
         paramters.put("payRemark", remark);
-        OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+        OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<OrderDeitalsBean>() {
             @Override
-            protected void onSuccess(BaseBean data) {
+            protected void onSuccess(OrderDeitalsBean data) {
                 if (data.getType() == 1) {
-                    mCreateOrderListener.createOrderSuccess((String) data.getResultdata());
+                    mCreateOrderListener.createMutOrderSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -55,11 +55,11 @@ public class CreateOrderPresenter extends PresenterBase {
         paramters.put("productName", productName);
         paramters.put("couponIds", couponId);
         paramters.put("payRemark", remark);
-        OKHttpManager.postString(getUrl(R.string.CreateOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+        OKHttpManager.postString(getUrl(R.string.CreateOrder), JSON.toJSONString(paramters), new CommonCallBack<OrderDeitalsBean>() {
             @Override
-            protected void onSuccess(BaseBean data) {
+            protected void onSuccess(OrderDeitalsBean data) {
                 if (data.getType() == 1) {
-                    mCreateOrderListener.createOrderSuccess((String) data.getResultdata());
+                    mCreateOrderListener.createOneOrderSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -69,7 +69,8 @@ public class CreateOrderPresenter extends PresenterBase {
     }
 
     public interface CreateOrderListener {
-        void createOrderSuccess(String orderId);
+        void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean orderId);
+        void createMutOrderSuccess(OrderDeitalsBean.ResultdataBean orderId);
     }
 
 
