@@ -12,7 +12,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.presener.PayPPPresenter;
-import com.whmnrc.flymall.presener.UpdateHeadImgPresenter;
+import com.whmnrc.flymall.presener.UpdateImgFile;
 import com.whmnrc.flymall.presener.UpdateUserInfoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.UserManager;
@@ -20,7 +20,6 @@ import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.UIUtils;
 import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
 import com.whmnrc.flymall.views.ActionSheetDialog;
-import com.whmnrc.mylibrary.utils.EncodeTask;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 import com.whmnrc.mylibrary.utils.ImgVideoPickerUtils;
 
@@ -38,7 +37,7 @@ import butterknife.OnClick;
  * @data 2018/5/21.
  */
 
-public class PersonalInformationActivity extends BaseActivity implements UpdateHeadImgPresenter.UpdateHeadImgListener, UpdateUserInfoPresenter.UpdateUserInfoListener {
+public class PersonalInformationActivity extends BaseActivity implements UpdateImgFile.UpdateHeadImgListener, UpdateUserInfoPresenter.UpdateUserInfoListener {
     @BindView(R.id.tv_user_header_img)
     ImageView mTvUserHeaderImg;
     @BindView(R.id.tv_user_name)
@@ -46,15 +45,16 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
     @BindView(R.id.tv_user_gender)
     TextView mTvUserGender;
     private File headFile;
-    public UpdateHeadImgPresenter mUpdateHeadImgPresenter;
+    public UpdateImgFile mUpdateHeadImgPresenter;
     private String mResultImgUrl = "";
     public UpdateUserInfoPresenter mUpdateUserInfoPresenter;
     public PayPPPresenter mPayPPPresenter;
+    private int mCurrentSex = 0;
 
     @Override
     protected void initViewData() {
         EventBus.getDefault().register(this);
-        mUpdateHeadImgPresenter = new UpdateHeadImgPresenter(this);
+        mUpdateHeadImgPresenter = new UpdateImgFile(this);
         mUpdateUserInfoPresenter = new UpdateUserInfoPresenter(this);
 
         setTitle("Personal information");
@@ -115,6 +115,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
                             @Override
                             public void onClick(int which) {
                                 mTvUserGender.setText("Male");
+                                mCurrentSex=0;
                             }
                         })
 
@@ -122,7 +123,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
                             @Override
                             public void onClick(int which) {
                                 mTvUserGender.setText("Female");
-
+                                mCurrentSex = 1;
                             }
                         }).show();
                 break;
@@ -137,7 +138,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
                     ToastUtils.showToast("性别不能为空");
                     return;
                 }
-                mUpdateUserInfoPresenter.updateUserInfo(mResultImgUrl, nickName, mTvUserGender.getText().toString().trim());
+                mUpdateUserInfoPresenter.updateUserInfo(mResultImgUrl, nickName, String.valueOf(mCurrentSex));
                 break;
             default:
                 break;
@@ -159,15 +160,15 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
             }
             UIUtils.loadCircleImg(mTvUserHeaderImg, headFile);
             //异步转化为base64
-            EncodeTask encodeTask = new EncodeTask(new EncodeTask.onResponse() {
-                @Override
-                public void onResult(String base64) {
-                    if (!TextUtils.isEmpty(base64)) {
-                        mUpdateHeadImgPresenter.updateHeadImg(base64,"123123");
-                    }
-                }
-            });
-            encodeTask.execute(headFile.getPath());
+//            EncodeTask encodeTask = new EncodeTask(new EncodeTask.onResponse() {
+//                @Override
+//                public void onResult(String base64) {
+//                    if (!TextUtils.isEmpty(base64)) {
+            mUpdateHeadImgPresenter.updateHeadImg(headFile);
+//                    }
+//                }
+//            });
+//            encodeTask.execute(headFile.getPath());
         }
     }
 

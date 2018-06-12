@@ -39,11 +39,11 @@
     <string name="UpdateUser">/api/ApiLogin/UpdateUser</string>
 
     <!--上传图片文件-->
-    <string name="UploadFile">/api/ApiLogin/UploadFile</string>
+    <!--<string name="UploadFile">/api/ApiLogin/UploadFile</string>-->
     <!--上传视频文件-->
     <string name="UploadMp4File">/api/ApiLogin/UploadMp4File</string>
     <!--上传头像-->
-    <string name="SetHeadPhoto">/api/Setting/SetHeadPhoto</string>
+    <string name="UploadFile">/api/ApiLogin/UploadFile</string>
 
 
     <!--接口名称：首页数据 轮播图，热门品牌，视频列表

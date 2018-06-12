@@ -25,6 +25,7 @@ import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.DelShoppingCartPresenter;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.presener.GetShoppingCartListPresenter;
+import com.whmnrc.flymall.presener.ShopCartListIsAddPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.mine.ConfirmOrderActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
@@ -48,7 +49,7 @@ import butterknife.OnClick;
  * @data 2018/5/8.
  */
 
-public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoodsPresenter.GetLikeGoodsListener, GetShoppingCartListPresenter.GetShoppingCartListListener, DelShoppingCartPresenter.DelShoppingCartListListener, OnRefreshListener {
+public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoodsPresenter.GetLikeGoodsListener, GetShoppingCartListPresenter.GetShoppingCartListListener, DelShoppingCartPresenter.DelShoppingCartListListener, OnRefreshListener, ShopCartListIsAddPresenter.AddCartItemNumListener {
 
     @BindView(R.id.rl_right_title)
     RelativeLayout mRlRightTitle;
@@ -81,6 +82,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     private Map<String, Integer> cartIds = new TreeMap<>();
     private List<Integer> removePosition = new ArrayList<>();
     public boolean mIsActivity;
+    public ShopCartListIsAddPresenter mShopCartListIsAddPresenter;
 
     @Override
     protected int contentViewLayoutID() {
@@ -107,6 +109,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         mRefresh.setOnRefreshListener(this);
         mGetLikeGoodsPresenter = new GetLikeGoodsPresenter(this);
         mGetShoppingCartListPresenter = new GetShoppingCartListPresenter(this);
+        mShopCartListIsAddPresenter = new ShopCartListIsAddPresenter(this);
         mGetShoppingCartListPresenter.getShoppingCartList(page);
         mGetLikeGoodsPresenter.getLikeGoods();
 
@@ -182,6 +185,13 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                 }
 
                 mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
+
+
+            }
+
+            @Override
+            public void addOrMinus(String skuId, String count) {
+                mShopCartListIsAddPresenter.addCartItemNum(skuId, count);
             }
         });
 
@@ -320,13 +330,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     @Override
     public void getListSuccess(ShoppingCartListBean.ResultdataBean resultdataBeans) {
-//        if (page == 1) {
-            mShoppingCartAdapter.setDataArray(resultdataBeans.getProducts());
-//        } else {
-//            List<ShoppingCartListBean.ResultdataBean.ProductsBean> datas = mShoppingCartAdapter.getDatas();
-//            datas.addAll(resultdataBeans.getProducts());
-//            mShoppingCartAdapter.setDataArray(datas);
-//        }
+        mShoppingCartAdapter.setDataArray(resultdataBeans.getProducts());
         mShoppingCartAdapter.notifyDataSetChanged();
 
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(mShoppingCartAdapter.getDatas().size()));
@@ -342,8 +346,6 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     @Override
     public void delCartSuccess() {
-
-
         RecyclerView.LayoutManager layoutManager = mRvInGoods.getLayoutManager();
         int childCount = layoutManager.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -366,7 +368,6 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         page = 1;
         mGetShoppingCartListPresenter.getShoppingCartList(page);
     }
-
 
 
     @Override
@@ -408,4 +409,8 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         }
     }
 
+    @Override
+    public void addSuceess() {
+
+    }
 }

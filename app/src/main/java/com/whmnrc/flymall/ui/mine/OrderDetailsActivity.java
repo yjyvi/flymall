@@ -12,12 +12,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.ConfirmOrderGoodListAdapter;
+import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
+import com.whmnrc.flymall.presener.CancelOrReceiptOrderPresenter;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.ui.home.GoodsCommentActivity;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.views.AlertDialog;
@@ -33,7 +35,7 @@ import butterknife.OnClick;
  * @data 2018/5/22.
  */
 
-public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPresenter.OrderDetailsListener {
+public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener {
 
     @BindView(R.id.rv_goods_list)
     RecyclerView rvGoodsList;
@@ -68,11 +70,15 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     public String mOrderId;
     public ConfirmOrderGoodListAdapter mMOrderListAdapter;
     private OrderDeitalsBean.ResultdataBean orderBean;
+    public CancelOrReceiptOrderPresenter mCancelOrReceiptOrderPresenter;
 
     @Override
     protected void initViewData() {
         setTitle("Line item");
+
+        mCancelOrReceiptOrderPresenter = new CancelOrReceiptOrderPresenter(this);
         mLoadingDialog = new LoadingDialog(this);
+
         rvGoodsList.setNestedScrollingEnabled(false);
 
         mOrderId = getIntent().getStringExtra("orderId");
@@ -210,12 +216,12 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 switch (orderBean.getOrderStatus()) {
                     case 1:
 
-                        GoodsCommentActivity.start(view.getContext(), mOrderId, "");
-//                        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-//                        addressBean.setAddress(orderBean.getAddress());
-//                        addressBean.setPhone(orderBean.getCellPhone());
-//                        addressBean.setAddress(orderBean.getShipTo());
-//                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
+//                        GoodsCommentActivity.start(view.getContext(), mOrderId, "");
+                        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
+                        addressBean.setAddress(orderBean.getAddress());
+                        addressBean.setPhone(orderBean.getCellPhone());
+                        addressBean.setAddress(orderBean.getShipTo());
+                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
                         break;
                     case 5:
                         OderCommentListActivity.start(view.getContext(), (ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean>) orderBean.getOrderItemInfo(), String.valueOf(orderBean.getId()), true);
@@ -233,9 +239,6 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     }
 
     private void receipOrCancelOrder(View view, String hinText, final boolean isCancel) {
-
-
-
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg(hinText)
                 .setCancelable(true)
@@ -243,9 +246,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                     @Override
                     public void onClick(View view) {
                         if (isCancel) {
-                            ToastUtils.showToast("取消成功");
+                            mCancelOrReceiptOrderPresenter.cancelOrder(mOrderId);
                         } else {
-                            ToastUtils.showToast("确认成功");
+                            mCancelOrReceiptOrderPresenter.receiptOrder(mOrderId);
                         }
                     }
                 })
@@ -258,4 +261,13 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     }
 
 
+    @Override
+    public void cancelSuccess() {
+
+    }
+
+    @Override
+    public void receiptSuccess() {
+
+    }
 }

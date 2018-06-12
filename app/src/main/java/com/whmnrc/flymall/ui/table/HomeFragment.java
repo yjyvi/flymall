@@ -182,7 +182,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                GoodsDetailsActivity.start(view.getContext(), String.valueOf(mAdapter.getDatas().get(position).getId()));
+                GoodsDetailsActivity.start(view.getContext(), String.valueOf(mAdapter.getDatas().get(position).getProductId()));
             }
 
             @Override

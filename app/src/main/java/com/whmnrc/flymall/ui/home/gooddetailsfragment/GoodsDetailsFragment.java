@@ -67,6 +67,8 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
                 settings.setDefaultTextEncodingName("utf-8");
             }
         });
+
+
     }
 
     /**

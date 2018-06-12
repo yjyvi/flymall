@@ -75,6 +75,8 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                 if (resultdataBean.isSelect()) {
                     mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getCartItemId()));
                 }
+                mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
+
             }
         });
 
@@ -89,6 +91,8 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                     if (resultdataBean.isSelect()) {
                         mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getCartItemId()));
                     }
+
+                    mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
                 }
             }
         });
@@ -99,6 +103,8 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         void delItem(int position);
 
         void selectToPrice(int position, double goodsPrice, boolean isAdd, String cartId);
+
+        void addOrMinus(String skuId, String count);
     }
 
 

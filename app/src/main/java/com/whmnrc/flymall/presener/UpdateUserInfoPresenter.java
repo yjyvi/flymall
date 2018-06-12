@@ -1,6 +1,5 @@
 package com.whmnrc.flymall.presener;
 
-import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -30,8 +29,8 @@ public class UpdateUserInfoPresenter extends PresenterBase {
         paramters.put("HeadImg", headImgUrl);
         paramters.put("NickName", nickname);
         paramters.put("Sex", sex);
-        paramters.put("UserInfo_ID", UserManager.getUser().getId());
-        OKHttpManager.postString(getUrl(R.string.UpdateUser), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+        paramters.put("UserInfoID", UserManager.getUser().getId());
+        OKHttpManager.post(getUrl(R.string.UpdateUser), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {
