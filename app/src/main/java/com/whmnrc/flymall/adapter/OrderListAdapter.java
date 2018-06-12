@@ -38,10 +38,10 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
     @Override
     public void convert(ViewHolder holder, final OrderListBean.ResultdataBean resultdataBean, final int position) {
 
-        holder.setText(R.id.tv_order_no, resultdataBean.getOrder().getOrder_No());
-        holder.setText(R.id.tv_total_num, String.format("A total of %s products", resultdataBean.getOrderItem().size()));
-        holder.setText(R.id.tv_total_price, String.format("Total:%s", PlaceholderUtils.pricePlaceholder(resultdataBean.getOrder().getOrder_Money())));
-        switch (resultdataBean.getOrder().getOrder_State()) {
+        holder.setText(R.id.tv_order_no, String.valueOf(resultdataBean.getId()));
+        holder.setText(R.id.tv_total_num, String.format("A total of %s products", resultdataBean.getItemInfo().size()));
+        holder.setText(R.id.tv_total_price, String.format("Total:%s", PlaceholderUtils.pricePlaceholder(Double.parseDouble(resultdataBean.getOrderTotalAmount()))));
+        switch (resultdataBean.getOrderStatus()) {
             case 0:
                 holder.setText(R.id.tv_order_state, "UNPAID");
                 holder.setText(R.id.tv_cancel, "Cancel");
@@ -109,18 +109,18 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                 outRect.bottom = 1;
             }
         });
-        ConfirmOrderGoodListAdapter mOrderListAdapter = new ConfirmOrderGoodListAdapter(mContext, R.layout.item_goods_list_vertical, true);
+        ConfirmOrderGoodListAdapter mOrderListAdapter = new ConfirmOrderGoodListAdapter(mContext, R.layout.item_goods_list_vertical, true, false);
 
         rvGoodsList.setAdapter(mOrderListAdapter);
         rvGoodsList.setNestedScrollingEnabled(false);
         rvGoodsList.setFocusableInTouchMode(false);
 
-        mOrderListAdapter.setDataArray(resultdataBean.getOrderItem());
+        mOrderListAdapter.setDataArray(resultdataBean.getItemInfo());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                OrderDetailsActivity.start(v.getContext(), resultdataBean.getOrder().getOrder_ID());
+                OrderDetailsActivity.start(v.getContext(), String.valueOf(resultdataBean.getId()));
             }
         });
 
@@ -128,14 +128,14 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
         holder.setOnClickListener(R.id.tv_order_pay, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (resultdataBean.getOrder().getOrder_State()) {
+                switch (resultdataBean.getOrderStatus()) {
                     case 0:
                         if (mOrderListOpertionListener != null) {
                             mOrderListOpertionListener.payOrder(resultdataBean);
                         }
                         break;
                     case 3:
-                        OderCommentListActivity.start(v.getContext(), (ArrayList<OrderListBean.ResultdataBean.OrderItemBean>) resultdataBean.getOrderItem());
+                        OderCommentListActivity.start(v.getContext(), (ArrayList<OrderListBean.ResultdataBean.ItemInfoBean>) resultdataBean.getItemInfo(), String.valueOf(resultdataBean.getId()));
                         break;
                     case 7:
                         if (mOrderListOpertionListener != null) {

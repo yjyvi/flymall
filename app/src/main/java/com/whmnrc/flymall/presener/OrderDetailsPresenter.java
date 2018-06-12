@@ -2,14 +2,13 @@ package com.whmnrc.flymall.presener;
 
 
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author yjyvi
@@ -28,9 +27,9 @@ public class OrderDetailsPresenter extends PresenterBase {
         paramters.put("orderId", orderId);
 //        paramters.put("Page", "1");
 //        paramters.put("Rows", "1");
-        OKHttpManager.get(getUrl(R.string.GetSomeOneOrder), paramters, new CommonCallBack<OrderListBean>() {
+        OKHttpManager.get(getUrl(R.string.GetSomeOneOrder), paramters, new CommonCallBack<OrderDeitalsBean>() {
             @Override
-            protected void onSuccess(OrderListBean data) {
+            protected void onSuccess(OrderDeitalsBean data) {
                 if (data.getType() == 1) {
                     mOrderDetailsListener.getOrderDetailsSuccess(data.getResultdata());
                 } else {
@@ -43,7 +42,7 @@ public class OrderDetailsPresenter extends PresenterBase {
     }
 
     public interface OrderDetailsListener {
-        void getOrderDetailsSuccess(List<OrderListBean.ResultdataBean> resultdataBeans);
+        void getOrderDetailsSuccess(OrderDeitalsBean.ResultdataBean resultdataBeans);
     }
 
 

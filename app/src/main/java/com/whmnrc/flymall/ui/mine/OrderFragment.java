@@ -18,8 +18,10 @@ import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.adapter.OrderListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.LikeGoodsBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
+import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.presener.OrderListPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.utils.EmptyListUtils;
@@ -39,7 +41,7 @@ import butterknife.BindView;
  * @data 2018/5/21.
  */
 
-public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener {
+public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener, OrderDetailsPresenter.OrderDetailsListener {
     @BindView(R.id.rv_order_list)
     RecyclerView mRvOrderList;
     @BindView(R.id.rv_goods_list)
@@ -58,6 +60,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     private OrderListPresenter mOrderListPresenter;
     private GetLikeGoodsPresenter mGetLikeGoodsPresenter;
     private LikeGoodListAdapter mAdapter;
+    public OrderDetailsPresenter mOrderDetailsPresenter;
 
     @Override
     protected int contentViewLayoutID() {
@@ -108,6 +111,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         mRvGoodsList.setAdapter(mAdapter);
 
         mOrderListAdapter.setOrderListOpertionListener(this);
+        mOrderDetailsPresenter = new OrderDetailsPresenter(this);
     }
 
     public static OrderFragment newInstance(int orderType) {
@@ -136,16 +140,16 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
         switch (orderListEvent.getEventType()) {
             case OrderListEvent.UNPAID:
-                getOrder(0);
+                getOrder(1);
                 break;
             case OrderListEvent.UNSHIPPED:
                 getOrder(2);
                 break;
             case OrderListEvent.RECEIPT:
-                getOrder(7);
+                getOrder(3);
                 break;
             case OrderListEvent.ALL:
-                getOrder(99);
+                getOrder(0);
                 break;
             default:
                 break;
@@ -237,11 +241,12 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     @Override
     public void payOrder(OrderListBean.ResultdataBean resultdataBean) {
-        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-        addressBean.setAddress(resultdataBean.getOrder().getAddress_Detail());
-        addressBean.setPhone(resultdataBean.getOrder().getAddress_Mobile());
-        addressBean.setAddress(resultdataBean.getOrder().getAddress_Name());
-        ConfirmPaymentActivity.start(getActivity(),resultdataBean.getOrder().getOrder_No(), String.valueOf(resultdataBean.getOrder().getOrder_Money()), JSON.toJSONString(addressBean));
+
+
+        mOrderDetailsPresenter.getOrderDetails(String.valueOf(resultdataBean.getId()));
+
+
+
     }
 
     @Override
@@ -261,5 +266,15 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
                     }
                 }).show();
+    }
+
+    @Override
+    public void getOrderDetailsSuccess(OrderDeitalsBean.ResultdataBean resultdataBeans) {
+        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
+        addressBean.setShipTo(resultdataBeans.getShipTo());
+        addressBean.setPhone(resultdataBeans.getCellPhone());
+        addressBean.setAddress(resultdataBeans.getAddress());
+        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), String.valueOf(resultdataBeans.getProductTotalAmount()), JSON.toJSONString(addressBean));
+
     }
 }

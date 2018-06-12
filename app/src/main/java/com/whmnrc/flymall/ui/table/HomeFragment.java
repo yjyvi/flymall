@@ -33,11 +33,10 @@ import com.whmnrc.flymall.presener.HomePageDataPresenter;
 import com.whmnrc.flymall.presener.HomePageSaleGoodsPresenter;
 import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
-import com.whmnrc.flymall.ui.UserManager;
+import com.whmnrc.flymall.ui.home.ActivityGoodsListActivity;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.home.GoodsListActivity;
 import com.whmnrc.flymall.ui.home.homebrands.HomeBrandsFragment;
-import com.whmnrc.flymall.ui.home.ActivityGoodsListActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
@@ -492,7 +491,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
                     return;
                 }
 
-                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId, UserManager.getUser().getId());
+                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId);
                 mCurrencyPrice = currencyPrice;
                 mPopCurrenty.dismiss();
             }

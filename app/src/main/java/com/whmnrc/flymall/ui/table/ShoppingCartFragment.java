@@ -261,7 +261,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                             confirmBean.setGoodsPrice_Price(resultdataBean.getPrice());
                             confirmBean.setGoods_spec(resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
                             confirmBean.setGoods_SourcePrice(resultdataBean.getPrice() * resultdataBean.getCount());
-                            confirmBean.setPriceIds(resultdataBean.getSkuId());
+                            confirmBean.setPriceIds(String.valueOf(resultdataBean.getId()));
                             confirmBean.setGoodsNUm(resultdataBean.getCount());
                             confirmBean.setGoods_ImaPath(resultdataBean.getImgUrl());
                             confirmBean.setGoods_Name(resultdataBean.getName());

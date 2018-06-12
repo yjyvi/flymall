@@ -16,7 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.ConfirmOrderGoodListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
-import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
@@ -25,7 +25,6 @@ import com.whmnrc.flymall.views.AlertDialog;
 import com.whmnrc.flymall.views.LoadingDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,7 +68,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     public OrderDetailsPresenter mOrderDetailsPresenter;
     public String mOrderId;
     public ConfirmOrderGoodListAdapter mMOrderListAdapter;
-    private OrderListBean.ResultdataBean orderBean;
+    private OrderDeitalsBean.ResultdataBean orderBean;
 
     @Override
     protected void initViewData() {
@@ -96,7 +95,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 outRect.bottom = 1;
             }
         });
-        mMOrderListAdapter = new ConfirmOrderGoodListAdapter(this, R.layout.item_goods_list_vertical, true);
+        mMOrderListAdapter = new ConfirmOrderGoodListAdapter(this, R.layout.item_goods_list_vertical, true, true);
 
         rvGoodsList.setAdapter(mMOrderListAdapter);
 
@@ -114,23 +113,22 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     }
 
     @Override
-    public void getOrderDetailsSuccess(List<OrderListBean.ResultdataBean> resultdataBeans) {
+    public void getOrderDetailsSuccess(OrderDeitalsBean.ResultdataBean resultdataBean) {
 
-        OrderListBean.ResultdataBean resultdataBean = resultdataBeans.get(0);
         orderBean = resultdataBean;
-        mTvAddressName.setText(String.format("Receiver:%s", resultdataBean.getOrder().getAddress_Name()));
-        mTvAddressTel.setText(resultdataBean.getOrder().getAddress_Mobile());
-        mTvAddressDesc.setText(resultdataBean.getOrder().getAddress_Detail());
-        mTvOrderNumber.setText(String.format("Order number:%s", resultdataBean.getOrder().getOrder_No()));
-        mTvOrderTime.setText(String.format("Order time:%s", resultdataBean.getOrder().getOrder_CreateTime()));
-        mTvOrderType.setText(String.format("Mode of payment:%s", resultdataBean.getOrder().getOrder_PayType()));
-        mTvOrderFreight.setText(String.format("Freight:%s", resultdataBean.getOrder().getORder_Freight()));
-        mTvOrderTotalPrice.setText(String.format("Total Purchases:%s", resultdataBean.getOrder().getOrder_Money()));
-        mTvOrderPayPrice.setText(String.format("Has to pay the amount:%s", resultdataBean.getOrder().getOrder_Money()));
-        mTvSkype.setText(String.format("skype us:%s", resultdataBean.getOrder().getOrder_Seed()));
+        mTvAddressName.setText(String.format("Receiver:%s", resultdataBean.getShipTo()));
+        mTvAddressTel.setText(resultdataBean.getCellPhone());
+        mTvAddressDesc.setText(resultdataBean.getAddress());
+        mTvOrderNumber.setText(String.format("Order number:%s", resultdataBean.getId()));
+        mTvOrderTime.setText(String.format("Order time:%s", resultdataBean.getOrderDate()));
+        mTvOrderType.setText(String.format("Mode of payment:%s", resultdataBean.getInvoiceType()));
+        mTvOrderFreight.setText(String.format("Freight:%s", resultdataBean.getFreight()));
+        mTvOrderTotalPrice.setText(String.format("Total Purchases:%s", resultdataBean.getProductTotalAmount()));
+        mTvOrderPayPrice.setText(String.format("Has to pay the amount:%s", resultdataBean.getProductTotalAmount()));
+        mTvSkype.setText(String.format("skype us:%s", resultdataBean.getTopRegionId()));
 
 
-        switch (resultdataBean.getOrder().getOrder_State()) {
+        switch (resultdataBean.getOrderStatus()) {
             case 0:
                 ll_bottom.setVisibility(View.VISIBLE);
                 mTvCancelOrder.setText("Cancel");
@@ -175,7 +173,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
         }
 
 
-        mMOrderListAdapter.setDataArray(resultdataBean.getOrderItem());
+        mMOrderListAdapter.setDataArray(resultdataBean.getOrderItemInfo());
         mMOrderListAdapter.notifyDataSetChanged();
     }
 
@@ -205,21 +203,21 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 startActivity(intent);
                 break;
             case R.id.tv_cancel_order:
-                if (orderBean.getOrder().getOrder_State() == 0) {
+                if (orderBean.getOrderStatus() == 0) {
                     receipOrCancelOrder(view, "Are you sure you want to Cancel the order?", true);
                 }
                 break;
             case R.id.tv_pay_order:
-                switch (orderBean.getOrder().getOrder_State()) {
+                switch (orderBean.getOrderStatus()) {
                     case 0:
                         AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-                        addressBean.setAddress(orderBean.getOrder().getAddress_Detail());
-                        addressBean.setPhone(orderBean.getOrder().getAddress_Mobile());
-                        addressBean.setAddress(orderBean.getOrder().getAddress_Name());
-                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, orderBean.getOrder().getOrder_No(), String.valueOf(orderBean.getOrder().getOrder_Money()), JSON.toJSONString(addressBean));
+                        addressBean.setAddress(orderBean.getAddress());
+                        addressBean.setPhone(orderBean.getCellPhone());
+                        addressBean.setAddress(orderBean.getShipTo());
+                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
                         break;
                     case 3:
-                        OderCommentListActivity.start(view.getContext(), (ArrayList<OrderListBean.ResultdataBean.OrderItemBean>) orderBean.getOrderItem());
+                        OderCommentListActivity.start(view.getContext(), (ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean>) orderBean.getOrderItemInfo(), String.valueOf(orderBean.getId()), true);
                         break;
                     case 7:
                         receipOrCancelOrder(view, "Do you want to confirm receipt?", false);

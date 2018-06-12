@@ -37,9 +37,7 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
         paramters.put("Address_Address2", addressDetail2);
         paramters.put("Address_ZipCode", addressZipCode);
         paramters.put("Address_IsDefault", String.valueOf(defaultAddress));
-        String url;
-        
-        url = getUrl(R.string.AddAddress);
+        String url= getUrl(R.string.AddAddress);
         OKHttpManager.post(url, paramters, new CommonCallBack<AddressBean>() {
             @Override
             protected void onSuccess(AddressBean data) {
