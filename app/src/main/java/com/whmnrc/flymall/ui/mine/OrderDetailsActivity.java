@@ -12,13 +12,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.ConfirmOrderGoodListAdapter;
-import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.ui.home.GoodsCommentActivity;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.views.AlertDialog;
@@ -129,38 +128,38 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
 
         switch (resultdataBean.getOrderStatus()) {
-            case 0:
+            case 1:
                 ll_bottom.setVisibility(View.VISIBLE);
                 mTvCancelOrder.setText("Cancel");
                 mTvPayOrder.setText("Pay now");
                 break;
-            case 1:
-                mTvCancelOrder.setVisibility(View.GONE);
-                mTvPayOrder.setVisibility(View.GONE);
-                ll_bottom.setVisibility(View.GONE);
-                break;
+//            case 1:
+//                mTvCancelOrder.setVisibility(View.GONE);
+//                mTvPayOrder.setVisibility(View.GONE);
+//                ll_bottom.setVisibility(View.GONE);
+//                break;
             case 2:
                 mTvCancelOrder.setVisibility(View.GONE);
                 mTvPayOrder.setVisibility(View.GONE);
                 ll_bottom.setVisibility(View.GONE);
                 break;
-            case 3:
+            case 5:
                 ll_bottom.setVisibility(View.VISIBLE);
                 mTvCancelOrder.setVisibility(View.GONE);
                 mTvPayOrder.setText("evaluated");
 
                 break;
-            case 4:
-                mTvCancelOrder.setVisibility(View.GONE);
-                mTvPayOrder.setVisibility(View.GONE);
-                ll_bottom.setVisibility(View.GONE);
-                break;
-            case 5:
-                mTvCancelOrder.setVisibility(View.GONE);
-                mTvPayOrder.setVisibility(View.GONE);
-                ll_bottom.setVisibility(View.GONE);
-                break;
-            case 7:
+//            case 4:
+//                mTvCancelOrder.setVisibility(View.GONE);
+//                mTvPayOrder.setVisibility(View.GONE);
+//                ll_bottom.setVisibility(View.GONE);
+//                break;
+//            case 5:
+//                mTvCancelOrder.setVisibility(View.GONE);
+//                mTvPayOrder.setVisibility(View.GONE);
+//                ll_bottom.setVisibility(View.GONE);
+//                break;
+            case 3:
                 ll_bottom.setVisibility(View.VISIBLE);
                 mTvCancelOrder.setVisibility(View.GONE);
                 mTvPayOrder.setText("Confirm receipt");
@@ -209,17 +208,19 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 break;
             case R.id.tv_pay_order:
                 switch (orderBean.getOrderStatus()) {
-                    case 0:
-                        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-                        addressBean.setAddress(orderBean.getAddress());
-                        addressBean.setPhone(orderBean.getCellPhone());
-                        addressBean.setAddress(orderBean.getShipTo());
-                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
+                    case 1:
+
+                        GoodsCommentActivity.start(view.getContext(), mOrderId, "");
+//                        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
+//                        addressBean.setAddress(orderBean.getAddress());
+//                        addressBean.setPhone(orderBean.getCellPhone());
+//                        addressBean.setAddress(orderBean.getShipTo());
+//                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
                         break;
-                    case 3:
+                    case 5:
                         OderCommentListActivity.start(view.getContext(), (ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean>) orderBean.getOrderItemInfo(), String.valueOf(orderBean.getId()), true);
                         break;
-                    case 7:
+                    case 3:
                         receipOrCancelOrder(view, "Do you want to confirm receipt?", false);
                         break;
                     default:
@@ -232,6 +233,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     }
 
     private void receipOrCancelOrder(View view, String hinText, final boolean isCancel) {
+
+
+
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg(hinText)
                 .setCancelable(true)

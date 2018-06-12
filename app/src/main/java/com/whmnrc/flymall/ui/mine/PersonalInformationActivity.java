@@ -47,7 +47,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
     TextView mTvUserGender;
     private File headFile;
     public UpdateHeadImgPresenter mUpdateHeadImgPresenter;
-    private String mResultImgUrl;
+    private String mResultImgUrl = "";
     public UpdateUserInfoPresenter mUpdateUserInfoPresenter;
     public PayPPPresenter mPayPPPresenter;
 
@@ -163,7 +163,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateH
                 @Override
                 public void onResult(String base64) {
                     if (!TextUtils.isEmpty(base64)) {
-                        mUpdateHeadImgPresenter.updateHeadImg(base64);
+                        mUpdateHeadImgPresenter.updateHeadImg(base64,"123123");
                     }
                 }
             });

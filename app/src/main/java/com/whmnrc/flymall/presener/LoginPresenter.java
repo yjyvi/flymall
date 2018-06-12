@@ -24,11 +24,11 @@ public class LoginPresenter extends PresenterBase {
 
     }
 
-    public void emailLogin(String account, String pwd,int type,String headImg,String sex,String nickname) {
+    public void emailLogin(String account, String pwd,String type,String headImg,String sex,String nickname) {
         HashMap<String, String> params = new HashMap<>(2);
         params.put("Token", account);
         params.put("Password", pwd);
-        params.put("Type", String.valueOf(type));
+        params.put("Type", type);
         params.put("HeadImg", headImg);
         params.put("Sex", sex);
         params.put("NickName", nickname);

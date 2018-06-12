@@ -71,7 +71,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
         switch (view.getId()) {
             case R.id.tv_login:
                 if (inputVerification()) {
-                    mEmailLoginPresenter.emailLogin(mEtMail.getText().toString().trim(), mEtPwd.getText().toString().trim(), 1, "", "", "");
+                    mEmailLoginPresenter.emailLogin(mEtMail.getText().toString().trim(), mEtPwd.getText().toString().trim(), "1", "", "", "");
                 }
                 break;
             case R.id.tv_agreement:

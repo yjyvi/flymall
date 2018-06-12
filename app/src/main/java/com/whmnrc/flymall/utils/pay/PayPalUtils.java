@@ -47,10 +47,14 @@ public class PayPalUtils {
             .merchantPrivacyPolicyUri(Uri.parse("https://www.example.com/privacy"))
             .merchantUserAgreementUri(Uri.parse("https://www.example.com/legal"));
     private Activity mContext;
+    private String orderMoney;
+    private String orderId;
 
 
-    public  void initPayPalUtils(Activity context) {
+    public  void initPayPalUtils(Activity context,String orderId,String orderMoney) {
         this.mContext = context;
+        this.orderId = orderId;
+        this.orderMoney= orderMoney;
         Intent intent = new Intent(context, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         context.startService(intent);
@@ -86,7 +90,7 @@ public class PayPalUtils {
     }
 
     private PayPalPayment getThingToBuy(String paymentIntent) {
-        return new PayPalPayment(new BigDecimal("0.01"), "USD", "sample item", paymentIntent);
+        return new PayPalPayment(new BigDecimal(orderMoney), "USD", orderId, paymentIntent);
     }
 
 

@@ -42,7 +42,7 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
         holder.setText(R.id.tv_total_num, String.format("A total of %s products", resultdataBean.getItemInfo().size()));
         holder.setText(R.id.tv_total_price, String.format("Total:%s", PlaceholderUtils.pricePlaceholder(Double.parseDouble(resultdataBean.getOrderTotalAmount()))));
         switch (resultdataBean.getOrderStatus()) {
-            case 0:
+            case 1:
                 holder.setText(R.id.tv_order_state, "UNPAID");
                 holder.setText(R.id.tv_cancel, "Cancel");
                 holder.setText(R.id.tv_order_pay, "Pay now");
@@ -55,22 +55,22 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                     }
                 });
                 break;
-            case 1:
-                holder.setText(R.id.tv_order_state, "PAID");
-                holder.setVisible(R.id.tv_cancel, false);
-                holder.setVisible(R.id.tv_order_pay, false);
-                break;
+//            case 1:
+//                holder.setText(R.id.tv_order_state, "PAID");
+//                holder.setVisible(R.id.tv_cancel, false);
+//                holder.setVisible(R.id.tv_order_pay, false);
+//                break;
             case 2:
                 holder.setText(R.id.tv_order_state, "UNSHIPPED");
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, false);
                 break;
-            case 3:
-                holder.setText(R.id.tv_order_state, "BEEVALUATED");
-                holder.setText(R.id.tv_order_pay, "evaluated");
-                holder.setVisible(R.id.tv_cancel, false);
-
-                break;
+//            case 3:
+//                holder.setText(R.id.tv_order_state, "BEEVALUATED");
+//                holder.setText(R.id.tv_order_pay, "evaluated");
+//                holder.setVisible(R.id.tv_cancel, false);
+//
+//                break;
             case 4:
                 holder.setText(R.id.tv_order_state, "CANCELLED");
                 holder.setVisible(R.id.tv_cancel, false);
@@ -81,7 +81,7 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, false);
                 break;
-            case 7:
+            case 3:
                 holder.setText(R.id.tv_order_state, "RECEIPT");
                 holder.setText(R.id.tv_order_pay, "Confirm receipt");
                 holder.setVisible(R.id.tv_cancel, false);
@@ -129,15 +129,15 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
             @Override
             public void onClick(View v) {
                 switch (resultdataBean.getOrderStatus()) {
-                    case 0:
+                    case 1:
                         if (mOrderListOpertionListener != null) {
                             mOrderListOpertionListener.payOrder(resultdataBean);
                         }
                         break;
-                    case 3:
+                    case 5:
                         OderCommentListActivity.start(v.getContext(), (ArrayList<OrderListBean.ResultdataBean.ItemInfoBean>) resultdataBean.getItemInfo(), String.valueOf(resultdataBean.getId()));
                         break;
-                    case 7:
+                    case 3:
                         if (mOrderListOpertionListener != null) {
                             mOrderListOpertionListener.receiptOrder(resultdataBean);
                         }

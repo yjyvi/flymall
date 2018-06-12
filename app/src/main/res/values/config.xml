@@ -36,12 +36,14 @@
     <!--修改用户信息
     [HttpPost]     修改用户信息
         public AjaxResult UpdateUser(string HeadImg,string NickName,string Sex,int UserInfo_ID = 0)-->
-    <string name="UpdateUser">/api/ApiLogin/UpdateUserr</string>
+    <string name="UpdateUser">/api/ApiLogin/UpdateUser</string>
 
     <!--上传图片文件-->
     <string name="UploadFile">/api/ApiLogin/UploadFile</string>
     <!--上传视频文件-->
     <string name="UploadMp4File">/api/ApiLogin/UploadMp4File</string>
+    <!--上传头像-->
+    <string name="SetHeadPhoto">/api/Setting/SetHeadPhoto</string>
 
 
     <!--接口名称：首页数据 轮播图，热门品牌，视频列表

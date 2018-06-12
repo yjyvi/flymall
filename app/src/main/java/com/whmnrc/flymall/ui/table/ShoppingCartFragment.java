@@ -261,7 +261,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                             confirmBean.setGoodsPrice_Price(resultdataBean.getPrice());
                             confirmBean.setGoods_spec(resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
                             confirmBean.setGoods_SourcePrice(resultdataBean.getPrice() * resultdataBean.getCount());
-                            confirmBean.setPriceIds(String.valueOf(resultdataBean.getId()));
+                            confirmBean.setPriceIds(String.valueOf(resultdataBean.getCartItemId()));
                             confirmBean.setGoodsNUm(resultdataBean.getCount());
                             confirmBean.setGoods_ImaPath(resultdataBean.getImgUrl());
                             confirmBean.setGoods_Name(resultdataBean.getName());
@@ -298,7 +298,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
             double totalPrice = 0;
             if (isAllChecked) {
                 for (int i = 0; i < mShoppingCartAdapter.getDatas().size(); i++) {
-                    cartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(i).getId()), i);
+                    cartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(i).getCartItemId()), i);
                     mShoppingCartAdapter.getDatas().get(i).setSelect(true);
                     totalPrice += mShoppingCartAdapter.getDatas().get(i).getPrice();
                 }

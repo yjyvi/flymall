@@ -226,7 +226,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                             return;
                         }
                         OkHttpUtils.post().addFile("image", file.get("image").getName(), file.get("image"))
-                                .addFile("file", file.get("file").getName(), file.get("file")).url(getString(R.string.service_host_address).concat("/api/Order/UploadMp4File"))
+                                .addFile("file", file.get("file").getName(), file.get("file")).url(getString(R.string.service_host_address).concat(getResources().getString(R.string.UploadMp4File)))
                                 .build().execute(new StringCallback() {
                             @Override
                             public void onError(Call call, Exception e, int id) {

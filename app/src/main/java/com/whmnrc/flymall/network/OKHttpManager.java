@@ -166,7 +166,7 @@ public class OKHttpManager {
 
         if (getIsConnected()) return;
 
-        String url = MyApplication.applicationContext.getString(R.string.service_host_address).concat("/api/Order/UploadFile");
+        String url = MyApplication.applicationContext.getString(R.string.service_host_address).concat(MyApplication.applicationContext.getResources().getString(R.string.UploadFile));
 
         postString(url, JSON.toJSONString(params), new ObjectCallback() {
             @Override
