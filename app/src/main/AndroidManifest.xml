@@ -217,6 +217,7 @@
         <activity android:name=".utils.pay.SampleActivity"/>
         <activity android:name=".ui.home.OderCommentListActivity" android:screenOrientation="portrait"/>
         <activity android:name=".ui.AdvertisingActivity"/>
+        <activity android:name=".ui.home.ActivityGoodsListActivity"/>
     </application>
 
 </manifest>

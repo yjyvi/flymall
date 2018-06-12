@@ -37,6 +37,7 @@ import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.home.GoodsListActivity;
 import com.whmnrc.flymall.ui.home.homebrands.HomeBrandsFragment;
+import com.whmnrc.flymall.ui.home.ActivityGoodsListActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
@@ -434,38 +435,33 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mIvActivity1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(0).getId());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(0).getId()));
             }
         });
-
         mIvActivity2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(1).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(1).getId()));
             }
         });
-
         mIvActivity3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(2).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(2).getId()));
             }
         });
-
         mIvActivity4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(3).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(3).getId()));
             }
         });
-
         mIvActivity5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GoodsDetailsActivity.start(v.getContext(), resultdataBean.get(4).getGoods_ID());
+                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(4).getId()));
             }
         });
-
     }
 
     @Override

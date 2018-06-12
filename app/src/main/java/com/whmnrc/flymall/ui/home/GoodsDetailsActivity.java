@@ -16,12 +16,11 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.TableViewPagerAdapter;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
-import com.whmnrc.flymall.beans.GoodsSpecificationsBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.AddOrDelCollectionGoodsPresenter;
 import com.whmnrc.flymall.presener.AddShoppingCartPresenter;
 import com.whmnrc.flymall.presener.GoodsDetailsPresenter;
-import com.whmnrc.flymall.presener.GoodsSpecificationsPresenter;
+import com.whmnrc.flymall.presener.GoodsIsCollectionPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.UserManager;
@@ -64,7 +63,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener {
+public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener, GoodsIsCollectionPresenter.GoodsIsCollectionListener {
 
 
     @BindView(R.id.ptlm_specialist_tour_detail)
@@ -109,8 +108,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     private int type;
     public String mGoodsId;
     public GoodsDetailsPresenter mGoodsDetailsPresenter;
-    private List<GoodsSpecificationsBean.ResultdataBean> mGoodsSpecificationBean;
-    public GoodsSpecificationsPresenter mGoodsSpecificationsPresenter;
     private String mGoodsImg;
     public GoodSpecificationsPop mGoodSpecificationsPop;
     private LoadingDialog mLoadingDialog;
@@ -118,6 +115,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     private GoodsDetailsBean.ResultdataBean mGoodsBean;
     private boolean isAddCart;
     public AddShoppingCartPresenter mAddShoppingCartPresenter;
+    public GoodsIsCollectionPresenter mGoodsIsCollectionPresenter;
 
     @Override
     protected int setLayoutId() {
@@ -132,10 +130,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mLoadingDialog.show();
         mGoodsDetailsPresenter = new GoodsDetailsPresenter(this);
         mAddOrDelCollectionGoodsPresenter = new AddOrDelCollectionGoodsPresenter(this);
-
+        mGoodsIsCollectionPresenter = new GoodsIsCollectionPresenter(this);
         mAddShoppingCartPresenter = new AddShoppingCartPresenter(this);
         mGoodsId = getIntent().getStringExtra("goodsId");
 
+        mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
         mAddOrDelCollectionGoodsPresenter.addCollection(mGoodsId, 2);
 
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
@@ -337,12 +336,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
             initBanner(goodsDetailsBean.getBannners());
 
-            //是否收藏
-//            if (TextUtils.equals(goodsDetailsBean.getCollection(), "1")) {
-//                isCollection(true, false);
-//            } else {
-//                isCollection(false, false);
-//            }
 
             initTab(goodsDetailsBean.getProductDescription(), goodsDetailsBean, String.valueOf(goodsDetailsBean.getProduct().getId()));
 
@@ -376,9 +369,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             confirmBean.setGoods_ImaPath(mGoodsImg);
             confirmBean.setGoods_Name(mGoodsBean.getProduct().getProductName());
             confirmBean.setGoodsNUm(number);
-            if (mGoodsSpecificationBean != null) {
-                confirmBean.setGoods_spec(goodsAttr);
-            }
+            confirmBean.setGoods_spec(goodsAttr);
             confirmBean.setPriceIds(goodSpe);
             confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
             confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
@@ -413,5 +404,16 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         if (homeTableChangeEvent.getEventType() == HomeTableChangeEvent.GO_TO_HOME) {
             finish();
         }
+    }
+
+    @Override
+    public void isCollection(int isCollection) {
+        //是否收藏
+        if (isCollection == 1) {
+            isCollection(true, false);
+        } else {
+            isCollection(false, false);
+        }
+
     }
 }
