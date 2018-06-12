@@ -71,6 +71,10 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     private int rows = 10;
     private int page = 1;
     public String mBrandId = "";
+    private String aid = "";
+    private String orderKey = "1";
+    private String orderType = "1";
+    private List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList;
 
     @Override
     protected void initViewData() {
@@ -95,7 +99,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     String trim = view.getText().toString().trim();
                     if (!TextUtils.isEmpty(trim)) {
-                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mBrandId, "", "", "", "", page, rows);
+                        aid = "";
+                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mBrandId, "", aid, orderKey, orderType, page, rows);
                         return true;
                     }
                 }
@@ -170,31 +175,64 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 break;
             case R.id.tv_tab_synthesize:
                 selectedView(mTvTabSynthesize);
+                orderKey = "1";
+                orderType = "1";
+                updateOrderKeyData(orderKey,orderType);
                 break;
             case R.id.tv_tab_sales_volume:
                 selectedView(mTvTabSalesVolume);
+                orderKey = "2";
+                orderType = "1";
+                updateOrderKeyData(orderKey,orderType);
                 break;
             case R.id.tv_tab_new:
+                orderKey = "3";
+                orderType = "1";
                 selectedView(mTvTabNew);
+                updateOrderKeyData(orderKey,orderType);
                 break;
             case R.id.tab_price:
+                orderKey = "4";
                 selectedView(mTvTabPrice);
                 if (!mIvArrow.isSelected()) {
                     mIvArrow.setSelected(true);
+                    orderType = "1";
                 } else {
                     mIvArrow.setSelected(false);
+                    orderType = "2";
                 }
+                updateOrderKeyData(orderKey,orderType);
                 break;
             case R.id.iv_filter_layout:
-                FilterPop filterPop = new FilterPop();
-                filterPop.imPopWindow(this);
-                filterPop.showPopupWindow(mLlTab);
+                if (mCategoryList != null){
+                    FilterPop filterPop = new FilterPop();
+                    filterPop.imPopWindow(this,mCategoryList);
+                    filterPop.showPopupWindow(mLlTab);
+                    filterPop.setOnConfirmClickListener(new FilterPop.OnConfirmClickListener() {
+                        @Override
+                        public void onConfirm(String cid,List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
+                            aid = cid;
+                            mSearchGoodsListPresenter.getSearchGoodsList("", mBrandId, "", aid, orderKey, orderType, page, rows);
+                            setTab(noNullCid);
+                        }
+                    });
+                }
                 break;
             default:
                 break;
         }
 
         mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+    }
+
+    private void setTab(List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
+//        mSearchTagListAdapter.setDataArray(noNullCid);
+    }
+
+    private void updateOrderKeyData(String orderKey,String orderType){
+        page = 1;
+        rows = 10;
+        mSearchGoodsListPresenter.getSearchGoodsList("", mBrandId, "", aid, orderKey, orderType, page, rows);
     }
 
 
@@ -216,6 +254,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 
     }
 
+
+
     @Override
     public void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean) {
         if (dataBean != null) {
@@ -228,8 +268,11 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 mAdapter.setDataArray(datas);
             }
         }
+        mCategoryList = dataBean.getCategory();
         mAdapter.notifyDataSetChanged();
 
         showEmpty();
     }
+
 }
+
