@@ -330,7 +330,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
     @Override
     public void loadHomeData(HomeDataBean homeDataBean) {
-        mLoadingDialog.dismiss();
+
 
         mBanner.setDelayTime(3000).setImages(homeDataBean.getResultdata().getBanners()).setImageLoader(new ImageLoader() {
             @Override
@@ -412,6 +412,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             }
         });
         pointChange(0);
+
+
     }
 
 
@@ -472,6 +474,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             mGoodListAdapter.setDataArray(datas);
         }
         mGoodListAdapter.notifyDataSetChanged();
+
+        mLoadingDialog.dismiss();
     }
 
 

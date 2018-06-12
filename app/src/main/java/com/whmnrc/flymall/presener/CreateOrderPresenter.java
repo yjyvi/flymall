@@ -31,7 +31,7 @@ public class CreateOrderPresenter extends PresenterBase {
         paramters.put("platformType", "2");
         paramters.put("recieveAddressId", addressId);
         paramters.put("couponIds", couponId);
-//        paramters.put("Order_Remark", remark);
+        paramters.put("payRemark", remark);
         OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
@@ -54,7 +54,7 @@ public class CreateOrderPresenter extends PresenterBase {
         paramters.put("platformType", "2");
         paramters.put("productName", productName);
         paramters.put("couponIds", couponId);
-//        paramters.put("Order_Remark", remark);
+        paramters.put("payRemark", remark);
         OKHttpManager.postString(getUrl(R.string.CreateOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

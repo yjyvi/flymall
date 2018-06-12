@@ -116,10 +116,11 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 if (mGoodsBean.size() == 1) {
                     mSkuIds.append(confirmBean.getPriceIds());
                 } else {
-                    mSkuIds.append(confirmBean.getPriceIds()).append("|");
+                    mSkuIds.append(confirmBean.getPriceIds()).append(",");
                 }
             }
 
+            sourcePrice = sourcePrice * mGoodsNum;
 
             mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(sourcePrice));
             mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
@@ -147,9 +148,8 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 mFlGoodsImg.addView(imageView);
             } else if (i == 2) {
                 ImageView imageView = new ImageView(this);
-                imageView.setPadding(0, 0, getResources().getDimensionPixelOffset(R.dimen.dm_5), 0);
                 imageView.setLayoutParams(new LinearLayout.LayoutParams(getResources().getDimensionPixelOffset(R.dimen.dm_75), getResources().getDimensionPixelOffset(R.dimen.dm_75)));
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                 imageView.setBackgroundResource(R.color.normal_gray);
                 GlideUtils.LoadImage(this, R.mipmap.icon_order_normal, imageView);
                 mFlGoodsImg.addView(imageView);

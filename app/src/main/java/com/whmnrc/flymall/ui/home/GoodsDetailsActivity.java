@@ -16,6 +16,7 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.TableViewPagerAdapter;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
+import com.whmnrc.flymall.beans.GoodsNoAttrBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.AddOrDelCollectionGoodsPresenter;
 import com.whmnrc.flymall.presener.AddShoppingCartPresenter;
@@ -419,11 +420,45 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     }
 
     @Override
-    public void commitSuccess() {
+    public void commitSuccess(GoodsNoAttrBean.ResultdataBean resultdata) {
+        if (resultdata.getShopCartItemModel() == null) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().size() <= 0) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().get(0).getCartItemModels() == null) {
+            return;
+        }
+
+        if (resultdata.getShopCartItemModel().get(0).getCartItemModels().size() <= 0) {
+            return;
+        }
+
+
+        GoodsNoAttrBean.ResultdataBean.ShopCartItemModelBean.CartItemModelsBean cartItemModelsBean = resultdata.getShopCartItemModel().get(0).getCartItemModels().get(0);
         if (isAddCart) {
-
+            mAddShoppingCartPresenter.addShoppingCartList(cartItemModelsBean.getSkuId(), String.valueOf(cartItemModelsBean.getCount()));
         } else {
+            ArrayList<ConfirmBean> confirmBeans = new ArrayList<>();
+            ConfirmBean confirmBean = new ConfirmBean();
+            confirmBean.setGoods_Describe("");
+            confirmBean.setGoods_ImaPath(cartItemModelsBean.getImgUrl());
+            confirmBean.setGoods_Name(cartItemModelsBean.getName());
+            confirmBean.setGoodsNUm(cartItemModelsBean.getCount());
+            confirmBean.setGoods_spec("");
+            confirmBean.setPriceIds(cartItemModelsBean.getSkuId());
+            confirmBean.setGoods_SourcePrice(cartItemModelsBean.getPrice());
+            confirmBean.setGoodsPrice_Price(0);
+            confirmBeans.add(confirmBean);
 
+            ConfirmOrderActivity.start(this, confirmBeans, true);
+
+            if (mGoodSpecificationsPop != null && mGoodSpecificationsPop.isShow()) {
+                mGoodSpecificationsPop.dissmiss();
+            }
         }
     }
 }

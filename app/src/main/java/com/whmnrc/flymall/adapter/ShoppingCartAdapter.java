@@ -73,7 +73,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                 resultdataBean.setCount(buyCarNum);
                 goodsNum.setText(String.valueOf(buyCarNum));
                 if (resultdataBean.isSelect()) {
-                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getSkuId()));
+                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getId()));
                 }
             }
         });
@@ -87,7 +87,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                     goodsNum.setText(String.valueOf(buyCarNum));
                     resultdataBean.setCount(buyCarNum);
                     if (resultdataBean.isSelect()) {
-                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getSkuId()));
+                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getId()));
                     }
                 }
             }
@@ -106,11 +106,11 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         if (!resultdataBean.isSelect()) {
             view.setSelected(true);
             resultdataBean.setSelect(true);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, resultdataBean.getSkuId());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, String.valueOf(resultdataBean.getId()));
         } else {
             view.setSelected(false);
             resultdataBean.setSelect(false);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, resultdataBean.getSkuId());
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getId()));
         }
 
     }

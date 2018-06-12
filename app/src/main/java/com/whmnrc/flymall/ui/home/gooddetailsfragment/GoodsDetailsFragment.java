@@ -1,12 +1,8 @@
 package com.whmnrc.flymall.ui.home.gooddetailsfragment;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -57,7 +53,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     private void initWeb(final String contUrl) {
         web.post(new Runnable() {
             @Override
@@ -71,16 +67,6 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
                 settings.setDefaultTextEncodingName("utf-8");
             }
         });
-
-        web.setOnScrollChangeListener(new View.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if (oldScrollY !=0) {
-
-                }
-            }
-        });
-
     }
 
     /**
@@ -90,8 +76,6 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
      * @return
      */
     public static String getHtmlData(String bodyHTML) {
-
-
         String head = "<head><style>* {\n" +
                 "        margin: 0;\n" +
                 "        padding: 0;\n" +
