@@ -24,15 +24,38 @@ public class CreateOrderPresenter extends PresenterBase {
         this.mCreateOrderListener = createOrderListener;
     }
 
-    public void createOrder(String productAttrIds, String addressId, String couponId,String remark) {
-        HashMap<String, String> paramters = new HashMap<>(1);
-        paramters.put("skuIds", productAttrIds);
+    public void shopCartCreateOrder(String productAttrIds, String addressId, String couponId, String remark) {
+        HashMap<String, String> paramters = new HashMap<>(6);
+        paramters.put("cartItemIds", productAttrIds);
         paramters.put("userId", UserManager.getUser().getId());
-        paramters.put("counts", UserManager.getUser().getId());
-        paramters.put("Address_ID", addressId);
-        paramters.put("collpids", couponId);
-        paramters.put("Order_Remark", remark);
-        OKHttpManager.postString(getUrl(R.string.AddOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+        paramters.put("platformType", "2");
+        paramters.put("recieveAddressId", addressId);
+        paramters.put("couponIds", couponId);
+//        paramters.put("Order_Remark", remark);
+        OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
+            @Override
+            protected void onSuccess(BaseBean data) {
+                if (data.getType() == 1) {
+                    mCreateOrderListener.createOrderSuccess((String) data.getResultdata());
+                } else {
+                    ToastUtils.showToast(data.getMessage());
+                }
+            }
+        });
+
+    }
+
+    public void goodsDetailsCreateOrder(String skuIds, String addressId, String couponId, String goodCount, String productName, String remark) {
+        HashMap<String, String> paramters = new HashMap<>(8);
+        paramters.put("userId", UserManager.getUser().getId());
+        paramters.put("skuIds", skuIds);
+        paramters.put("counts", goodCount);
+        paramters.put("recieveAddressId", addressId);
+        paramters.put("platformType", "2");
+        paramters.put("productName", productName);
+        paramters.put("couponIds", couponId);
+//        paramters.put("Order_Remark", remark);
+        OKHttpManager.postString(getUrl(R.string.CreateOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {

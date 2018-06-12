@@ -134,8 +134,8 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
                 String skuAttr;
                 if (mSpecificationBean == null) {
                     skuId = mGoodsId + "_" + mColorSkuId + "_" + mSizeSkuId + "_" + versionSkuId;
-                    skuAttr="";
-                }else {
+                    skuAttr = "";
+                } else {
                     skuId = mSpecificationBean.getId();
                     skuAttr = mSpecificationBean.getColor() + mSpecificationBean.getColor() + mSpecificationBean.getVersion();
                 }
@@ -154,7 +154,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
 
         oneList = mGoodsSpecificationBean.getSize();
         twoList = mGoodsSpecificationBean.getColor();
-
+        tvPrice.setText(PlaceholderUtils.pricePlaceholder(mGoodsSpecificationBean.getProduct().getMinSalePrice()));
         mGoodsId = mGoodsSpecificationBean.getProduct().getId();
 
         mOnTagClickListener = new TagFlowLayout.OnTagClickListener() {
@@ -162,9 +162,9 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
                 selectOneListPosition = position;
-
-
-//                mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                if (!TextUtils.equals(mColorSkuId, "0")) {
+                    mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                }
                 return true;
             }
         };
@@ -213,10 +213,10 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentNumber >= mTotalNumber) {
-                    ToastUtils.showToast("库存不足了");
-                    return;
-                }
+//                if (currentNumber >= mTotalNumber) {
+//                    ToastUtils.showToast("库存不足了");
+//                    return;
+//                }
                 currentNumber++;
                 editNum.setText(String.valueOf(currentNumber));
             }
@@ -247,18 +247,29 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     }
 
     private void initRv() {
-        adapter1 = new TagAdapter<GoodsDetailsBean.ResultdataBean.SizeBean>(oneList) {
-            @Override
-            public View getView(FlowLayout parent, int position, GoodsDetailsBean.ResultdataBean.SizeBean o) {
-                TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_speciflcations_select2, null);
-                textView.setText(o.getValue());
-                return textView;
-            }
-        };
-        recyclerView1.setAdapter(adapter1);
-        selectOneListPosition = 0;
+
+        if (oneList.size() > 0) {
+            tvName1.setVisibility(View.VISIBLE);
+            recyclerView1.setVisibility(View.VISIBLE);
+            adapter1 = new TagAdapter<GoodsDetailsBean.ResultdataBean.SizeBean>(oneList) {
+                @Override
+                public View getView(FlowLayout parent, int position, GoodsDetailsBean.ResultdataBean.SizeBean o) {
+                    TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_speciflcations_select2, null);
+                    textView.setText(o.getValue());
+                    return textView;
+                }
+            };
+            recyclerView1.setAdapter(adapter1);
+            selectOneListPosition = 0;
+        } else {
+            tvName1.setVisibility(View.GONE);
+            recyclerView1.setVisibility(View.GONE);
+        }
+
 
         if (twoList.size() > 0) {
+            tvName2.setVisibility(View.VISIBLE);
+            recyclerView2.setVisibility(View.VISIBLE);
             adapter2 = new TagAdapter<GoodsDetailsBean.ResultdataBean.ColorBean>(twoList) {
                 @Override
                 public View getView(FlowLayout parent, int position, GoodsDetailsBean.ResultdataBean.ColorBean contentBean) {
@@ -268,6 +279,9 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
                 }
             };
             recyclerView2.setAdapter(adapter2);
+        } else {
+            tvName2.setVisibility(View.GONE);
+            recyclerView2.setVisibility(View.GONE);
         }
     }
 

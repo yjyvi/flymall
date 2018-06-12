@@ -15,14 +15,10 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.HomeActivityGoodListAdapter;
 import com.whmnrc.flymall.beans.ActivityGoodsListBean;
-import com.whmnrc.flymall.beans.CollectionListBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
-import com.whmnrc.flymall.presener.CollectionListPresenter;
 import com.whmnrc.flymall.presener.HomePageActivityListGoodsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
-
-import java.util.List;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import butterknife.BindView;
 
@@ -31,7 +27,7 @@ import butterknife.BindView;
  * @data 2018/5/19.
  */
 
-public class ActivityGoodsListActivity extends BaseActivity implements CollectionListPresenter.CollectionListListener, HomePageActivityListGoodsPresenter.HomeActivityGoodsListListener, OnRefreshListener {
+public class ActivityGoodsListActivity extends BaseActivity implements HomePageActivityListGoodsPresenter.HomeActivityGoodsListListener, OnRefreshListener {
 
     @BindView(R.id.title)
     TextView mTitle;
@@ -42,19 +38,21 @@ public class ActivityGoodsListActivity extends BaseActivity implements Collectio
     @BindView(R.id.refresh)
     SmartRefreshLayout mRefresh;
     private HomeActivityGoodListAdapter mAdapter;
-    public CollectionListPresenter mCollectionListPresenter;
     private int page = 1;
     public String mTopActivityId;
     public HomePageActivityListGoodsPresenter mHomePageActivityListGoodsPresenter;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
         mRefresh.setEnableLoadMore(true);
         mRefresh.setOnRefreshListener(this);
         mHomePageActivityListGoodsPresenter = new HomePageActivityListGoodsPresenter(this);
 
         mTopActivityId = getIntent().getStringExtra("topActivityId");
-        mHomePageActivityListGoodsPresenter.getHomePageActivityGoodsList(mTopActivityId);
+        mHomePageActivityListGoodsPresenter.getHomePageActivityGoodsList(mTopActivityId,mLoadingDialog);
         setTitle("ActivityGoods");
 
         mRvBrowsingHistoryList.setLayoutManager(new GridLayoutManager(this, 2));
@@ -89,15 +87,6 @@ public class ActivityGoodsListActivity extends BaseActivity implements Collectio
         return R.layout.activity_home_activity_goods_list;
     }
 
-    @Override
-    public void getCollectionListSuccess(List<CollectionListBean.ResultdataBean> resultdataBeanList) {
-
-    }
-
-    @Override
-    public void getHistoryListSuccess(List<GoodsListBean.ResultdataBean> resultdataBeanList) {
-
-    }
 
 
     public void showEmpty() {
@@ -119,6 +108,6 @@ public class ActivityGoodsListActivity extends BaseActivity implements Collectio
 
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
-        mHomePageActivityListGoodsPresenter.getHomePageActivityGoodsList(mTopActivityId);
+        mHomePageActivityListGoodsPresenter.getHomePageActivityGoodsList(mTopActivityId, mLoadingDialog);
     }
 }

@@ -135,16 +135,11 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mRvSaleList.setNestedScrollingEnabled(false);
         mRvVideoList.setNestedScrollingEnabled(false);
 
-
         mRvSaleList.setFocusableInTouchMode(false);
         mRvVideoList.setFocusableInTouchMode(false);
-        mVpBrands.setFocusableInTouchMode(false);
-        mBanner.setFocusableInTouchMode(false);
 
         mRvSaleList.requestFocus();
         mRvVideoList.requestFocus();
-        mVpBrands.requestFocus();
-        mBanner.requestFocus();
 
 
         initVideoList();

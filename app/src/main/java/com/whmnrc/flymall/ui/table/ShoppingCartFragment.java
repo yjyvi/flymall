@@ -270,7 +270,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                         }
                     }
 
-                    ConfirmOrderActivity.start(view.getContext(), confirmBeans);
+                    ConfirmOrderActivity.start(view.getContext(), confirmBeans, false);
 
                 }
                 break;
