@@ -40,8 +40,6 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
         String url;
         
         url = getUrl(R.string.AddAddress);
-
-
         OKHttpManager.post(url, paramters, new CommonCallBack<AddressBean>() {
             @Override
             protected void onSuccess(AddressBean data) {
