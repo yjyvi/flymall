@@ -56,5 +56,6 @@ public class CommonConstant {
          * 当前的选择的货币
          */
         public static final String CURRENT_CURRENCY = "current_currency";
+        public static final String CURRENT_CURRENCY_CODE = "currency_code";
     }
 }

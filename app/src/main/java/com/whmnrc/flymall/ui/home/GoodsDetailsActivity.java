@@ -139,7 +139,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mGoodsId = getIntent().getStringExtra("goodsId");
 
         mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
-        mAddOrDelCollectionGoodsPresenter.addCollection(mGoodsId, 2);
+//        mAddOrDelCollectionGoodsPresenter.addCollection(mGoodsId, 2);
 
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
 
@@ -173,6 +173,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
             }
         });
+
         mBanner.isAutoPlay(false).setImages(img).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {

@@ -44,9 +44,9 @@ public class AddOrDelCollectionGoodsPresenter extends PresenterBase {
                 if (data.getType() == 1) {
                     mAddOrDelCollectionGoodsListener.addCollectionSuccess();
                 }
-                if (type == 1) {
-                    ToastUtils.showToast(data.getMessage());
-                }
+
+                ToastUtils.showToast(data.getMessage());
+
             }
         });
     }
@@ -59,7 +59,7 @@ public class AddOrDelCollectionGoodsPresenter extends PresenterBase {
     public void delCollection(String goodsId) {
         Map<String, String> params = new HashMap<>(1);
         params.put("productId", goodsId);
-        params.put("userId",  UserManager.getUser().getId());
+        params.put("userId", UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.DeleteSingle), params, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
@@ -70,8 +70,6 @@ public class AddOrDelCollectionGoodsPresenter extends PresenterBase {
             }
         });
     }
-
-
 
 
     public interface AddOrDelCollectionGoodsListener {

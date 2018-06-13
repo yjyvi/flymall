@@ -52,7 +52,6 @@ public class TwoClassifyFragment extends LazyLoadFragment {
         mWidth = getArguments().getInt("width");
         mCurrentySex = getArguments().getInt("mCurrentySex");
 
-
         if (oneBrands != null) {
             LinearLayoutManager layout = new LinearLayoutManager(getActivity());
             layout.setAutoMeasureEnabled(true);

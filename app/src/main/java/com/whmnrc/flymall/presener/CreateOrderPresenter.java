@@ -4,6 +4,7 @@ package com.whmnrc.flymall.presener;
 import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
+import com.whmnrc.flymall.beans.ShopCartCreateOrderBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
@@ -33,11 +34,13 @@ public class CreateOrderPresenter extends PresenterBase {
         paramters.put("integral", "0");
         paramters.put("platformType", "2");
         paramters.put("payRemark", remark);
-        OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<OrderDeitalsBean>() {
+        OKHttpManager.postString(getUrl(R.string.CreateOrderFromShopCart), JSON.toJSONString(paramters), new CommonCallBack<ShopCartCreateOrderBean>() {
             @Override
-            protected void onSuccess(OrderDeitalsBean data) {
+            protected void onSuccess(ShopCartCreateOrderBean data) {
                 if (data.getType() == 1) {
-                    mCreateOrderListener.createMutOrderSuccess(data.getResultdata());
+                    if (data.getResultdata() != null) {
+                        mCreateOrderListener.createMutOrderSuccess(data.getResultdata().get(0));
+                    }
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -70,8 +73,9 @@ public class CreateOrderPresenter extends PresenterBase {
     }
 
     public interface CreateOrderListener {
+        void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean orderId);
+
         void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean orderId);
-        void createMutOrderSuccess(OrderDeitalsBean.ResultdataBean orderId);
     }
 
 

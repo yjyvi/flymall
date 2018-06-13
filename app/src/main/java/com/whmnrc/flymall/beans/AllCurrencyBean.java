@@ -64,7 +64,7 @@ public class AllCurrencyBean {
         private String Currency_ID;
         private String Currency_Name;
         private double Currency_Price;
-        private Object Code;
+        private String Code;
 
         public String getCurrency_ID() {
             return Currency_ID;
@@ -90,11 +90,11 @@ public class AllCurrencyBean {
             this.Currency_Price = Currency_Price;
         }
 
-        public Object getCode() {
+        public String  getCode() {
             return Code;
         }
 
-        public void setCode(Object Code) {
+        public void setCode(String Code) {
             this.Code = Code;
         }
     }

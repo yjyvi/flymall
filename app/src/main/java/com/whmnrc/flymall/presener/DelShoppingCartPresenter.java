@@ -25,10 +25,10 @@ public class DelShoppingCartPresenter extends PresenterBase {
     }
 
     public void delShoppingCartList(String skuId) {
-        HashMap<String, String> paramters = new HashMap<>(1);
-        paramters.put("skuId", skuId);
+        HashMap<String, String> paramters = new HashMap<>(2);
+        paramters.put("skuIds", skuId);
         paramters.put("userId", UserManager.getUser().getId());
-        OKHttpManager.get(getUrl(R.string.RemoveFromCart), paramters, new CommonCallBack<BaseBean>() {
+        OKHttpManager.get(getUrl(R.string.RemoveFromCartMulty), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {

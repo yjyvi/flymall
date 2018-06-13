@@ -36,11 +36,6 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
     @BindView(R.id.rv_left)
     RecyclerView rv_left;
 
-//    @BindView(R.id.iv_men)
-//    ImageView mIvMen;
-//    @BindView(R.id.iv_women)
-//    ImageView mIvWomen;
-
     @BindView(R.id.rl_right)
     RelativeLayout rl_right;
 

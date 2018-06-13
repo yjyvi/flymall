@@ -2,30 +2,30 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="108px"
+    android:layout_height="@dimen/dm_40"
     android:background="@color/withe"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_type"
         android:layout_width="match_parent"
-        android:layout_height="107px"
+        android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <View
             android:id="@+id/v_line"
-            android:layout_width="5px"
+            android:layout_width="@dimen/dm_2"
             android:layout_height="match_parent"
             android:background="@drawable/type_selected"/>
 
         <TextView
             android:id="@+id/tv_name"
             android:background="@drawable/type_text_selected"
-
             android:layout_width="match_parent"
+            android:textColor="@color/selecter_type_text_color_bg"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:padding="10px"
+            android:gravity="center"
+            android:padding="@dimen/dm_5"
             android:text="oneType"/>
     </LinearLayout>
 

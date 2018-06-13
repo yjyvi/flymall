@@ -25,8 +25,6 @@ public class OrderDetailsPresenter extends PresenterBase {
     public void getOrderDetails(String orderId) {
         HashMap<String, String> paramters = new HashMap<>(3);
         paramters.put("orderId", orderId);
-//        paramters.put("Page", "1");
-//        paramters.put("Rows", "1");
         OKHttpManager.get(getUrl(R.string.GetSomeOneOrder), paramters, new CommonCallBack<OrderDeitalsBean>() {
             @Override
             protected void onSuccess(OrderDeitalsBean data) {

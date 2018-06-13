@@ -20,9 +20,11 @@ import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.presener.CancelOrReceiptOrderPresenter;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.presener.OrderListPresenter;
+import com.whmnrc.flymall.ui.HomeTableActivity;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.evntBusBean.OrderListEvent;
@@ -41,7 +43,7 @@ import butterknife.BindView;
  * @data 2018/5/21.
  */
 
-public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener, OrderDetailsPresenter.OrderDetailsListener {
+public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener, OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener {
     @BindView(R.id.rv_order_list)
     RecyclerView mRvOrderList;
     @BindView(R.id.rv_goods_list)
@@ -61,6 +63,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     private GetLikeGoodsPresenter mGetLikeGoodsPresenter;
     private LikeGoodListAdapter mAdapter;
     public OrderDetailsPresenter mOrderDetailsPresenter;
+    private CancelOrReceiptOrderPresenter mCancelOrReceiptOrderPresenter;
 
     @Override
     protected int contentViewLayoutID() {
@@ -88,7 +91,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         showLoadingDialog();
         getOrder(mOrderType);
 
-
+        mCancelOrReceiptOrderPresenter = new CancelOrReceiptOrderPresenter(this);
         mRvGoodsList.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mAdapter = new LikeGoodListAdapter(getActivity(), R.layout.item_goods_list);
         mRvGoodsList.addItemDecoration(new RecyclerView.ItemDecoration() {
@@ -112,6 +115,16 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
         mOrderListAdapter.setOrderListOpertionListener(this);
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
+
+        mLlEmptyGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getActivity() != null) {
+                    getActivity().finish();
+                }
+                HomeTableActivity.startHomeTableView(getActivity(), 0);
+            }
+        });
     }
 
     public static OrderFragment newInstance(int orderType) {
@@ -128,8 +141,8 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         EventBus.getDefault().unregister(this);
     }
 
-    private void showLoadingDialog(){
-        if (!mLoadingDialog.isShowing()){
+    private void showLoadingDialog() {
+        if (!mLoadingDialog.isShowing()) {
             mLoadingDialog.show();
         }
     }
@@ -137,7 +150,6 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     @Subscribe
     public void orderListEvent(OrderListEvent orderListEvent) {
         page = 1;
-
         switch (orderListEvent.getEventType()) {
             case OrderListEvent.UNPAID:
                 getOrder(1);
@@ -221,14 +233,14 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     }
 
     @Override
-    public void cancelOrder(OrderListBean.ResultdataBean resultdataBean) {
+    public void cancelOrder(final OrderListBean.ResultdataBean resultdataBean) {
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg("Are you sure you want to Cancel the order?")
                 .setCancelable(true)
                 .setPositiveButton("agree", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        mCancelOrReceiptOrderPresenter.cancelOrder(String.valueOf(resultdataBean.getId()));
                     }
                 })
                 .setNegativeButton("cancel", new View.OnClickListener() {
@@ -241,23 +253,18 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     @Override
     public void payOrder(OrderListBean.ResultdataBean resultdataBean) {
-
-
         mOrderDetailsPresenter.getOrderDetails(String.valueOf(resultdataBean.getId()));
-
-
-
     }
 
     @Override
-    public void receiptOrder(OrderListBean.ResultdataBean resultdataBean) {
+    public void receiptOrder(final OrderListBean.ResultdataBean resultdataBean) {
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg("Do you want to confirm receipt?")
                 .setCancelable(true)
                 .setPositiveButton("agree", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
+                        mCancelOrReceiptOrderPresenter.receiptOrder(String.valueOf(resultdataBean.getId()));
                     }
                 })
                 .setNegativeButton("cancel", new View.OnClickListener() {
@@ -275,6 +282,17 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         addressBean.setPhone(resultdataBeans.getCellPhone());
         addressBean.setAddress(resultdataBeans.getAddress());
         ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), String.valueOf(resultdataBeans.getProductTotalAmount()), JSON.toJSONString(addressBean));
+    }
+
+    @Override
+    public void cancelSuccess() {
 
     }
+
+    @Override
+    public void receiptSuccess() {
+
+    }
+
+
 }

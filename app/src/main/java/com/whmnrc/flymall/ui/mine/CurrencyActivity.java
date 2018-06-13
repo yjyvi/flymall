@@ -48,6 +48,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
     public UpdateDefaultCurrencyPresenter mUpdateDefaultCurrencyPresenter;
     public String mCurrencyId;
     private double mCurrencyPrice;
+    private String mCurrencyCode;
 
     @Override
     protected void initViewData() {
@@ -66,6 +67,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
                 selectedView(view);
                 mCurrencyId = mCurrencyAdapter.getDatas().get(position).getCurrency_ID();
                 mCurrencyPrice = mCurrencyAdapter.getDatas().get(position).getCurrency_Price();
+                mCurrencyCode = mCurrencyAdapter.getDatas().get(position).getCode();
             }
 
             @Override
@@ -121,6 +123,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
     public void updateSuccess(String msg) {
         ToastUtils.showToast(msg);
         SPUtils.put(this, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
+        SPUtils.put(this, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
         finish();
     }
 

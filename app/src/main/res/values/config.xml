@@ -265,6 +265,7 @@
         地址：/ShopCart/RemoveFromCart/?userId=当前用户id&&skuId=商品sku属性
         请求方法：get-->
     <string name="RemoveFromCart">/api/ShopCart/RemoveFromCart</string>
+    <string name="RemoveFromCartMulty">/api/ShopCart/RemoveFromCartMulty</string>
 
     <!--接口名称： 更新购物车信息
         说明： 更新购物车信息

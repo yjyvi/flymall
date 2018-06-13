@@ -251,7 +251,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
                     String result;
                     if (cartIds.size() > 1) {
-                        result = cartIdSt.toString().substring(0, cartIdSt.toString().length());
+                        result = cartIdSt.toString().substring(0, cartIdSt.toString().length() - 1);
                     } else {
                         result = cartIdSt.toString();
                     }

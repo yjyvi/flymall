@@ -18,6 +18,7 @@ import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.CouponBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
+import com.whmnrc.flymall.beans.ShopCartCreateOrderBean;
 import com.whmnrc.flymall.presener.AddressListPresenter;
 import com.whmnrc.flymall.presener.CreateOrderPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
@@ -121,6 +122,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 }
             }
 
+
             sourcePrice = sourcePrice * mGoodsNum;
 
             mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(sourcePrice));
@@ -198,10 +200,13 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                     ToastUtils.showToast("地址不能为空");
                     return;
                 }
+                String productAttrIds = mSkuIds.toString();
+
                 if (mIsGoodsDetails) {
-                    mCreateOrderPresenter.goodsDetailsCreateOrder(mSkuIds.toString(), mAddressId, mCouponId, String.valueOf(mGoodsNum), mGoodsBean.get(0).getGoods_Name(), mEtRemark.getText().toString().trim());
+                    mCreateOrderPresenter.goodsDetailsCreateOrder(productAttrIds, mAddressId, mCouponId, String.valueOf(mGoodsNum), mGoodsBean.get(0).getGoods_Name(), mEtRemark.getText().toString().trim());
                 } else {
-                    mCreateOrderPresenter.shopCartCreateOrder(mSkuIds.toString(), mAddressId, mCouponId, mEtRemark.getText().toString().trim());
+                     productAttrIds = productAttrIds.substring(0, productAttrIds.length() - 1);
+                    mCreateOrderPresenter.shopCartCreateOrder(productAttrIds, mAddressId, mCouponId, mEtRemark.getText().toString().trim());
                 }
                 break;
             case R.id.ll_to_order_img:
@@ -213,14 +218,15 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     }
 
     @Override
-    public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean  resultdataBean) {
-        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(mMoney), JSON.toJSONString(addressEventData));
+    public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean resultdataBean) {
+        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getProductTotalAmount()), JSON.toJSONString(addressEventData));
         finish();
     }
 
     @Override
-    public void createMutOrderSuccess(OrderDeitalsBean.ResultdataBean orderId) {
-
+    public void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean resultdataBean) {
+        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getCommisTotalAmount()), JSON.toJSONString(addressEventData));
+        finish();
     }
 
     @Override

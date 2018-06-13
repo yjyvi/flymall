@@ -28,7 +28,7 @@ public class CancelOrReceiptOrderPresenter extends PresenterBase {
     public void cancelOrder(String orderId) {
         TreeMap<String, String> paramters = new TreeMap<>();
         paramters.put("orderId", orderId);
-        paramters.put("userName", UserManager.getUser().getId());
+        paramters.put("userName", UserManager.getUser().getUserName());
         OKHttpManager.get(getUrl(R.string.MemberCloseOrder), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
@@ -43,7 +43,7 @@ public class CancelOrReceiptOrderPresenter extends PresenterBase {
     public void receiptOrder(String orderId) {
         TreeMap<String, String> paramters = new TreeMap<>();
         paramters.put("orderId", orderId);
-        paramters.put("userName", UserManager.getUser().getId());
+        paramters.put("userName", UserManager.getUser().getUserName());
         OKHttpManager.postString(getUrl(R.string.ConfirmOrder), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
