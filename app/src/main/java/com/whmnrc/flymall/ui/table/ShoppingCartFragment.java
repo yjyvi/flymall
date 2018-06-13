@@ -32,6 +32,7 @@ import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -85,6 +86,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     private List<Integer> removePosition = new ArrayList<>();
     public boolean mIsActivity;
     public ShopCartListIsAddPresenter mShopCartListIsAddPresenter;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected int contentViewLayoutID() {
@@ -101,6 +103,8 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     @Override
     protected void initViewData() {
+        mLoadingDialog = new LoadingDialog(getActivity());
+        mLoadingDialog.show();
 
         mIsActivity = getArguments().getBoolean("isActivity", false);
 
@@ -337,6 +341,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     public void loadGoodsSucces(List<LikeGoodsBean.ResultdataBean> resultdataBean) {
         mGoodListAdapter.setDataArray(resultdataBean);
         mGoodListAdapter.notifyDataSetChanged();
+        mLoadingDialog.dismiss();
     }
 
 

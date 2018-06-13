@@ -24,12 +24,13 @@ import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.beans.MediaBean;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.presener.AddEvaluatePresenter;
+import com.whmnrc.flymall.presener.UpdateImgFilePresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.FileUtils;
 import com.whmnrc.flymall.utils.MediaUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.views.RatingBarView;
-import com.whmnrc.mylibrary.utils.EncodeTask;
 import com.whmnrc.mylibrary.utils.ImgVideoPickerUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -42,14 +43,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
 
 /**
@@ -57,7 +51,7 @@ import okhttp3.Call;
  * @data 2018/5/19.
  */
 
-public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePresenter.AddEvaluateListener {
+public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePresenter.AddEvaluateListener, UpdateImgFilePresenter.UpdateHeadImgListener {
 
     @BindView(R.id.rv_photo)
     RecyclerView rvPhoto;
@@ -72,9 +66,11 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
     private MultiItemTypeAdapter<LocalMedia> localMediaMultiItemTypeAdapter;
     private static final int MAX_PICTURE = 9;
     public AddEvaluatePresenter mAddEvaluatePresenter;
-    private String videos = "";
+    private String videosUrl = "";
     public String mOrderId;
     public String mGoodsId;
+    private String videoThumbUrl;
+    public UpdateImgFilePresenter mUpdateImgFilePresenter;
 
     @Override
     protected void initViewData() {
@@ -82,6 +78,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         mOrderId = getIntent().getStringExtra("orderId");
         mGoodsId = getIntent().getStringExtra("goodsId");
         mAddEvaluatePresenter = new AddEvaluatePresenter(this);
+        mUpdateImgFilePresenter = new UpdateImgFilePresenter(this);
         initRv();
     }
 
@@ -101,6 +98,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
     private void initRv() {
 
         selectPremissions();
+        mRbStar.setStar(5,false);
         rvPhoto.setLayoutManager(new GridLayoutManager(this, 3));
         localMediaMultiItemTypeAdapter = new MultiItemTypeAdapter<>(this);
         localMediaMultiItemTypeAdapter.addItemViewDelegate(new PublishImgArrayAdapter(new PublishImgArrayAdapter.OnClick() {
@@ -196,150 +194,61 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         }
 
 
-        Observable.create(new ObservableOnSubscribe<Map<String, File>>() {
+        Bitmap videoThumb = MediaUtils.getVideoThumb(mediaData.get(0).getPath());
+        String imgCache = FileUtils.bitmap2File(videoThumb, "img_cache");
+        File image = new File(imgCache);
+        File file = new File(mediaData.get(0).getPath());
+        videoThumb.recycle();
+
+        //开始网络请求 上传图片
+        if (OKHttpManager.getIsConnected()) {
+            return;
+        }
+        OkHttpUtils.post()
+                .addFile("image", image.getName(), image)
+                .addFile("file", file.getName(), file)
+                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getNick()) ? "img" : UserManager.getUser().getNick())
+                .url(getString(R.string.service_host_address).concat(getResources().getString(R.string.UploadMp4File)))
+                .build().execute(new StringCallback() {
             @Override
-            public void subscribe(ObservableEmitter<Map<String, File>> e) throws Exception {
-                Bitmap videoThumb = MediaUtils.getVideoThumb(mediaData.get(0).getPath());
-                String imgCache = FileUtils.bitmap2File(videoThumb, "img_cache");
-
-
-                Map<String, File> fileMap = new HashMap<>();
-                fileMap.put("image", new File(imgCache));
-                fileMap.put("file", new File(mediaData.get(0).getPath()));
-                e.onNext(fileMap);
-                videoThumb.recycle();
+            public void onError(Call call, Exception e, int id) {
+                isUpload = true;
+                progressDialog.dismiss();
+                ToastUtils.showToast("上传失败，请重新上传");
             }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Map<String, File>>() {
-                    Disposable disposable;
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        disposable = d;
-                    }
+            @Override
+            public void onResponse(String response, int id) {
+                isUpload = true;
+                ToastUtils.showToast("Uploaded successfully");
+                BaseBean<String> netBaseBean = JSON.parseObject(response, BaseBean.class);
+                if (netBaseBean.getType() == 1) {
+                    String videoImgPath = netBaseBean.getMessage();
+                    String videoPath = netBaseBean.getResultdata();
+                    MediaBean mediaBean = new MediaBean();
+                    videosUrl = videoPath;
+                    videoThumbUrl = videoImgPath;
+                    mediaBean.setType(PictureConfig.TYPE_VIDEO);
+                    mediaBean.setNetimgPath(videoImgPath);
+                    mediaBean.setNetVideoPath(videoPath);
+                    mediaMap.put(mediaData.get(0), mediaBean);
+                }
+                progressDialog.dismiss();
+            }
 
-                    @Override
-                    public void onNext(Map<String, File> file) {
-                        //开始网络请求 上传图片
-                        if (OKHttpManager.getIsConnected()) {
-                            return;
-                        }
-                        OkHttpUtils.post()
-                                .addFile("image", file.get("image").getName(), file.get("image"))
-                                .addFile("file", file.get("file").getName(), file.get("file"))
-                                .url(getString(R.string.service_host_address).concat(getResources().getString(R.string.UploadMp4File)))
-                                .build().execute(new StringCallback() {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
-                                isUpload = true;
-                                progressDialog.dismiss();
-                                ToastUtils.showToast("上传失败，请重新上传");
-                            }
+            @Override
+            public void inProgress(float progress, long total, int id) {
+                super.inProgress(progress, total, id);
+                progressDialog.setProgress((int) progress * 100);
+            }
+        });
 
-                            @Override
-                            public void onResponse(String response, int id) {
-                                isUpload = true;
-                                ToastUtils.showToast("Uploaded successfully");
-                                BaseBean<String> netBaseBean = JSON.parseObject(response, BaseBean.class);
-                                if (netBaseBean.getType() == 1) {
-                                    String videoImgPath = netBaseBean.getMessage();
-                                    String videoPath = netBaseBean.getResultdata();
-                                    MediaBean mediaBean = new MediaBean();
-                                    videos = videoImgPath + "," + videoPath;
-                                    mediaBean.setType(PictureConfig.TYPE_VIDEO);
-                                    mediaBean.setNetimgPath(videoImgPath);
-                                    mediaBean.setNetVideoPath(videoPath);
-                                    mediaMap.put(mediaData.get(0), mediaBean);
-                                }
-                                disposable.dispose();
-                                progressDialog.dismiss();
-                            }
 
-                            @Override
-                            public void inProgress(float progress, long total, int id) {
-                                super.inProgress(progress, total, id);
-                                progressDialog.setProgress((int) progress * 100);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
 
     public void uploadImg(final List<LocalMedia> datas, final int position) {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("上传中");
-            progressDialog.setTitle("提示");
-            progressDialog.setMax(100);
-            progressDialog.setIndeterminate(false);
-            progressDialog.setCancelable(true);
-//            progressDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-//                @Override
-//                public void onDismiss(DialogInterface dialog) {
-//                    if (!isUpload) {
-//                        ToastUtils.showToast("Cancel Upload！");
-//                    }
-//                }
-//            });
-        }
-        //视频
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
-
-        EncodeTask encodeTask = new EncodeTask(new EncodeTask.onResponse() {
-            @Override
-            public void onResult(String base64) {
-                Map<String, String> params = new HashMap<>();
-                params.put("Type", "1");
-                params.put("FileData", base64);
-
-                OKHttpManager.uploadFile(params, new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        BaseBean<String> netBaseBean = JSON.parseObject(response, BaseBean.class);
-                        if (netBaseBean.getType() == 1) {
-                            String resultdata = netBaseBean.getResultdata();
-                            MediaBean mediaBean = new MediaBean();
-                            mediaBean.setType(PictureConfig.TYPE_IMAGE);
-                            mediaBean.setNetimgPath(resultdata);
-                            mediaBean.setSort(position);
-                            mediaMap.put(datas.get(position), mediaBean);
-                            uploadImg(datas, position + 1);
-                        }
-                    }
-
-                    @Override
-                    public void inProgress(float progress, long total, int id) {
-                        super.inProgress(progress, total, id);
-                        progressDialog.setProgress((int) progress * 100);
-                    }
-                });
-            }
-        });
-
-        if (position >= datas.size()) {
-            progressDialog.dismiss();
-            return;
-        }
-        encodeTask.execute(datas.get(position).getCompressPath());
-
+        mUpdateImgFilePresenter.updateHeadImg(datas, position);
     }
 
 
@@ -366,10 +275,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
             case R.id.tv_submit:
 
                 int starCount = mRbStar.getStarCount();
-                if (starCount == 0) {
-                    ToastUtils.showToast("请选择评价星级");
-                    return;
-                }
+
 
                 String content = mEtContent.getText().toString().trim();
 
@@ -380,16 +286,17 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
 
 
                 StringBuilder imgs = new StringBuilder();
+                String imgsChange = "";
                 if (mediaMap.size() > 0) {
                     for (LocalMedia localMedia : mediaMap.keySet()) {
                         MediaBean mediaBean = mediaMap.get(localMedia);
                         imgs.append(mediaBean.getNetimgPath()).append(",");
                     }
+                    imgsChange = imgs.toString().substring(0, imgs.toString().length() - 1);
                 }
 
-                String imgsChange =   imgs.toString().substring(0,imgs.toString().length());
 
-                mAddEvaluatePresenter.addEvaluate(starCount, content, imgsChange, videos, mOrderId, mGoodsId);
+                mAddEvaluatePresenter.addEvaluate(starCount, content, imgsChange, videosUrl, videoThumbUrl, mOrderId, mGoodsId);
 
                 break;
             default:
@@ -401,4 +308,15 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
     public void addEvaluateSuccess() {
         finish();
     }
+
+    @Override
+    public void loadSuccess(String resultImgUrl, List<LocalMedia> datas, int position) {
+        MediaBean mediaBean = new MediaBean();
+        mediaBean.setType(PictureConfig.TYPE_IMAGE);
+        mediaBean.setNetimgPath(resultImgUrl);
+        mediaBean.setSort(position);
+        mediaMap.put(datas.get(position), mediaBean);
+        uploadImg(datas, position + 1);
+    }
+
 }

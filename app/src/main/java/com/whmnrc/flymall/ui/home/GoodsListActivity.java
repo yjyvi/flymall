@@ -18,9 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.SearchGoodListAdapter;
 import com.whmnrc.flymall.adapter.SearchTagListAdapter;
+import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.SearchResultBean;
 import com.whmnrc.flymall.presener.SearchGoodsListPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
@@ -40,7 +44,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class GoodsListActivity extends BaseActivity implements SearchGoodsListPresenter.SearchGoodsListener {
+public class GoodsListActivity extends BaseActivity implements SearchGoodsListPresenter.SearchGoodsListener, OnRefreshLoadMoreListener {
     @BindView(R.id.rv_goods_list)
     RecyclerView mRvGoodsList;
     @BindView(R.id.rv_tga_list)
@@ -63,6 +67,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     ImageView mIvArrow;
     @BindView(R.id.et_search)
     EditText mEtSearch;
+    @BindView(R.id.refresh)
+    SmartRefreshLayout refresh;
 
 
     private SearchGoodListAdapter mAdapter;
@@ -78,6 +84,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     private List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList;
     private LoadingDialog mLoadingDialog;
     private String mBid = "";
+    public String mSearchContent;
 
     @Override
     protected void initViewData() {
@@ -92,7 +99,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         selectedView(mTvTabSynthesize);
         mIvArrow.setSelected(false);
 
-        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, "", "", "", "1", page, rows);
+        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, "", "1", page, rows);
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -102,10 +109,10 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
                             .hideSoftInputFromWindow(getCurrentFocus()
                                     .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-                    String trim = view.getText().toString().trim();
-                    if (!TextUtils.isEmpty(trim)) {
-                        aid = "";
-                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mCid, "", aid, orderKey, orderType, page, rows);
+                    mSearchContent = view.getText().toString().trim();
+
+                    if (!TextUtils.isEmpty(mSearchContent)) {
+                        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, "", aid, orderKey, orderType, page, rows);
                         return true;
                     }
                 }
@@ -114,6 +121,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         });
 
         mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+
+        refresh.setOnRefreshLoadMoreListener(this);
     }
 
     private void initGoodsList() {
@@ -138,13 +147,25 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     private void initTgaList() {
+        mRvTgaList.setVisibility(View.GONE);
         mRvTgaList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mSearchTagListAdapter = new SearchTagListAdapter(this, R.layout.item_search_tag_list);
-        mRvTgaList.setNestedScrollingEnabled(false);
-        mRvTgaList.setFocusableInTouchMode(false);
-        mRvTgaList.requestFocus();
-        mSearchTagListAdapter.setDataArray(initTestData(10));
         mRvTgaList.setAdapter(mSearchTagListAdapter);
+        mSearchTagListAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                mSearchTagListAdapter.getDatas().remove(position);
+                mSearchTagListAdapter.notifyDataSetChanged();
+                if (mSearchTagListAdapter.getDatas().size() == 0) {
+                    mRvTgaList.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -159,7 +180,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     public void showEmpty() {
-        if (mAdapter != null && mAdapter.getDatas().size() == 0) {
+        if (mAdapter.getDatas() == null || mAdapter.getDatas().size() == 0) {
             EmptyListUtils.loadEmpty(true, "Can't find products", R.mipmap.no_search, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
@@ -216,8 +237,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     filterPop.setOnConfirmClickListener(new FilterPop.OnConfirmClickListener() {
                         @Override
                         public void onConfirm(String selectCid, List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
-                            aid = selectCid;
-                            mSearchGoodsListPresenter.getSearchGoodsList("", mCid, mBid, aid, orderKey, orderType, page, rows);
+                            mCid = selectCid;
+                            mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
                             setTab(noNullCid);
                         }
                     });
@@ -231,13 +252,15 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     private void setTab(List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
-//        mSearchTagListAdapter.setDataArray(noNullCid);
+        mRvTgaList.setVisibility(View.VISIBLE);
+        mSearchTagListAdapter.setDataArray(noNullCid);
+        mSearchTagListAdapter.notifyDataSetChanged();
     }
 
     private void updateOrderKeyData(String orderKey, String orderType) {
-        page = 1;
-        rows = 10;
-        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, "", aid, orderKey, orderType, page, rows);
+        this.orderType = orderType;
+        this.orderKey = orderKey;
+        refresh.autoRefresh();
     }
 
 
@@ -287,5 +310,20 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         showEmpty();
     }
 
+    @Override
+    public void onLoadMore(RefreshLayout refreshLayout) {
+        page++;
+        rows = 10;
+        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
+        refreshLayout.finishLoadMore();
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        page = 1;
+        rows = 10;
+        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
+        refreshLayout.finishRefresh();
+    }
 }
 

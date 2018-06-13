@@ -10,6 +10,7 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.presener.GetCommentStatusPresenter;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
@@ -18,9 +19,9 @@ import com.whmnrc.mylibrary.utils.GlideUtils;
  * @data 2018/5/18.
  */
 
-public class OrderCommentGoodListAdapter extends CommonAdapter {
+public class OrderCommentGoodListAdapter extends CommonAdapter implements GetCommentStatusPresenter.GetCommentStatusListener {
 
-
+    GetCommentStatusPresenter mGetCommentStatusPresenter = new GetCommentStatusPresenter(this);
     private boolean mIsOrderDetials;
 
     public OrderCommentGoodListAdapter(Context context, int layoutId, boolean isOrderDetials) {
@@ -34,11 +35,13 @@ public class OrderCommentGoodListAdapter extends CommonAdapter {
         String prductName;
         double money;
         String imgs;
+        String orderId;
         if (!mIsOrderDetials) {
             OrderListBean.ResultdataBean.ItemInfoBean orderBean = (OrderListBean.ResultdataBean.ItemInfoBean) beans;
             prductName = orderBean.getProductName();
             money = orderBean.getPrice();
             imgs = orderBean.getImage();
+
 
         } else {
             OrderDeitalsBean.ResultdataBean.OrderItemInfoBean orderBean = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) beans;
@@ -51,11 +54,14 @@ public class OrderCommentGoodListAdapter extends CommonAdapter {
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(money));
         GlideUtils.LoadImage(mContext, imgs, (ImageView) holder.getView(R.id.iv_goods_img));
 
-
+//        mGetCommentStatusPresenter.getGetCommentStatus(beans);
 //        holder.setText(R.id.tv_goods_spec, beans.get());
         TextView tvGoodEvaluate = holder.getView(R.id.tv_good_evaluate);
 
     }
 
+    @Override
+    public void getState() {
 
+    }
 }

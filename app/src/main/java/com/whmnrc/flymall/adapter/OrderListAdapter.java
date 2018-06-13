@@ -43,6 +43,8 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
         holder.setText(R.id.tv_total_price, String.format("Total:%s", PlaceholderUtils.pricePlaceholder(Double.parseDouble(resultdataBean.getOrderTotalAmount()))));
         switch (resultdataBean.getOrderStatus()) {
             case 1:
+                holder.setVisible(R.id.tv_cancel, true);
+                holder.setVisible(R.id.tv_order_pay, true);
                 holder.setText(R.id.tv_order_state, "UNPAID");
                 holder.setText(R.id.tv_cancel, "Cancel");
                 holder.setText(R.id.tv_order_pay, "Pay now");
@@ -55,22 +57,11 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                     }
                 });
                 break;
-//            case 1:
-//                holder.setText(R.id.tv_order_state, "PAID");
-//                holder.setVisible(R.id.tv_cancel, false);
-//                holder.setVisible(R.id.tv_order_pay, false);
-//                break;
             case 2:
                 holder.setText(R.id.tv_order_state, "UNSHIPPED");
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, false);
                 break;
-//            case 3:
-//                holder.setText(R.id.tv_order_state, "BEEVALUATED");
-//                holder.setText(R.id.tv_order_pay, "evaluated");
-//                holder.setVisible(R.id.tv_cancel, false);
-//
-//                break;
             case 4:
                 holder.setText(R.id.tv_order_state, "CANCELLED");
                 holder.setVisible(R.id.tv_cancel, false);
@@ -79,7 +70,8 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
             case 5:
                 holder.setText(R.id.tv_order_state, "EVALUATED");
                 holder.setVisible(R.id.tv_cancel, false);
-                holder.setVisible(R.id.tv_order_pay, false);
+                holder.setVisible(R.id.tv_order_pay, true);
+                holder.setText(R.id.tv_order_pay, "evaluated");
                 break;
             case 3:
                 holder.setText(R.id.tv_order_state, "RECEIPT");

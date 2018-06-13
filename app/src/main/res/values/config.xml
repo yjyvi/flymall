@@ -21,6 +21,11 @@
         UserInfo_ID   用户ID-->
     <string name="GetUserInfo">/api/ApiLogin/SelectUserInformation</string>
 
+    <!--注册协议-->
+    <string name="GetAgreement">/api/ApiLogin/GetAgreement</string>
+    <!--关于我们-->
+    <string name="GetAboutUs">/api/ApiLogin/GetAboutUs</string>
+
 
     <!--第三方登录-->
     <string name="ThirdPartyLogin">/api/User/ThirdPartyLogin</string>
@@ -107,10 +112,39 @@
     <string name="SubmitOrderByProductId">/api/ImmediatelyBuy/SubmitOrderByProductId</string>
 
 
-    <!--商品评论-->
-    <string name="GetEvaluateItem">/api/Order/GetEvaluateItem</string>
-    <!--评论商品-->
-    <string name="AddEvaluateItem">/api/Order/AddEvaluateItem</string>
+    <!--接口名称：分页查看商品评论列表
+        说明：分页查看商品评论列表
+        地址：/Comment/GetComments
+        请求方法：get
+        参数：
+        long productId,
+        int pageNo,
+        int pageSize=10-->
+    <string name="GetEvaluateItem">/api/Comment/GetComments</string>
+
+    <!--接口名称：写评论
+        说明：订单页提交写评论
+        地址：/Comment/AddComments
+        请求方法：post
+        参数：
+        long ProductId { get; set; } //当前商品id
+        long SubOrderId { get; set; } // 当前订单项id
+        long UserId { get; set; } //用户id
+        string Images { get; set; } // 图片集合，多张图片","分割
+        string VideoUrl { get; set; } // 商品路径
+        string CommentContent { get; set; } //评论文字内容
+        string ThumImg { get; set; } // 缩略图路径
+         int Stars { get; set; }  // 评论星级-->
+    <string name="AddEvaluateItem">/api/Comment/AddComments</string>
+
+    <!--接口名称：查询订单项是否被评论
+        说明：订单页查询订单项是否被评论
+        地址：/Comment/GetStatus
+        请求方法：get
+        参数：
+        long subOrderId
+        long  userId-->
+    <string name="GetCommentStatus">/api/Comment/GetStatus</string>
 
     <!--接口名称：是否加入收藏
         说明：用户是否收藏某商品
@@ -273,14 +307,17 @@
         请求方法：get-->
     <string name="UpdateCartItem">/api//ShopCart/UpdateCartItem</string>
 
-    <!--&lt;!&ndash;接口名称： 购物车提交-->
-        <!--说明： 购物车提交-->
-        <!--地址：/ShopCart/SubmitByCart/?cartItemIds=购物车itemid组合&&userId=当前用户id-->
-        <!--请求方法：get&ndash;&gt;-->
-    <!--<string name="SubmitByCart">/api/ShopCart/SubmitByCart</string>-->
+    <!--接口名称：支付成功回调函数
+        说明：支付成功回调函数
+        地址：/PaySuccess/Notify
+        请求方法：post
+        参数：
+        int PayType//支付方式：1.tt/2.paypal/3.托付
+        string Token// 当前用户用户名
+        long OrderId// 订单编号-->
+    <string name="Pay">/api/PaySuccess/Notify</string>
 
 
-    <string name="Pay">/api/BuyCar/GetAllCar</string>
 
 
 </resources>

@@ -83,7 +83,7 @@ public class PayUtils {
         params.put("PayType", payType);
         params.put("OrderPayNo", orderId);
         params.put("PayPurpose", payPurpose);
-        OKHttpManager.postString(url, JSON.toJSONString(params), objectCallback);
+//        OKHttpManager.postString(url, JSON.toJSONString(params), objectCallback);
     }
 
 

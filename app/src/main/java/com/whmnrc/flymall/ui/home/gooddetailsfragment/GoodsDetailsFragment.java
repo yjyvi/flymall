@@ -29,7 +29,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
     @BindView(R.id.web)
     WebView web;
     private GoodsCommentAdapter2 mGoodsCommentAdapter;
-    public GoodsDetailsBean.ResultdataBean mEvaluateBean;
+    public GoodsDetailsBean.ResultdataBean.ProductCommentInfo mEvaluateBean;
 
     @Override
     protected int contentViewLayoutID() {
@@ -41,14 +41,14 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
 
 
         String evaluate = getArguments().getString("evaluate");
-        mEvaluateBean = JSON.parseObject(evaluate, GoodsDetailsBean.ResultdataBean.class);
+        mEvaluateBean = JSON.parseObject(evaluate, GoodsDetailsBean.ResultdataBean.ProductCommentInfo.class);
 
         String goodsContent = getArguments().getString("goodsContent");
 
         mRvGoodsComment.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGoodsCommentAdapter = new GoodsCommentAdapter2(getActivity(), R.layout.item_goods_comment);
         mRvGoodsComment.setAdapter(mGoodsCommentAdapter);
-//        mGoodsCommentAdapter.setDataArray(mEvaluateBean.getEvaluate());
+        mGoodsCommentAdapter.setDataArray(mEvaluateBean.getModels());
         initWeb(goodsContent);
 
     }

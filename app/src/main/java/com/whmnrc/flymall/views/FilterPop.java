@@ -9,20 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.SearchResultBean;
-import com.whmnrc.flymall.utils.ToastUtils;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 /**
@@ -63,7 +60,7 @@ public class FilterPop extends PopupWindow {
     // 存放popupwindow的布局；
     private View conentView;
 
-    public void imPopWindow(final Activity context,List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList) {
+    public void imPopWindow(final Activity context, List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -75,7 +72,7 @@ public class FilterPop extends PopupWindow {
         //动态适配分类
         for (int i = 0; i < mCategoryList.size(); i++) {
             final SearchResultBean.ResultdataBean.CategoryBean categoryBean = mCategoryList.get(i);
-            View view  = inflater.inflate(R.layout.tab_flow_item,null);
+            View view = inflater.inflate(R.layout.tab_flow_item, null);
             TagFlowLayout tagFlowLayout = view.findViewById(R.id.tag_flow_layout);
             TextView tvTitleFlow = view.findViewById(R.id.tv_flow_title);
             tvTitleFlow.setText(categoryBean.getName());
@@ -113,7 +110,7 @@ public class FilterPop extends PopupWindow {
                         List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid = new ArrayList<>();
                         //去Null值
                         for (int i = 0; i < num.length; i++) {
-                            if (num[i] != null){
+                            if (num[i] != null) {
                                 noNullCid.add(num[i]);
                             }
 
@@ -125,7 +122,11 @@ public class FilterPop extends PopupWindow {
                                 cid += noNullCid.get(i).getId() + "@";
                             }
                         }
-                        mOnConfirmClickListener.onConfirm(cid,noNullCid);
+
+                        if (noNullCid.size() >= 2) {
+                            cid = cid.substring(0, cid.length() - 1);
+                        }
+                        mOnConfirmClickListener.onConfirm(cid, noNullCid);
                     }
                 }
             }
@@ -176,7 +177,7 @@ public class FilterPop extends PopupWindow {
         }
     }
 
-    public interface OnConfirmClickListener{
-        void onConfirm(String cid,List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid);
+    public interface OnConfirmClickListener {
+        void onConfirm(String cid, List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid);
     }
 }

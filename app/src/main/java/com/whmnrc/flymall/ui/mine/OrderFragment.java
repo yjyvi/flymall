@@ -202,7 +202,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
             mRvGoodsList.setVisibility(View.VISIBLE);
             mLlEmptyGoods.setVisibility(View.VISIBLE);
             mGetLikeGoodsPresenter.getLikeGoods();
-            EmptyListUtils.loadEmpty(true,"No order", R.mipmap.no_order, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No order", R.mipmap.no_order, mVsEmpty);
         } else {
             mRvGoodsList.setVisibility(View.GONE);
             mLlEmptyGoods.setVisibility(View.GONE);
@@ -286,12 +286,12 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     @Override
     public void cancelSuccess() {
-
+        mRefresh.autoRefresh();
     }
 
     @Override
     public void receiptSuccess() {
-
+        mRefresh.autoRefresh();
     }
 
 

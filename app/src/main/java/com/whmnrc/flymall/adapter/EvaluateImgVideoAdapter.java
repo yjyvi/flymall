@@ -21,8 +21,13 @@ public class EvaluateImgVideoAdapter extends CommonAdapter<MediaBean> {
 
     @Override
     public void convert(ViewHolder holder, MediaBean evaluateItem, int position) {
-        holder.setVisible(R.id.iv_cancel,false);
-        GlideUtils.LoadImage(mContext,evaluateItem.getNetimgPath(), (ImageView) holder.getView(R.id.iv_img));
+        ImageView imageview = (ImageView) holder.getView(R.id.iv_img);
+        if (evaluateItem.getType() == 1) {
+            holder.setVisible(R.id.iv_video_img, true);
+        } else {
+            holder.setVisible(R.id.iv_video_img, false);
+        }
+        GlideUtils.LoadImage(mContext, evaluateItem.getNetimgPath(), imageview);
     }
 
 

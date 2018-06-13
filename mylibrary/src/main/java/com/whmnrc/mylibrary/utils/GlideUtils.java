@@ -41,7 +41,7 @@ public class GlideUtils {
         }
 
         if (!path.startsWith("http")) {
-            path = "https://www.bc100w.com" + path;
+            path = "http://flymall.store" + path;
         }
 
         RequestOptions requestOptions = new RequestOptions();
@@ -124,6 +124,15 @@ public class GlideUtils {
      */
     public static void LoadCircleImage(Context mContext, String path,
                                        ImageView imageview) {
+
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+
+        if (!path.startsWith("http")) {
+            path = "http://flymall.store" + path;
+        }
+
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.transform(new GlideCircleTransform(mContext));
         Glide.with(mContext).load(path).apply(requestOptions).into(imageview);

@@ -12,14 +12,14 @@ public class GoodsEvaluateListBean {
     /**
      * type : 1
      * code : 0
-     * message : 成功。
-     * resultdata : [{"Evaluate_ID":"9560954E-F44E-4DE3-8AA7-9326097A5745","Evaluate_Star":3,"Evaluate_Content":"这是评论内容","Evaluate_Img":"","Order_ID":"","Goods_ID":"bd69ae37-02fe-41bc-bb85-337ec579e369","UserInfo_ID":"0001b39e-3d49-4e43-8f6e-9ec433f116a4","Dy_EvaluateItem":[]},{"Evaluate_ID":"70AB8CCB-5789-4D68-B327-44EA06CF25DA","Evaluate_Star":2,"Evaluate_Content":"这是评论内容","Evaluate_Img":"","Order_ID":"","Goods_ID":"bd69ae37-02fe-41bc-bb85-337ec579e369","UserInfo_ID":"0001b39e-3d49-4e43-8f6e-9ec433f116a4","Dy_EvaluateItem":[]}]
+     * message : 请求成功
+     * resultdata : {"Models":[{"Id":15,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:36","Stars":5},{"Id":14,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:35","Stars":5},{"Id":13,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:33","Stars":5},{"Id":12,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:31","Stars":5},{"Id":11,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:30","Stars":5},{"Id":10,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:28","Stars":5},{"Id":9,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:26","Stars":5},{"Id":8,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:24","Stars":5},{"Id":7,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:23","Stars":5},{"Id":6,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:21","Stars":5}],"Total":15}
      */
 
     private int type;
     private int code;
     private String message;
-    private List<ResultdataBean> resultdata;
+    private ResultdataBean resultdata;
 
     public int getType() {
         return type;
@@ -45,180 +45,182 @@ public class GoodsEvaluateListBean {
         this.message = message;
     }
 
-    public List<ResultdataBean> getResultdata() {
+    public ResultdataBean getResultdata() {
         return resultdata;
     }
 
-    public void setResultdata(List<ResultdataBean> resultdata) {
+    public void setResultdata(ResultdataBean resultdata) {
         this.resultdata = resultdata;
     }
 
     public static class ResultdataBean {
         /**
-         * Evaluate_ID : 9560954E-F44E-4DE3-8AA7-9326097A5745
-         * Evaluate_Star : 3
-         * Evaluate_Content : 这是评论内容
-         * Evaluate_Img :
-         * Order_ID :
-         * Goods_ID : bd69ae37-02fe-41bc-bb85-337ec579e369
-         * UserInfo_ID : 0001b39e-3d49-4e43-8f6e-9ec433f116a4
-         * Dy_EvaluateItem : []
+         * Models : [{"Id":15,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:36","Stars":5},{"Id":14,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:35","Stars":5},{"Id":13,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:33","Stars":5},{"Id":12,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:31","Stars":5},{"Id":11,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:30","Stars":5},{"Id":10,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:28","Stars":5},{"Id":9,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:26","Stars":5},{"Id":8,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:24","Stars":5},{"Id":7,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:23","Stars":5},{"Id":6,"ProductId":1452,"Nick":"专业电商五十年","Photo":"/Storage/Small/headPhoto/13554151871/20171208142511397.jpg","UserId":2034,"Images":"/Storage/Plat/Brand/logo_106.jpg","VideoUrl":"/Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4","CommentContent":null,"ThumImg":"/Storage/Plat/Brand/logo_106.jpg","Color":"","Size":"","Version":"","CreateDate":"2018-06-13 11:14:21","Stars":5}]
+         * Total : 15
          */
 
-        private String Evaluate_ID;
-        private int Evaluate_Star;
-        private String Evaluate_Content;
-        private String Evaluate_Img;
-        private String Order_ID;
-        private String Goods_ID;
-        private String UserInfo_ID;
-        private String Evaluate_Time;
-        private String UserInfo_NickName;
-        private String GoodsPrice_AttrName;
-        private List<EvaluateItem> Dy_EvaluateItem;
+        private int Total;
+        private List<ModelsBean> Models;
 
-        public String getEvaluate_Time() {
-            return Evaluate_Time;
+        public int getTotal() {
+            return Total;
         }
 
-        public void setEvaluate_Time(String evaluate_Time) {
-            Evaluate_Time = evaluate_Time;
+        public void setTotal(int Total) {
+            this.Total = Total;
         }
 
-        public String getUserInfo_NickName() {
-            return UserInfo_NickName;
+        public List<ModelsBean> getModels() {
+            return Models;
         }
 
-        public void setUserInfo_NickName(String userInfo_NickName) {
-            UserInfo_NickName = userInfo_NickName;
+        public void setModels(List<ModelsBean> Models) {
+            this.Models = Models;
         }
 
-        public String getGoodsPrice_AttrName() {
-            return GoodsPrice_AttrName;
-        }
-
-        public void setGoodsPrice_AttrName(String goodsPrice_AttrName) {
-            GoodsPrice_AttrName = goodsPrice_AttrName;
-        }
-
-        public String getEvaluate_ID() {
-            return Evaluate_ID;
-        }
-
-        public void setEvaluate_ID(String Evaluate_ID) {
-            this.Evaluate_ID = Evaluate_ID;
-        }
-
-        public int getEvaluate_Star() {
-            return Evaluate_Star;
-        }
-
-        public void setEvaluate_Star(int Evaluate_Star) {
-            this.Evaluate_Star = Evaluate_Star;
-        }
-
-        public String getEvaluate_Content() {
-            return Evaluate_Content;
-        }
-
-        public void setEvaluate_Content(String Evaluate_Content) {
-            this.Evaluate_Content = Evaluate_Content;
-        }
-
-        public String getEvaluate_Img() {
-            return Evaluate_Img;
-        }
-
-        public void setEvaluate_Img(String Evaluate_Img) {
-            this.Evaluate_Img = Evaluate_Img;
-        }
-
-        public String getOrder_ID() {
-            return Order_ID;
-        }
-
-        public void setOrder_ID(String Order_ID) {
-            this.Order_ID = Order_ID;
-        }
-
-        public String getGoods_ID() {
-            return Goods_ID;
-        }
-
-        public void setGoods_ID(String Goods_ID) {
-            this.Goods_ID = Goods_ID;
-        }
-
-        public String getUserInfo_ID() {
-            return UserInfo_ID;
-        }
-
-        public void setUserInfo_ID(String UserInfo_ID) {
-            this.UserInfo_ID = UserInfo_ID;
-        }
-
-        public List<EvaluateItem> getDy_EvaluateItem() {
-            return Dy_EvaluateItem;
-        }
-
-        public void setDy_EvaluateItem(List<EvaluateItem> Dy_EvaluateItem) {
-            this.Dy_EvaluateItem = Dy_EvaluateItem;
-        }
-
-        public class EvaluateItem{
-
+        public static class ModelsBean {
             /**
-             * EvaluateItem_ID : 09AF918D-9167-474B-AEF0-76096D5437AD
-             * Evaluate_ID : 48F50AE4-BE50-427E-A55A-1AD62DA60D6C
-             * EvaluateItem_FileType : 1
-             * EvaluateItem_Thumbnail : http://ppt.downhot.com/d/file/p/2014/07/24/afd8b2135086cc9f2787d114bd73005a.png
-             * EvaluateItem_FileUrl : http://ppt.downhot.com/d/file/p/2014/07/24/afd8b2135086cc9f2787d114bd73005a.png
+             * Id : 15
+             * ProductId : 1452
+             * Nick : 专业电商五十年
+             * Photo : /Storage/Small/headPhoto/13554151871/20171208142511397.jpg
+             * UserId : 2034
+             * Images : /Storage/Plat/Brand/logo_106.jpg
+             * VideoUrl : /Storage/Video/Videos/09aade79-3140-4de7-b918-004c071aa52e.mp4
+             * CommentContent : null
+             * ThumImg : /Storage/Plat/Brand/logo_106.jpg
+             * Color :
+             * Size :
+             * Version :
+             * CreateDate : 2018-06-13 11:14:36
+             * Stars : 5
              */
 
-            private String EvaluateItem_ID;
-            private String Evaluate_ID;
-            private int EvaluateItem_FileType;
-            private String EvaluateItem_Thumbnail;
-            private String EvaluateItem_FileUrl;
+            private int Id;
+            private int ProductId;
+            private String Nick;
+            private String Photo;
+            private int UserId;
+            private String Images;
+            private String VideoUrl;
+            private String CommentContent;
+            private String ThumImg;
+            private String Color;
+            private String Size;
+            private String Version;
+            private String CreateDate;
+            private int Stars;
 
-            public String getEvaluateItem_ID() {
-                return EvaluateItem_ID;
+            public int getId() {
+                return Id;
             }
 
-            public void setEvaluateItem_ID(String EvaluateItem_ID) {
-                this.EvaluateItem_ID = EvaluateItem_ID;
+            public void setId(int Id) {
+                this.Id = Id;
             }
 
-            public String getEvaluate_ID() {
-                return Evaluate_ID;
+            public int getProductId() {
+                return ProductId;
             }
 
-            public void setEvaluate_ID(String Evaluate_ID) {
-                this.Evaluate_ID = Evaluate_ID;
+            public void setProductId(int ProductId) {
+                this.ProductId = ProductId;
             }
 
-            public int getEvaluateItem_FileType() {
-                return EvaluateItem_FileType;
+            public String getNick() {
+                return Nick;
             }
 
-            public void setEvaluateItem_FileType(int EvaluateItem_FileType) {
-                this.EvaluateItem_FileType = EvaluateItem_FileType;
+            public void setNick(String Nick) {
+                this.Nick = Nick;
             }
 
-            public String getEvaluateItem_Thumbnail() {
-                return EvaluateItem_Thumbnail;
+            public String getPhoto() {
+                return Photo;
             }
 
-            public void setEvaluateItem_Thumbnail(String EvaluateItem_Thumbnail) {
-                this.EvaluateItem_Thumbnail = EvaluateItem_Thumbnail;
+            public void setPhoto(String Photo) {
+                this.Photo = Photo;
             }
 
-            public String getEvaluateItem_FileUrl() {
-                return EvaluateItem_FileUrl;
+            public int getUserId() {
+                return UserId;
             }
 
-            public void setEvaluateItem_FileUrl(String EvaluateItem_FileUrl) {
-                this.EvaluateItem_FileUrl = EvaluateItem_FileUrl;
+            public void setUserId(int UserId) {
+                this.UserId = UserId;
+            }
+
+            public String getImages() {
+                return Images;
+            }
+
+            public void setImages(String Images) {
+                this.Images = Images;
+            }
+
+            public String getVideoUrl() {
+                return VideoUrl;
+            }
+
+            public void setVideoUrl(String VideoUrl) {
+                this.VideoUrl = VideoUrl;
+            }
+
+            public String  getCommentContent() {
+                return CommentContent;
+            }
+
+            public void setCommentContent(String CommentContent) {
+                this.CommentContent = CommentContent;
+            }
+
+            public String getThumImg() {
+                return ThumImg;
+            }
+
+            public void setThumImg(String ThumImg) {
+                this.ThumImg = ThumImg;
+            }
+
+            public String getColor() {
+                return Color;
+            }
+
+            public void setColor(String Color) {
+                this.Color = Color;
+            }
+
+            public String getSize() {
+                return Size;
+            }
+
+            public void setSize(String Size) {
+                this.Size = Size;
+            }
+
+            public String getVersion() {
+                return Version;
+            }
+
+            public void setVersion(String Version) {
+                this.Version = Version;
+            }
+
+            public String getCreateDate() {
+                return CreateDate;
+            }
+
+            public void setCreateDate(String CreateDate) {
+                this.CreateDate = CreateDate;
+            }
+
+            public int getStars() {
+                return Stars;
+            }
+
+            public void setStars(int Stars) {
+                this.Stars = Stars;
             }
         }
     }

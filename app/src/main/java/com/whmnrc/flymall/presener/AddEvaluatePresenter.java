@@ -1,5 +1,6 @@
 package com.whmnrc.flymall.presener;
 
+import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 /**
  * @author yjyvi
  * @data 2018/5/30.
+ * 评价商品
  */
 
 public class AddEvaluatePresenter extends PresenterBase {
@@ -24,19 +26,17 @@ public class AddEvaluatePresenter extends PresenterBase {
     }
 
 
-    public void addEvaluate(int star, String content, String imgs, String voides, String orderId, String goodsId) {
-        HashMap<String, String> params = new HashMap<>(7);
-        params.put("UserInfo_ID", UserManager.getUser().getId());
-        params.put("Evaluate_Star", String.valueOf(star));
-        params.put("Evaluate_Content", content);
-
-        params.put("Imgs", imgs);
-        params.put("Flashs", voides);
-
-        params.put("Order_ID", orderId);
-        params.put("Goods_ID", goodsId);
-
-        OKHttpManager.get(getUrl(R.string.AddEvaluateItem), params, new CommonCallBack<BaseBean>() {
+    public void addEvaluate(int star, String content, String imgs, String voides, String videoThum, String orderId, String goodsId) {
+        HashMap<String, String> params = new HashMap<>(8);
+        params.put("ProductId", goodsId);
+        params.put("SubOrderId", orderId);
+        params.put("UserId", UserManager.getUser().getId());
+        params.put("Images", imgs);
+        params.put("VideoUrl", voides);
+        params.put("CommentContent", content);
+        params.put("ThumImg", videoThum);
+        params.put("Stars", String.valueOf(star));
+        OKHttpManager.postString(getUrl(R.string.AddEvaluateItem), JSON.toJSONString(params), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {

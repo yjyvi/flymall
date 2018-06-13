@@ -42,9 +42,11 @@ public class MyWebView extends WebView {
                 //ScrollView来执行Scroll动作。其他情况Scroll动作都由WebView
                 //来执行。
                 boolean scroll = true;
-                if (isTop()) {     //是否滑到顶部
+                //是否滑到顶部
+                if (isTop()) {
                     scroll = false;
-                } else if (isBottom()) {    //是否滑到底部
+                    //是否滑到底部
+                } else if (isBottom()) {
                     scroll = false;
                 }
                 getParent().getParent().requestDisallowInterceptTouchEvent(scroll);
@@ -52,6 +54,8 @@ public class MyWebView extends WebView {
                 break;
             case MotionEvent.ACTION_UP:
                 getParent().getParent().requestDisallowInterceptTouchEvent(false);
+            default:
+                break;
         }
 
         return super.onTouchEvent(event);

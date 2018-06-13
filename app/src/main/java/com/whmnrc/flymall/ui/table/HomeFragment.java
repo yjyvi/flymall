@@ -206,14 +206,11 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mRvSaleList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGoodListAdapter = new HomeHeaderGoodsListAdapter(mRvSaleList.getContext(), R.layout.item_home_good_list_header);
         mRvSaleList.setAdapter(mGoodListAdapter);
-
-
     }
 
     private void initData() {
         mHomePageBannerPresenter = new HomePageDataPresenter(this);
         mHomePageBannerPresenter.getHomePageBanner();
-
     }
 
     /**
@@ -251,8 +248,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
     }
 
     private void createView(View childAt, int width, int resid) {
-
-
         childAt.setBackgroundResource(resid);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 width, getResources().getDimensionPixelOffset(R.dimen.dm_4)

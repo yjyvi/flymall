@@ -105,4 +105,5 @@
     <dimen name="dm_376">376dp</dimen>
     <dimen name="dm_290">290dp</dimen>
     <dimen name="dm_300">300dp</dimen>
+    <dimen name="dm_105">105dp</dimen>
 </resources>

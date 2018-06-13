@@ -15,8 +15,6 @@ import com.whmnrc.flymall.presener.EvaluateListPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 
@@ -65,7 +63,7 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
         mRvEvaluationList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mGoodsCommentAdapter = new GoodsCommentAdapter(getActivity(), R.layout.item_goods_comment);
         mGoodsId = getArguments().getString("goodsId");
-
+        mEvaluateListPresenter.getEvaluateList(mGoodsId, page, rows, mEvaluationType);
         mRvEvaluationList.setAdapter(mGoodsCommentAdapter);
         selectedView(mTvTypeAll);
     }
@@ -79,9 +77,11 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
     }
 
     @Override
-    public void getEvaluateListSuccess(List<GoodsEvaluateListBean.ResultdataBean> resultdataBean) {
-        mGoodsCommentAdapter.setDataArray(resultdataBean);
-        mGoodsCommentAdapter.notifyDataSetChanged();
+    public void getEvaluateListSuccess(GoodsEvaluateListBean.ResultdataBean resultdataBean) {
+        if (resultdataBean != null) {
+            mGoodsCommentAdapter.setDataArray(resultdataBean.getModels());
+            mGoodsCommentAdapter.notifyDataSetChanged();
+        }
         showEmpty();
     }
 

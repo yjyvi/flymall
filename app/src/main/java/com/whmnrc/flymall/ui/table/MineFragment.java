@@ -4,7 +4,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.ImageView;
@@ -32,6 +31,7 @@ import com.whmnrc.flymall.ui.mine.SettingActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.UIUtils;
 import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -67,6 +67,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
 
     private LikeGoodListAdapter mAdapter;
     public GetLikeGoodsPresenter mGetLikeGoodsPresenter;
+    private LoadingDialog mLoadingDialog;
 
     /**
      * 初始化实例
@@ -86,7 +87,8 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
     @Override
     protected void initViewData() {
         setTitle("Personal center");
-
+        mLoadingDialog = new LoadingDialog(getActivity());
+        mLoadingDialog.show();
         mGetLikeGoodsPresenter = new GetLikeGoodsPresenter(this);
         mGetLikeGoodsPresenter.getLikeGoods();
 
@@ -119,11 +121,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
 
 
         if (UserManager.isLogin()) {
-            String userinfoNickname = UserManager.getUser().getNick();
-            if (TextUtils.isEmpty(userinfoNickname)) {
-                userinfoNickname = UserManager.getUser().getCurrencyName();
-            }
-            mTvUserName.setText(userinfoNickname);
+            mTvUserName.setText(UserManager.getUser().getNick());
             mTvCoupons.setText(String.format("%s Coupons", UserManager.getUser().getCouponNum()));
             UIUtils.loadCircleImg(mIvUserImg, UserManager.getUser().getPhoto());
         }
@@ -220,6 +218,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
         mAdapter.setDataArray(resultdataBean);
         mAdapter.notifyDataSetChanged();
         showEmpty();
+        mLoadingDialog.dismiss();
     }
 
     @Override

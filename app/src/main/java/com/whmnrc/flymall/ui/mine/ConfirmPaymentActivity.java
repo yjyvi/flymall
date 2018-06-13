@@ -58,6 +58,8 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     ImageView mIvPayZfb;
     @BindView(R.id.iv_pay_wx)
     ImageView mIvPayWx;
+    @BindView(R.id.tv_pay)
+    TextView mTvPay;
     private static final int REQUEST_CODE = 909;
     private int payType = PAY_METHOD_PP;
     public PayUtils mPayUtils;
@@ -82,6 +84,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
 
         mTvOrderNo.setText(String.format("Order number：%s", mOrderId));
         mTvTotalPrice.setText(String.format("Total merchandise：%s", mTotalPrice));
+        mTvPay.setText(String.format("Pay Pal %s ", mTotalPrice));
 
         if (confirmAddressBean != null) {
             mTvAddressDesc.setText(confirmAddressBean.getAddress_Address2());
@@ -133,17 +136,21 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         switch (view.getId()) {
             case R.id.ll_pay_pp:
                 selectedView(mIvPayPp);
+                mTvPay.setText(String.format("Pay Pal %s ", mTotalPrice));
                 payType = PAY_METHOD_PP;
                 break;
             case R.id.ll_pay_tt:
                 payType = PAY_METHOD_TT;
+                mTvPay.setText(String.format("T/T Reimbursement Clause %s ", mTotalPrice));
                 selectedView(mIvPayTt);
                 break;
             case R.id.ll_pay_zfb:
+                mTvPay.setText(String.format("ALIPAY %s ", mTotalPrice));
                 payType = PAY_METHOD_ZFB;
                 selectedView(mIvPayZfb);
                 break;
             case R.id.ll_pay_wx:
+                mTvPay.setText(String.format("WeChat Pay %s ", mTotalPrice));
                 payType = PAY_METHOD_WX;
                 selectedView(mIvPayWx);
                 break;

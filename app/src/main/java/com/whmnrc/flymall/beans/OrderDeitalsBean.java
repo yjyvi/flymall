@@ -57,7 +57,10 @@ public class OrderDeitalsBean {
         this.resultdata = resultdata;
     }
 
-    public static class ResultdataBean {
+    public static class ResultdataBean implements Parcelable {
+        public ResultdataBean() {
+        }
+
         /**
          * OrderItemInfo : [{"Color":"??","CommisRate":0.02,"CostPrice":149,"DiscountAmount":0,"EnabledRefundAmount":null,"Id":3562,"IsLimitBuy":false,"OrderId":2018061155998180,"ProductCode":null,"ProductId":1512,"ProductName":"??????????????????????????????","Quantity":3,"RealTotalPrice":3582,"RefundPrice":0,"ReturnQuantity":0,"SalePrice":1194,"ShopId":266,"Size":"","SKU":"FG000023","SkuId":"1512_679_0_0","ThumbnailsUrl":"/Storage/Shop/266/Products/1512/1_100.png","Version":""}]
          * ActiveType : 0
@@ -149,6 +152,47 @@ public class OrderDeitalsBean {
         private String UserName;
         private Object UserRemark;
         private List<OrderItemInfoBean> OrderItemInfo;
+
+        protected ResultdataBean(Parcel in) {
+            ActiveType = in.readInt();
+            Address = in.readString();
+            CellPhone = in.readString();
+            CommisTotalAmount = in.readInt();
+            DiscountAmount = in.readInt();
+            Freight = in.readInt();
+            Id = in.readLong();
+            IntegralDiscount = in.readInt();
+            InvoiceType = in.readInt();
+            IsPrinted = in.readByte() != 0;
+            OrderDate = in.readString();
+            OrderStatus = in.readInt();
+            Platform = in.readInt();
+            ProductTotalAmount = in.readDouble();
+            RefundCommisAmount = in.readInt();
+            RefundTotalAmount = in.readInt();
+            RegionFullName = in.readString();
+            RegionId = in.readInt();
+            ShipTo = in.readString();
+            ShopId = in.readInt();
+            ShopName = in.readString();
+            Tax = in.readInt();
+            TopRegionId = in.readInt();
+            UserId = in.readInt();
+            UserName = in.readString();
+            OrderItemInfo = in.createTypedArrayList(OrderItemInfoBean.CREATOR);
+        }
+
+        public static final Creator<ResultdataBean> CREATOR = new Creator<ResultdataBean>() {
+            @Override
+            public ResultdataBean createFromParcel(Parcel in) {
+                return new ResultdataBean(in);
+            }
+
+            @Override
+            public ResultdataBean[] newArray(int size) {
+                return new ResultdataBean[size];
+            }
+        };
 
         public int getActiveType() {
             return ActiveType;
@@ -502,7 +546,46 @@ public class OrderDeitalsBean {
             this.OrderItemInfo = OrderItemInfo;
         }
 
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeInt(ActiveType);
+            dest.writeString(Address);
+            dest.writeString(CellPhone);
+            dest.writeInt(CommisTotalAmount);
+            dest.writeInt(DiscountAmount);
+            dest.writeInt(Freight);
+            dest.writeLong(Id);
+            dest.writeInt(IntegralDiscount);
+            dest.writeInt(InvoiceType);
+            dest.writeByte((byte) (IsPrinted ? 1 : 0));
+            dest.writeString(OrderDate);
+            dest.writeInt(OrderStatus);
+            dest.writeInt(Platform);
+            dest.writeDouble(ProductTotalAmount);
+            dest.writeInt(RefundCommisAmount);
+            dest.writeInt(RefundTotalAmount);
+            dest.writeString(RegionFullName);
+            dest.writeInt(RegionId);
+            dest.writeString(ShipTo);
+            dest.writeInt(ShopId);
+            dest.writeString(ShopName);
+            dest.writeInt(Tax);
+            dest.writeInt(TopRegionId);
+            dest.writeInt(UserId);
+            dest.writeString(UserName);
+            dest.writeTypedList(OrderItemInfo);
+        }
+
         public static class OrderItemInfoBean implements Parcelable {
+
+            public OrderItemInfoBean() {
+            }
+
             /**
              * Color : ??
              * CommisRate : 0.02
@@ -550,6 +633,41 @@ public class OrderDeitalsBean {
             private String SkuId;
             private String ThumbnailsUrl;
             private String Version;
+
+            protected OrderItemInfoBean(Parcel in) {
+                Color = in.readString();
+                CommisRate = in.readDouble();
+                CostPrice = in.readInt();
+                DiscountAmount = in.readInt();
+                Id = in.readInt();
+                IsLimitBuy = in.readByte() != 0;
+                OrderId = in.readLong();
+                ProductId = in.readInt();
+                ProductName = in.readString();
+                Quantity = in.readInt();
+                RealTotalPrice = in.readInt();
+                RefundPrice = in.readInt();
+                ReturnQuantity = in.readInt();
+                SalePrice = in.readInt();
+                ShopId = in.readInt();
+                Size = in.readString();
+                SKU = in.readString();
+                SkuId = in.readString();
+                ThumbnailsUrl = in.readString();
+                Version = in.readString();
+            }
+
+            public static final Creator<OrderItemInfoBean> CREATOR = new Creator<OrderItemInfoBean>() {
+                @Override
+                public OrderItemInfoBean createFromParcel(Parcel in) {
+                    return new OrderItemInfoBean(in);
+                }
+
+                @Override
+                public OrderItemInfoBean[] newArray(int size) {
+                    return new OrderItemInfoBean[size];
+                }
+            };
 
             public String getColor() {
                 return Color;
@@ -734,7 +852,26 @@ public class OrderDeitalsBean {
 
             @Override
             public void writeToParcel(Parcel dest, int flags) {
-
+                dest.writeString(Color);
+                dest.writeDouble(CommisRate);
+                dest.writeInt(CostPrice);
+                dest.writeInt(DiscountAmount);
+                dest.writeInt(Id);
+                dest.writeByte((byte) (IsLimitBuy ? 1 : 0));
+                dest.writeLong(OrderId);
+                dest.writeInt(ProductId);
+                dest.writeString(ProductName);
+                dest.writeInt(Quantity);
+                dest.writeInt(RealTotalPrice);
+                dest.writeInt(RefundPrice);
+                dest.writeInt(ReturnQuantity);
+                dest.writeInt(SalePrice);
+                dest.writeInt(ShopId);
+                dest.writeString(Size);
+                dest.writeString(SKU);
+                dest.writeString(SkuId);
+                dest.writeString(ThumbnailsUrl);
+                dest.writeString(Version);
             }
         }
     }

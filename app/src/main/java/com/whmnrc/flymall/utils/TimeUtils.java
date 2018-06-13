@@ -110,6 +110,11 @@ public class TimeUtils {
             return;
         }
 
+        if (!time.contains("T")) {
+            textView.setText(time);
+            return;
+        }
+
         String[] split = time.split("T");
 
         String yymmdd = split[0];

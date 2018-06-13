@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm_9"
         android:layout_toRightOf="@id/iv_user_img"
-        android:text="Amazon Customer"
         android:textColor="@color/black"
         android:textSize="@dimen/dm_15"/>
 
@@ -36,7 +35,6 @@
         android:layout_below="@id/tv_user_name"
         android:layout_marginLeft="@dimen/dm_9"
         android:layout_toRightOf="@id/iv_user_img"
-        android:text="January 21, 2018"
         android:textColor="@color/normal_gray"
         android:textSize="@dimen/dm_12"/>
 
@@ -55,31 +53,37 @@
         app:starImageSize="@dimen/dm_20"/>
 
 
-    <TextView
-        android:id="@+id/tv_goods_spec"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_sp"
         android:layout_below="@id/iv_user_img"
-        android:layout_marginTop="@dimen/dm_7"
-        android:text="Chosen“S”“Black”"
-        android:textSize="@dimen/dm_12"/>
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dm_6"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_goods_comment_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_goods_spec"
-        android:layout_marginTop="@dimen/dm_15"
-        android:text="I like it except it is band too small but I called them and they are sending more links for the band"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dm_12"/>
+        <TextView
+            android:id="@+id/tv_goods_spec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dm_12"/>
+
+        <TextView
+            android:layout_marginTop="@dimen/dm_5"
+            android:id="@+id/tv_goods_comment_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dm_12"/>
+
+    </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="@dimen/dm_10"
         android:id="@+id/rv_goods_comment_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_goods_comment_content"
-        android:layout_marginTop="@dimen/dm_10"/>
+        android:layout_below="@id/ll_sp"/>
 
 
 </RelativeLayout>

@@ -3,6 +3,7 @@ package com.whmnrc.flymall.adapter;
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,40 +24,50 @@ import java.util.List;
  * @data 2018/5/19.
  */
 
-public class GoodsCommentAdapter extends CommonAdapter<GoodsEvaluateListBean.ResultdataBean> {
+public class GoodsCommentAdapter extends CommonAdapter<GoodsEvaluateListBean.ResultdataBean.ModelsBean> {
     public GoodsCommentAdapter(Context context, int layoutId) {
         super(context, layoutId);
     }
 
     @Override
-    public void convert(ViewHolder holder, GoodsEvaluateListBean.ResultdataBean bean, int position) {
+    public void convert(ViewHolder holder, GoodsEvaluateListBean.ResultdataBean.ModelsBean bean, int position) {
         holder.setIsRecyclable(false);
         RatingBarView view = holder.getView(R.id.rb_star);
         view.setClickable(false);
-        view.setStar(bean.getEvaluate_Star(), false);
-        GlideUtils.LoadCircleImage(mContext, bean.getEvaluate_Img(), (ImageView) holder.getView(R.id.iv_user_img));
-        holder.setText(R.id.tv_goods_comment_content, bean.getEvaluate_Content());
-        holder.setText(R.id.tv_user_name, bean.getUserInfo_NickName());
-        holder.setText(R.id.tv_goods_spec, bean.getGoodsPrice_AttrName());
-        holder.setText(R.id.tv_goods_comment_content, bean.getEvaluate_Content());
-        TimeUtils.setTime((TextView) holder.getView(R.id.tv_comment_time), bean.getEvaluate_Time());
-
+        view.setStar(bean.getStars(), false);
+        GlideUtils.LoadCircleImage(mContext, bean.getPhoto(), (ImageView) holder.getView(R.id.iv_user_img));
+        holder.setText(R.id.tv_goods_comment_content, bean.getCommentContent());
+        holder.setText(R.id.tv_user_name, bean.getNick());
+        holder.setText(R.id.tv_goods_spec, bean.getColor() + bean.getSize() + bean.getVersion());
+        TimeUtils.setTime((TextView) holder.getView(R.id.tv_comment_time), bean.getCreateDate());
 
 
         RecyclerView rvGoodsCommentImg = holder.getView(R.id.rv_goods_comment_img);
         rvGoodsCommentImg.setLayoutManager(new GridLayoutManager(mContext, 3));
 
-        EvaluateImgVideoAdapter evaluateImgVideoAdapter = new EvaluateImgVideoAdapter(mContext,R.layout.item_array_img);
+        EvaluateImgVideoAdapter evaluateImgVideoAdapter = new EvaluateImgVideoAdapter(mContext, R.layout.item_goods_comment_img);
 
         List<MediaBean> mediaBeanList = new ArrayList<>();
-        for (GoodsEvaluateListBean.ResultdataBean.EvaluateItem dyEvaluateItemBean : bean.getDy_EvaluateItem()) {
-            MediaBean mediaBean = new MediaBean();
-            mediaBean.setNetimgPath(dyEvaluateItemBean.getEvaluateItem_Thumbnail());
-            mediaBean.setNetVideoPath(dyEvaluateItemBean.getEvaluateItem_FileUrl());
-            mediaBean.setType(dyEvaluateItemBean.getEvaluateItem_FileType());
+        //视频
+        MediaBean mediaBean;
+        if (!TextUtils.isEmpty(bean.getVideoUrl())) {
+            mediaBean = new MediaBean();
+            mediaBean.setNetimgPath(bean.getThumImg());
+            mediaBean.setNetVideoPath(bean.getVideoUrl());
+            mediaBean.setType(1);
             mediaBeanList.add(mediaBean);
         }
 
+
+        //图片集合
+        String images = bean.getImages();
+        String[] split = images.split(",");
+        for (int i = 0; i < split.length; i++) {
+            mediaBean = new MediaBean();
+            mediaBean.setNetimgPath(split[i]);
+            mediaBean.setType(0);
+            mediaBeanList.add(mediaBean);
+        }
         evaluateImgVideoAdapter.setDataArray(mediaBeanList);
         rvGoodsCommentImg.setAdapter(evaluateImgVideoAdapter);
 

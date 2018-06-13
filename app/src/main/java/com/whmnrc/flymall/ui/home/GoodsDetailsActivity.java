@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.View;
@@ -125,6 +127,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         return R.layout.activity_goods_details;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initViewData() {
 
@@ -137,15 +140,10 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mGoodsIsCollectionPresenter = new GoodsIsCollectionPresenter(this);
         mAddShoppingCartPresenter = new AddShoppingCartPresenter(this);
         mGoodsId = getIntent().getStringExtra("goodsId");
-
+//        mGoodsId = "1452";
         mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
-
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
-
-
         mRbStar.setClickable(false);
-
-
     }
 
     private void initBanner(List<String> img) {
@@ -193,10 +191,10 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     }
 
 
-    private void initTab(String goodsContent, GoodsDetailsBean.ResultdataBean evaluate, String goodsId) {
+    private void initTab(String goodsContent, GoodsDetailsBean.ResultdataBean.ProductCommentInfo evaluate, String goodsId) {
         fragments.add(GoodsDetailsFragment.newInstance(goodsContent, JSON.toJSONString(evaluate)));
         fragments.add(GoodsEvaluationFragment.newInstance(goodsId));
-        mVpOrder.setNoScroll(true);
+//        mVpOrder.setNoScroll(true);
         mVpOrder.setAdapter(new TableViewPagerAdapter(getSupportFragmentManager(), fragments));
 
         CommonNavigator commonNavigator = new CommonNavigator(this);
@@ -288,6 +286,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 finish();
                 break;
             case R.id.iv_back2:
+
                 mPtlmSpecialistTourDetail.scrollToTop();
                 if (mVpOrder != null) {
                     mVpOrder.setCurrentItem(0);
@@ -325,6 +324,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             GoodsDetailsBean.ResultdataBean.ProductBean product = goodsDetailsBean.getProduct();
             mGoodsImg = product.getImagePath();
             mTvTitle.setFocusableInTouchMode(true);
+            mTvTitle.setClickable(true);
             mTvTitle.setText(product.getProductName());
             mTvPrice.setText(PlaceholderUtils.pricePlaceholder(product.getMinSalePrice()));
             mTvOldPrice.setText(PlaceholderUtils.pricePlaceholder(product.getMarketPrice()));
@@ -334,8 +334,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
             initBanner(goodsDetailsBean.getBannners());
 
-
-            initTab(goodsDetailsBean.getProductDescription(), goodsDetailsBean, String.valueOf(goodsDetailsBean.getProduct().getId()));
+            initTab(goodsDetailsBean.getProductDescription(), goodsDetailsBean.getProductCommentInfo(), String.valueOf(goodsDetailsBean.getProduct().getId()));
 
             mGoodSpecificationsPop = new GoodSpecificationsPop(this, goodsDetailsBean, mGoodsImg);
             mGoodSpecificationsPop.setPopListener(this);

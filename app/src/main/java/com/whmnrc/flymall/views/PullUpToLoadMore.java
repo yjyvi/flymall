@@ -9,12 +9,11 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
-
 /**
- * 作者:linzheng 日期:2016/12/29 功能:
+ * Created by baoyunlong on 16/6/8.
  */
-
 public class PullUpToLoadMore extends ViewGroup {
+    public static String TAG = PullUpToLoadMore.class.getName();
 
     MyScrollView topScrollView, bottomScrollView;
     VelocityTracker velocityTracker = VelocityTracker.obtain();
@@ -24,16 +23,11 @@ public class PullUpToLoadMore extends ViewGroup {
     int position1Y;
     int lastY;
     public int scaledTouchSlop;//最小滑动距离
-    int speed = 2000;
+    int speed = 200;
     boolean isIntercept;
 
     public boolean bottomScrollVIewIsInTop = false;
     public boolean topScrollViewIsBottom = false;
-    private CallBack mCallBack;
-
-    public interface CallBack {
-        void onCurrentPositionChangedListener(int currentPosition);
-    }
 
     public PullUpToLoadMore(Context context) {
         super(context);
@@ -83,22 +77,26 @@ public class PullUpToLoadMore extends ViewGroup {
                 bottomScrollView.setScrollListener(new MyScrollView.ScrollListener() {
                     @Override
                     public void onScrollToBottom() {
-                        bottomScrollVIewIsInTop = false;
+
                     }
 
                     @Override
                     public void onScrollToTop() {
-                        bottomScrollVIewIsInTop = true;
+
                     }
 
                     @Override
                     public void onScroll(int scrollY) {
-
+                        if (scrollY == 0) {
+                            bottomScrollVIewIsInTop = true;
+                        } else {
+                            bottomScrollVIewIsInTop = false;
+                        }
                     }
 
                     @Override
                     public void notBottom() {
-                        bottomScrollVIewIsInTop = false;
+
                     }
                 });
 
@@ -112,6 +110,7 @@ public class PullUpToLoadMore extends ViewGroup {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
+        //防止子View禁止父view拦截事件
         this.requestDisallowInterceptTouchEvent(false);
         return super.dispatchTouchEvent(ev);
     }
@@ -119,7 +118,7 @@ public class PullUpToLoadMore extends ViewGroup {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int y = (int) ev.getY();
-//        System.out.println("topScrollViewIsBottom = "+ topScrollViewIsBottom+"  "+ "bottomScrollVIewIsInTop = " + bottomScrollVIewIsInTop);
+
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 lastY = y;
@@ -127,14 +126,13 @@ public class PullUpToLoadMore extends ViewGroup {
             case MotionEvent.ACTION_MOVE:
                 //判断是否已经滚动到了底部
                 if (topScrollViewIsBottom) {
-                    //dy 表示 滑动距离
                     int dy = lastY - y;
 
                     //判断是否是向上滑动和是否在第一屏
                     if (dy > 0 && currPosition == 0) {
                         if (dy >= scaledTouchSlop) {
                             isIntercept = true;//拦截事件
-                            lastY = y;
+                            lastY=y;
                         }
                     }
                 }
@@ -151,15 +149,12 @@ public class PullUpToLoadMore extends ViewGroup {
                 }
 
                 break;
-            default:
-                break;
         }
         return isIntercept;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         int y = (int) event.getY();
         velocityTracker.addMovement(event);
 
@@ -180,32 +175,22 @@ public class PullUpToLoadMore extends ViewGroup {
 
                 velocityTracker.computeCurrentVelocity(1000);
                 float yVelocity = velocityTracker.getYVelocity();
-                //currPositon = 1 表示在 第二ScollView  = 0 表示 在 第一个ScorllView
+
                 if (currPosition == 0) {
                     if (yVelocity < 0 && yVelocity < -speed) {
                         smoothScroll(position1Y);
-                        bottomScrollVIewIsInTop = true;
                         currPosition = 1;
-                        if (mCallBack != null) {
-                            mCallBack.onCurrentPositionChangedListener(currPosition);
-                        }
                     } else {
                         smoothScroll(0);
                     }
                 } else {
                     if (yVelocity > 0 && yVelocity > speed) {
-                        topScrollViewIsBottom = true;
                         smoothScroll(0);
                         currPosition = 0;
-                        if (mCallBack != null) {
-                            mCallBack.onCurrentPositionChangedListener(currPosition);
-                        }
                     } else {
                         smoothScroll(position1Y);
                     }
                 }
-                break;
-            default:
                 break;
         }
         lastY = y;
@@ -230,6 +215,7 @@ public class PullUpToLoadMore extends ViewGroup {
     }
 
 
+
     //通过Scroller实现弹性滑动
     private void smoothScroll(int tartY) {
         int dy = tartY - getScrollY();
@@ -239,12 +225,10 @@ public class PullUpToLoadMore extends ViewGroup {
 
 
     //滚动到顶部
-    public void scrollToTop() {
+    public void scrollToTop(){
         smoothScroll(0);
-        currPosition = 0;
-        bottomScrollVIewIsInTop = false;
-        topScrollViewIsBottom = false;
-        topScrollView.smoothScrollTo(0, 0);
+        currPosition=0;
+        topScrollView.smoothScrollTo(0,0);
     }
 
     @Override
@@ -253,10 +237,6 @@ public class PullUpToLoadMore extends ViewGroup {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
             postInvalidate();
         }
-    }
-
-    public void setCallBack(CallBack callBack) {
-        this.mCallBack = callBack;
     }
 
 }

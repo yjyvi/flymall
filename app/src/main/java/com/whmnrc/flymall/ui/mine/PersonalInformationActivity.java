@@ -12,7 +12,7 @@ import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.presener.PayPPPresenter;
-import com.whmnrc.flymall.presener.UpdateImgFile;
+import com.whmnrc.flymall.presener.UpdateImgFilePresenter;
 import com.whmnrc.flymall.presener.UpdateUserInfoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.UserManager;
@@ -37,15 +37,15 @@ import butterknife.OnClick;
  * @data 2018/5/21.
  */
 
-public class PersonalInformationActivity extends BaseActivity implements UpdateImgFile.UpdateHeadImgListener, UpdateUserInfoPresenter.UpdateUserInfoListener {
+public class PersonalInformationActivity extends BaseActivity implements UpdateImgFilePresenter.UpdateHeadImgListener, UpdateUserInfoPresenter.UpdateUserInfoListener {
     @BindView(R.id.tv_user_header_img)
     ImageView mTvUserHeaderImg;
     @BindView(R.id.tv_user_name)
     EditText mTvUserName;
     @BindView(R.id.tv_user_gender)
     TextView mTvUserGender;
-    private File headFile;
-    public UpdateImgFile mUpdateHeadImgPresenter;
+
+    public UpdateImgFilePresenter mUpdateHeadImgPresenter;
     private String mResultImgUrl = "";
     public UpdateUserInfoPresenter mUpdateUserInfoPresenter;
     public PayPPPresenter mPayPPPresenter;
@@ -54,7 +54,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
     @Override
     protected void initViewData() {
         EventBus.getDefault().register(this);
-        mUpdateHeadImgPresenter = new UpdateImgFile(this);
+        mUpdateHeadImgPresenter = new UpdateImgFilePresenter(this);
         mUpdateUserInfoPresenter = new UpdateUserInfoPresenter(this);
 
         setTitle("Personal information");
@@ -115,7 +115,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
                             @Override
                             public void onClick(int which) {
                                 mTvUserGender.setText("Male");
-                                mCurrentSex=0;
+                                mCurrentSex = 0;
                             }
                         })
 
@@ -145,12 +145,17 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
         }
     }
 
-    //图片选择 拍照回调
+    /**
+     * //图片选择 拍照回调
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(final int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
+        File headFile;
         if (resultCode == RESULT_OK) {
             List<LocalMedia> mediaList = PictureSelector.obtainMultipleResult(data);
             if (!mediaList.isEmpty())
@@ -159,21 +164,12 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
                 return;
             }
             UIUtils.loadCircleImg(mTvUserHeaderImg, headFile);
-            //异步转化为base64
-//            EncodeTask encodeTask = new EncodeTask(new EncodeTask.onResponse() {
-//                @Override
-//                public void onResult(String base64) {
-//                    if (!TextUtils.isEmpty(base64)) {
-            mUpdateHeadImgPresenter.updateHeadImg(headFile);
-//                    }
-//                }
-//            });
-//            encodeTask.execute(headFile.getPath());
+            mUpdateHeadImgPresenter.updateHeadImg(mediaList, 0);
         }
     }
 
     @Override
-    public void loadSuccess(String resultImgUrl) {
+    public void loadSuccess(String resultImgUrl, List<LocalMedia> datas, int position) {
         this.mResultImgUrl = resultImgUrl;
     }
 

@@ -8,11 +8,11 @@ import com.whmnrc.flymall.ui.PresenterBase;
 import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author yjyvi
  * @data 2018/5/30.
+ * 商品评价列表
  */
 
 public class EvaluateListPresenter extends PresenterBase {
@@ -24,12 +24,11 @@ public class EvaluateListPresenter extends PresenterBase {
     }
 
 
-    public void getEvaluateList(String goodsId, int page, int rows,int type) {
+    public void getEvaluateList(String goodsId, int page, int rows, int type) {
         HashMap<String, String> params = new HashMap<>(4);
-        params.put("Goods_ID", goodsId);
-        params.put("Page", String.valueOf(page));
-        params.put("Rows", String.valueOf(rows));
-        params.put("Type", String.valueOf(type));
+        params.put("productId", goodsId);
+        params.put("pageNo", String.valueOf(page));
+        params.put("pageSize", String.valueOf(rows));
 
         OKHttpManager.get(getUrl(R.string.GetEvaluateItem), params, new CommonCallBack<GoodsEvaluateListBean>() {
             @Override
@@ -45,7 +44,7 @@ public class EvaluateListPresenter extends PresenterBase {
 
 
     public interface EvaluateListListener {
-        void getEvaluateListSuccess(List<GoodsEvaluateListBean.ResultdataBean> resultdataBean);
+        void getEvaluateListSuccess(GoodsEvaluateListBean.ResultdataBean resultdataBean);
     }
 
 }
