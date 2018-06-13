@@ -6,6 +6,8 @@ import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
@@ -16,8 +18,12 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
+import com.umeng.message.UmengNotificationClickHandler;
+import com.umeng.message.entity.UMessage;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
+import com.whmnrc.flymall.ui.mine.OrderDetailsActivity;
 import com.whmnrc.flymall.views.MyClassicsHeader;
 
 /**
@@ -26,7 +32,6 @@ import com.whmnrc.flymall.views.MyClassicsHeader;
 public class MyApplication extends MultiDexApplication {
 
     /**
-     *
      * 全局context
      */
     public static Context applicationContext;
@@ -65,9 +70,6 @@ public class MyApplication extends MultiDexApplication {
         applicationContext = getApplicationContext();
 
 
-
-
-
         //-----------内存泄漏检查工具初始化----------------
 //        if (LeakCanary.isInAnalyzerProcess(this)) {
 //            return;
@@ -81,7 +83,7 @@ public class MyApplication extends MultiDexApplication {
 //        }
 
         //友盟推送
-        UMConfigure.init( this, "5b07c292f43e483b31000013", "", UMConfigure.DEVICE_TYPE_PHONE,"50194719f5daf7d21ae146523c86c2dc");
+        UMConfigure.init(this, "5b07c292f43e483b31000013", "", UMConfigure.DEVICE_TYPE_PHONE, "50194719f5daf7d21ae146523c86c2dc");
         UMConfigure.setLogEnabled(true);
         PushAgent mPushAgent = PushAgent.getInstance(this);
         //注册推送服务，每次调用register方法都会回调该接口
@@ -90,7 +92,7 @@ public class MyApplication extends MultiDexApplication {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
-                Log.e("deviceToken",deviceToken);
+                Log.e("deviceToken", deviceToken);
             }
 
             @Override
@@ -99,10 +101,37 @@ public class MyApplication extends MultiDexApplication {
             }
         });
 
+
+        mPushAgent.setNotificationClickHandler(notificationClickHandler);
+
         //友盟登录
         UMShareAPI.get(this);
         PlatformConfig.setWeixin("wxdac79b5de8e5d7e2", "1558bf90a97d4bb6283835ad562340a7");
         PlatformConfig.setTwitter("wbwVZitQ6qheSbtPZwwk7rwKP", "cUt6epJiDYMXZdpJLZxRK9Uq6w8aKwqHQFf9Twsg6UtmFz2JlC");
     }
+
+    public static UmengNotificationClickHandler notificationClickHandler = new UmengNotificationClickHandler() {
+
+        @Override
+        public void handleMessage(Context context, UMessage uMessage) {
+            super.handleMessage(context, uMessage);
+            Log.e("MyApplication", uMessage.custom);
+            JSONObject jsonObject = JSON.parseObject(uMessage.custom);
+            int msageType = jsonObject.getInteger("AppMsgType");
+            String appId;
+            switch (msageType) {
+                case 1:
+                    appId = jsonObject.getString("AppID");
+                    OrderDetailsActivity.start(context, appId);
+                    break;
+                case 2:
+                    appId = jsonObject.getString("AppID");
+                    GoodsDetailsActivity.start(context, appId);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
 }

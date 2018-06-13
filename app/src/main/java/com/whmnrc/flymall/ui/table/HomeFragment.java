@@ -17,6 +17,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.HomeHeaderGoodsListAdapter;
 import com.whmnrc.flymall.adapter.HomeVideoGoodsListAdapter;
@@ -112,6 +113,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
     public HomePageActivityGoodsPresenter mHomePageActivityGoodsPresenter;
     public HomePageSaleGoodsPresenter mHomePageSaleGoodsPresenter;
     private LoadingDialog mLoadingDialog;
+    private String mCurrencyCode;
 
     @Override
     protected int contentViewLayoutID() {
@@ -364,9 +366,9 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         for (int i = 0; i < brandsPage; i++) {
             onPageVideoList = new ArrayList<>();
             int maxNum;
-            if (i == brandsPage - 1){
+            if (i == brandsPage - 1) {
                 maxNum = i * pageMax + size % pageMax;
-            }else {
+            } else {
                 maxNum = i * pageMax + 10;
             }
             for (int j = i * pageMax; j < maxNum; j++) {
@@ -484,7 +486,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mPopCurrenty.show();
         mPopCurrenty.setListener(new PopCurrency.CurrencyClickListener() {
             @Override
-            public void onClick(String currencyId, double currencyPrice) {
+            public void onClick(String currencyId, double currencyPrice, String code) {
 
                 if (TextUtils.isEmpty(currencyId)) {
                     ToastUtils.showToast("Please Select Currency");
@@ -493,6 +495,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
                 mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId);
                 mCurrencyPrice = currencyPrice;
+                mCurrencyCode = code;
                 mPopCurrenty.dismiss();
             }
         });
@@ -501,6 +504,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
     @Override
     public void updateSuccess(String msg) {
-        SPUtils.put(getActivity(), CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
+
     }
 }

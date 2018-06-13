@@ -35,6 +35,7 @@ public class PopCurrency {
     private CurrencyClickListener mListener;
     private String mCurrencyId;
     private double mCurrencyPrice;
+    private String mCurrencyCode;
 
 
     public void setListener(CurrencyClickListener listener) {
@@ -57,6 +58,7 @@ public class PopCurrency {
                 selectedView(view);
                 mCurrencyId = mCurrencyAdapter.getDatas().get(position).getCurrency_ID();
                 mCurrencyPrice = mCurrencyAdapter.getDatas().get(position).getCurrency_Price();
+                mCurrencyCode = mCurrencyAdapter.getDatas().get(position).getCode();
             }
 
             @Override
@@ -83,7 +85,7 @@ public class PopCurrency {
             @Override
             public void onClick(View v) {
                 if (mListener != null) {
-                    mListener.onClick(mCurrencyId, mCurrencyPrice);
+                    mListener.onClick(mCurrencyId, mCurrencyPrice, mCurrencyCode);
                 }
             }
         });
@@ -125,7 +127,7 @@ public class PopCurrency {
 
 
     public interface CurrencyClickListener {
-        void onClick(String currencyId, double currencyPrice);
+        void onClick(String currencyId, double currencyPrice,String code);
     }
 
     /**

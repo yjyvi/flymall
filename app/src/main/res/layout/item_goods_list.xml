@@ -35,6 +35,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dm_17"
+            android:lines="1"
+            android:ellipsize="end"
             android:text="$ 58:99"
             android:textColor="@color/good_price_red"
             android:textSize="@dimen/dm_17"/>
@@ -42,6 +44,8 @@
         <TextView
             android:id="@+id/tv_source_price"
             android:layout_width="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
             android:layout_height="wrap_content"
             android:text="$199"
             android:textColor="@color/normal_gray"/>

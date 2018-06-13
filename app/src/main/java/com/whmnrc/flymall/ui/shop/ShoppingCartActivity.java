@@ -26,6 +26,8 @@ public class ShoppingCartActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.fl_content, shoppingCartFragment).commit();
     }
 
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

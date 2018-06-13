@@ -28,6 +28,7 @@ import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.shop.ShoppingCartActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.views.FilterPop;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import java.util.List;
 
@@ -70,16 +71,20 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     public SearchGoodsListPresenter mSearchGoodsListPresenter;
     private int rows = 10;
     private int page = 1;
-    public String mBrandId = "";
+    public String mCid = "";
     private String aid = "";
     private String orderKey = "1";
     private String orderType = "1";
     private List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList;
+    private LoadingDialog mLoadingDialog;
+    private String mBid = "";
 
     @Override
     protected void initViewData() {
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
 
-        mBrandId = getIntent().getStringExtra("brandId");
+        mCid = getIntent().getStringExtra("brandId");
         mSearchGoodsListPresenter = new SearchGoodsListPresenter(this);
         initGoodsList();
         initTgaList();
@@ -87,7 +92,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         selectedView(mTvTabSynthesize);
         mIvArrow.setSelected(false);
 
-        mSearchGoodsListPresenter.getSearchGoodsList("", mBrandId, "", "", "", "1", page, rows);
+        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, "", "", "", "1", page, rows);
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -100,7 +105,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     String trim = view.getText().toString().trim();
                     if (!TextUtils.isEmpty(trim)) {
                         aid = "";
-                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mBrandId, "", aid, orderKey, orderType, page, rows);
+                        mSearchGoodsListPresenter.getSearchGoodsList(view.getText().toString().trim(), mCid, "", aid, orderKey, orderType, page, rows);
                         return true;
                     }
                 }
@@ -154,8 +159,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
     public void showEmpty() {
-        if (mAdapter != null && mAdapter.getDatas() == null) {
-            EmptyListUtils.loadEmpty(true, "暂时没有信息", R.mipmap.no_data_list, mVsEmpty);
+        if (mAdapter != null && mAdapter.getDatas().size() == 0) {
+            EmptyListUtils.loadEmpty(true, "Can't find products", R.mipmap.no_search, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
                 mVsEmpty.setVisibility(View.GONE);
@@ -177,19 +182,19 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 selectedView(mTvTabSynthesize);
                 orderKey = "1";
                 orderType = "1";
-                updateOrderKeyData(orderKey,orderType);
+                updateOrderKeyData(orderKey, orderType);
                 break;
             case R.id.tv_tab_sales_volume:
                 selectedView(mTvTabSalesVolume);
                 orderKey = "2";
                 orderType = "1";
-                updateOrderKeyData(orderKey,orderType);
+                updateOrderKeyData(orderKey, orderType);
                 break;
             case R.id.tv_tab_new:
                 orderKey = "3";
                 orderType = "1";
                 selectedView(mTvTabNew);
-                updateOrderKeyData(orderKey,orderType);
+                updateOrderKeyData(orderKey, orderType);
                 break;
             case R.id.tab_price:
                 orderKey = "4";
@@ -201,18 +206,18 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     mIvArrow.setSelected(false);
                     orderType = "2";
                 }
-                updateOrderKeyData(orderKey,orderType);
+                updateOrderKeyData(orderKey, orderType);
                 break;
             case R.id.iv_filter_layout:
-                if (mCategoryList != null){
+                if (mCategoryList != null) {
                     FilterPop filterPop = new FilterPop();
-                    filterPop.imPopWindow(this,mCategoryList);
+                    filterPop.imPopWindow(this, mCategoryList);
                     filterPop.showPopupWindow(mLlTab);
                     filterPop.setOnConfirmClickListener(new FilterPop.OnConfirmClickListener() {
                         @Override
-                        public void onConfirm(String cid,List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
-                            aid = cid;
-                            mSearchGoodsListPresenter.getSearchGoodsList("", mBrandId, "", aid, orderKey, orderType, page, rows);
+                        public void onConfirm(String selectCid, List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
+                            aid = selectCid;
+                            mSearchGoodsListPresenter.getSearchGoodsList("", mCid, mBid, aid, orderKey, orderType, page, rows);
                             setTab(noNullCid);
                         }
                     });
@@ -229,10 +234,10 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 //        mSearchTagListAdapter.setDataArray(noNullCid);
     }
 
-    private void updateOrderKeyData(String orderKey,String orderType){
+    private void updateOrderKeyData(String orderKey, String orderType) {
         page = 1;
         rows = 10;
-        mSearchGoodsListPresenter.getSearchGoodsList("", mBrandId, "", aid, orderKey, orderType, page, rows);
+        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, "", aid, orderKey, orderType, page, rows);
     }
 
 
@@ -255,22 +260,30 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     }
 
 
-
     @Override
     public void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean) {
-        if (dataBean != null) {
-            if (page == 1) {
+        if (page == 1) {
+            if (dataBean == null) {
+                if (mAdapter.getDatas() != null) {
+                    mAdapter.getDatas().clear();
+                }
+            } else {
                 mAdapter.setDataArray(dataBean.getProductList());
                 mRvGoodsList.setAdapter(mAdapter);
-            } else {
-                List<SearchResultBean.ResultdataBean.ProductListBean> datas = mAdapter.getDatas();
-                datas.addAll(dataBean.getProductList());
-                mAdapter.setDataArray(datas);
             }
+        } else {
+            List<SearchResultBean.ResultdataBean.ProductListBean> datas = mAdapter.getDatas();
+            if (datas != null && dataBean != null && dataBean.getProductList() != null) {
+                datas.addAll(dataBean.getProductList());
+            }
+            mAdapter.setDataArray(datas);
         }
-        mCategoryList = dataBean.getCategory();
-        mAdapter.notifyDataSetChanged();
 
+        if (dataBean != null) {
+            mCategoryList = dataBean.getCategory();
+        }
+        mAdapter.notifyDataSetChanged();
+        mLoadingDialog.dismiss();
         showEmpty();
     }
 

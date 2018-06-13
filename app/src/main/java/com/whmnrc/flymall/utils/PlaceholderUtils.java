@@ -26,7 +26,7 @@ public class PlaceholderUtils {
         }
     }
 
-    private static double sCurrencyPrice;
+    private static double sCurrencyPrice = 1.0;
     private static String sCode;
 
     /**
@@ -42,7 +42,7 @@ public class PlaceholderUtils {
         if (money <= 0.0) {
             money = 0.0;
         }
-        return String.format("%s%s2.2f", sCode, money * sCurrencyPrice);
+        return String.format("%s%2.2f", sCode, money * sCurrencyPrice);
     }
 
 
@@ -53,7 +53,7 @@ public class PlaceholderUtils {
         if (money <= 0) {
             money = 0;
         }
-        return String.format("%1s%2s$2.2f", sCode, money * sCurrencyPrice);
+        return String.format("%s%s", sCode, money * sCurrencyPrice);
     }
 
 

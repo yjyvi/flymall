@@ -9,6 +9,7 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.CollectionListBean;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
+import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
 /**
@@ -31,6 +32,7 @@ public class CollectionAdapter extends CommonAdapter<CollectionListBean.Resultda
     public void convert(ViewHolder holder, final CollectionListBean.ResultdataBean resultdataBean, final int position) {
 
         holder.setText(R.id.tv_goods_name, resultdataBean.getProductName());
+        holder.setText(R.id.tv_goods_price, PlaceholderUtils.pricePlaceholder(resultdataBean.getSalePrice()));
         GlideUtils.LoadImage(mContext, resultdataBean.getImage(), (ImageView) holder.getView(R.id.iv_goods_img));
         holder.setOnClickListener(R.id.iv_del_collection, new View.OnClickListener() {
             @Override

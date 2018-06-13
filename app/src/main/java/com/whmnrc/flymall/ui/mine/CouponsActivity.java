@@ -85,7 +85,7 @@ public class CouponsActivity extends BaseActivity implements CouponListPresenter
 
     public void showEmpty() {
         if (mCouponsAdapter != null && mCouponsAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, mVsEmpty);
+            EmptyListUtils.loadEmpty(true,"No coupon", R.mipmap.no_coupon, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
                 mVsEmpty.setVisibility(View.GONE);

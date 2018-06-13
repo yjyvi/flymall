@@ -67,7 +67,7 @@ public class CollectionListBean {
         private int Id;
         private String Image;
         private String ProductName;
-        private String SalePrice;
+        private double SalePrice;
         private  boolean isSelect;
 
         public boolean isSelect() {
@@ -110,11 +110,11 @@ public class CollectionListBean {
             this.ProductName = ProductName;
         }
 
-        public String getSalePrice() {
+        public double getSalePrice() {
             return SalePrice;
         }
 
-        public void setSalePrice(String SalePrice) {
+        public void setSalePrice(double SalePrice) {
             this.SalePrice = SalePrice;
         }
     }

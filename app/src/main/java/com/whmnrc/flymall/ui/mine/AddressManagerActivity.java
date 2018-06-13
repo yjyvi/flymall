@@ -138,7 +138,7 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
 
     public void showEmpty() {
         if (mAddressManagerAdapter != null && mAddressManagerAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No Address", R.mipmap.no_address,mVsEmpty);
         } else {
             if (mVsEmpty != null) {
                 mVsEmpty.setVisibility(View.GONE);

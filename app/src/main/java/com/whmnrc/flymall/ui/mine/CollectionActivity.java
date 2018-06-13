@@ -181,7 +181,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
 
     public void showEmpty() {
         if (mCollectionAdapter != null && mCollectionAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No Collections", R.mipmap.no_search,mVsEmpty);
         } else {
             mVsEmpty.setVisibility(View.GONE);
         }

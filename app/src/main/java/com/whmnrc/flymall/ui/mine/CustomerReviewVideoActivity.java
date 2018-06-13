@@ -16,6 +16,7 @@ import com.whmnrc.flymall.adapter.VideoGoodsListAdapter;
 import com.whmnrc.flymall.beans.AllVideoBean;
 import com.whmnrc.flymall.presener.AllVideoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.utils.EmptyListUtils;
 
 import java.util.List;
 
@@ -102,4 +103,15 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
         mAllVideoPresenter.getAllVideo(page, rows);
         refreshLayout.finishRefresh();
     }
+
+    public void showEmpty() {
+        if (mVideoGoodsListAdapter != null && mVideoGoodsListAdapter.getDatas().size() == 0) {
+            EmptyListUtils.loadEmpty(true,"No Video", R.mipmap.no_video, mVsEmpty);
+        } else {
+            if (mVsEmpty != null) {
+                mVsEmpty.setVisibility(View.GONE);
+            }
+        }
+    }
+
 }

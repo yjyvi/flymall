@@ -13,6 +13,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.CurrencyAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
@@ -122,8 +123,8 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
     @Override
     public void updateSuccess(String msg) {
         ToastUtils.showToast(msg);
-        SPUtils.put(this, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
-        SPUtils.put(this, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
         finish();
     }
 

@@ -71,6 +71,8 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     ViewStub mVsEmpty;
     @BindView(R.id.tv_to_home)
     TextView mTvToHome;
+    @BindView(R.id.common_title_back)
+    RelativeLayout mCommonTitleBack;
 
     public ShoppingCartAdapter mShoppingCartAdapter;
     public LikeGoodListAdapter mGoodListAdapter;
@@ -103,7 +105,17 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         mIsActivity = getArguments().getBoolean("isActivity", false);
 
         EventBus.getDefault().register(this);
-
+        if (mIsActivity) {
+            leftVisible(R.mipmap.back);
+            mCommonTitleBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getActivity() != null) {
+                        getActivity().finish();
+                    }
+                }
+            });
+        }
         setTitle("Shopping Cart");
         rightVisible("Complete");
         mRefresh.setOnRefreshListener(this);
@@ -336,7 +348,11 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(mShoppingCartAdapter.getDatas().size()));
 
         if (mShoppingCartAdapter != null && mShoppingCartAdapter.getDatas() != null) {
-            mTvEntry.setText(String.format("Bill(%s)", mShoppingCartAdapter.getDatas().size()));
+            int goodsNum = 0;
+            for (ShoppingCartListBean.ResultdataBean.ProductsBean productsBean : mShoppingCartAdapter.getDatas()) {
+                goodsNum += productsBean.getCount();
+            }
+            mTvEntry.setText(String.format("Bill(%s)", goodsNum));
         } else {
             mTvEntry.setText(String.format("Bill(%s)", 0));
         }
@@ -381,7 +397,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     public void showEmpty() {
         if (mShoppingCartAdapter != null && mShoppingCartAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No shopping cart", R.mipmap.no_shopping_cart, mVsEmpty);
             mTvToHome.setVisibility(View.VISIBLE);
         } else {
             mTvToHome.setVisibility(View.GONE);
