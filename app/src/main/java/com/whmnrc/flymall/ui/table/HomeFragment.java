@@ -133,14 +133,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
         mRefresh.setOnRefreshLoadMoreListener(this);
 
-        mRvSaleList.setNestedScrollingEnabled(false);
-        mRvVideoList.setNestedScrollingEnabled(false);
-
-        mRvSaleList.setFocusableInTouchMode(false);
-        mRvVideoList.setFocusableInTouchMode(false);
-
-        mRvSaleList.requestFocus();
-        mRvVideoList.requestFocus();
+        requestNoTouch();
 
 
         initVideoList();
@@ -163,6 +156,26 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         }
 
         initData();
+
+    }
+
+
+    /**
+     * 取消子类的滑动焦点
+     */
+    private void requestNoTouch() {
+        mRvSaleList.setNestedScrollingEnabled(false);
+        mRvVideoList.setNestedScrollingEnabled(false);
+
+        mRvSaleList.setFocusableInTouchMode(false);
+        mRvVideoList.setFocusableInTouchMode(false);
+        mLlPoint.setFocusableInTouchMode(false);
+        mVpBrands.setFocusableInTouchMode(false);
+
+        mRvSaleList.requestFocus();
+        mRvVideoList.requestFocus();
+        mLlPoint.requestFocus();
+        mVpBrands.requestFocus();
     }
 
 
@@ -221,6 +234,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mLlPoint.removeAllViews();
         for (int i = 0; i < brandsPage; i++) {
             View imageView = new View(getActivity());
+            imageView.setFocusable(false);
+            imageView.setFocusableInTouchMode(false);
             createView(imageView, getResources().getDimensionPixelOffset(R.dimen.dm_8), R.drawable.rect_home_brands_false);
             mLlPoint.addView(imageView);
             scaleView(imageView, 30, 8);
@@ -326,8 +341,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
     @Override
     public void loadHomeData(HomeDataBean homeDataBean) {
-
-
         mBanner.setDelayTime(3000).setImages(homeDataBean.getResultdata().getBanners()).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
@@ -371,17 +384,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             }
             onPageVideoLists.add(onPageVideoList);
         }
-
-//        for (int i = 0; i < brandsPage; i++) {
-//            onPageVideoList = new ArrayList();
-//            for (int j = 0; j < brands.size(); j++) {
-//                if (j <= pageMax * i) {
-//                    onPageVideoList.add(brands.get(j));
-//                }
-//            }
-//            onPageVideoLists.add(onPageVideoList);
-//        }
-
 
         for (int i = 0; i < brandsPage; i++) {
             mFragments.add(HomeBrandsFragment.newInstance(onPageVideoLists.get(i)));

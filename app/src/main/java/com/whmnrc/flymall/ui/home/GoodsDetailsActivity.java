@@ -19,6 +19,7 @@ import com.whmnrc.flymall.adapter.TableViewPagerAdapter;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
 import com.whmnrc.flymall.beans.GoodsNoAttrBean;
+import com.whmnrc.flymall.beans.HistoryGoodsBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.AddOrDelCollectionGoodsPresenter;
 import com.whmnrc.flymall.presener.AddShoppingCartPresenter;
@@ -32,6 +33,7 @@ import com.whmnrc.flymall.ui.home.gooddetailsfragment.GoodsDetailsFragment;
 import com.whmnrc.flymall.ui.home.gooddetailsfragment.GoodsEvaluationFragment;
 import com.whmnrc.flymall.ui.mine.ConfirmOrderActivity;
 import com.whmnrc.flymall.ui.shop.ShoppingCartActivity;
+import com.whmnrc.flymall.utils.HistoryGoodsBeanUtils;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.views.GoodSpecificationsPop;
@@ -338,7 +340,19 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
             mGoodSpecificationsPop = new GoodSpecificationsPop(this, goodsDetailsBean, mGoodsImg);
             mGoodSpecificationsPop.setPopListener(this);
+
+
+            saveHistory(product);
         }
+    }
+
+    /**
+     * 保存存历史记录
+     * @param product
+     */
+    private void saveHistory(GoodsDetailsBean.ResultdataBean.ProductBean product) {
+        HistoryGoodsBean historyGoodsBean = new HistoryGoodsBean(String.valueOf(product.getId()),product.getProductName(), product.getMinSalePrice(), product.getMarketPrice(), String.valueOf(product.getSaleCounts()), product.getImagePath());
+        HistoryGoodsBeanUtils.saveGoods(historyGoodsBean);
     }
 
     @Override

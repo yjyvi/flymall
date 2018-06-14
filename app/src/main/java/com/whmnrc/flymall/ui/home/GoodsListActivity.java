@@ -31,8 +31,12 @@ import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.shop.ShoppingCartActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
+import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.views.FilterPop;
 import com.whmnrc.flymall.views.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -88,6 +92,9 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 
     @Override
     protected void initViewData() {
+
+        EventBus.getDefault().register(this);
+
         mLoadingDialog = new LoadingDialog(this);
         mLoadingDialog.show();
 
@@ -324,6 +331,26 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         rows = 10;
         mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
         refreshLayout.finishRefresh();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
+        if (sHopCartEvent.getEventType() == SHopCartEvent.SHOPPING_CARR_NUM) {
+            int data = (int) sHopCartEvent.getData();
+            if (data == 0) {
+                mTvCartNum.setVisibility(View.GONE);
+            } else {
+                mTvCartNum.setVisibility(View.VISIBLE);
+                mTvCartNum.setText(String.valueOf(data));
+            }
+        }
     }
 }
 

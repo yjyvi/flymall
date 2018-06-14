@@ -27,6 +27,7 @@ import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.AddressEvent;
 import com.whmnrc.flymall.utils.evntBusBean.CouponsEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -91,6 +92,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
      */
     public double mCouponFullQuota;
     public boolean mIsGoodsDetails;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
@@ -98,6 +100,8 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
         EventBus.getDefault().register(this);
 
+
+        mLoadingDialog = new LoadingDialog(this);
 
         mGoodsBean = getIntent().getParcelableArrayListExtra("goodsBean");
         mIsGoodsDetails = getIntent().getBooleanExtra("isGoodsDetails", false);
@@ -208,6 +212,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                      productAttrIds = productAttrIds.substring(0, productAttrIds.length() - 1);
                     mCreateOrderPresenter.shopCartCreateOrder(productAttrIds, mAddressId, mCouponId, mEtRemark.getText().toString().trim());
                 }
+                mLoadingDialog.show();
                 break;
             case R.id.ll_to_order_img:
                 VerticalGoodsListActivity.start(view.getContext(), mGoodsBean);
@@ -219,6 +224,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
     @Override
     public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean resultdataBean) {
+        mLoadingDialog.dismiss();
         ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getProductTotalAmount()), JSON.toJSONString(addressEventData));
         finish();
     }
@@ -226,6 +232,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     @Override
     public void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean resultdataBean) {
         ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getCommisTotalAmount()), JSON.toJSONString(addressEventData));
+        mLoadingDialog.dismiss();
         finish();
     }
 

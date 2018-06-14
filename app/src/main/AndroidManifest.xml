@@ -229,6 +229,8 @@
         <activity android:name="com.paypal.android.sdk.payments.FuturePaymentInfoActivity" />
         <activity android:name="com.paypal.android.sdk.payments.PayPalProfileSharingActivity" />
         <activity android:name="com.paypal.android.sdk.payments.ProfileSharingConsentActivity" />
+        <activity android:name=".ui.mine.AboutUsActivity"/>
+
         <service
             android:name="com.paypal.android.sdk.payments.PayPalService"
             android:exported="false" />

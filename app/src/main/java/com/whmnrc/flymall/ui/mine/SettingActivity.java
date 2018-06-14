@@ -11,7 +11,6 @@ import com.whmnrc.flymall.CommonConstant;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.ui.CommonH5WebView;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.DataCleanManager;
@@ -71,7 +70,7 @@ public class SettingActivity extends BaseActivity {
                         }).show();
                 break;
             case R.id.ll_about:
-                CommonH5WebView.startCommonH5WebView(this, "", " About");
+                AboutUsActivity.start(view.getContext());
                 break;
             case R.id.tv_sign_out:
                 UserManager.clearUser();

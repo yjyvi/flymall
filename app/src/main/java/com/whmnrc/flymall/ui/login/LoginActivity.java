@@ -76,7 +76,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
                 break;
             case R.id.tv_agreement:
                 //用户协议
-                CommonH5WebView.startCommonH5WebView(this, "http://www.3cbestclub.com", "User Agreement");
+                CommonH5WebView.startCommonH5WebView(view.getContext(),CommonConstant.Common.AGREEMENT,"User Agreement");
                 break;
 
             default:

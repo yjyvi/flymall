@@ -171,7 +171,12 @@ public class HomeTableActivity extends BaseActivity {
     public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
         if (sHopCartEvent.getEventType() == SHopCartEvent.SHOPPING_CARR_NUM) {
             int data = (int) sHopCartEvent.getData();
-            mTvCartNum.setText(String.valueOf(data));
+            if (data == 0) {
+                mTvCartNum.setVisibility(View.GONE);
+            } else {
+                mTvCartNum.setVisibility(View.VISIBLE);
+                mTvCartNum.setText(String.valueOf(data));
+            }
         }
     }
 

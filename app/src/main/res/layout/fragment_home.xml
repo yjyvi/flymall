@@ -58,7 +58,7 @@
             <LinearLayout
                 android:id="@+id/header_layout"
                 android:layout_width="match_parent"
-
+                android:focusableInTouchMode="true"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 

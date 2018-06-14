@@ -5,19 +5,22 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewStub;
-import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.alibaba.fastjson.JSON;
+import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.adapter.GoodListAdapter;
-import com.whmnrc.flymall.beans.CollectionListBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
-import com.whmnrc.flymall.presener.CollectionListPresenter;
+import com.whmnrc.flymall.adapter.HistoryGoodListAdapter;
+import com.whmnrc.flymall.beans.HistoryGoodsBean;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
+import com.whmnrc.flymall.utils.SPUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -27,27 +30,27 @@ import butterknife.BindView;
  * @data 2018/5/19.
  */
 
-public class BrowsingHistoryActivity extends BaseActivity implements CollectionListPresenter.CollectionListListener {
+public class BrowsingHistoryActivity extends BaseActivity {
 
-    @BindView(R.id.title)
-    TextView mTitle;
+
     @BindView(R.id.vs_empty)
     ViewStub mVsEmpty;
     @BindView(R.id.rv_browsing_history_list)
     RecyclerView mRvBrowsingHistoryList;
-    @BindView(R.id.refresh)
-    SmartRefreshLayout mRefresh;
-    private GoodListAdapter mAdapter;
-    public CollectionListPresenter mCollectionListPresenter;
-    private int page = 1;
+    private HistoryGoodListAdapter mAdapter;
+    public List<HistoryGoodsBean> mHistoryGoodsBean = new ArrayList<>();
 
     @Override
     protected void initViewData() {
-        mCollectionListPresenter = new CollectionListPresenter(this);
-        mCollectionListPresenter.getCollectionList(2, page);
         setTitle("Browsing history");
+
+        String goods = SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.HISTORY_GOODS);
+        if (!TextUtils.isEmpty(goods)) {
+            Log.d("BrowsingHistoryActivity", goods);
+            mHistoryGoodsBean = JSON.parseArray(goods, HistoryGoodsBean.class);
+        }
         mRvBrowsingHistoryList.setLayoutManager(new GridLayoutManager(this, 2));
-        mAdapter = new GoodListAdapter(this, R.layout.item_goods_list);
+        mAdapter = new HistoryGoodListAdapter(this, R.layout.item_goods_list);
         mRvBrowsingHistoryList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -62,9 +65,10 @@ public class BrowsingHistoryActivity extends BaseActivity implements CollectionL
             }
         });
         mRvBrowsingHistoryList.setNestedScrollingEnabled(false);
-
-
+        mAdapter.setDataArray(mHistoryGoodsBean);
         mRvBrowsingHistoryList.setAdapter(mAdapter);
+
+        showEmpty();
     }
 
     public static void start(Context context) {
@@ -75,23 +79,6 @@ public class BrowsingHistoryActivity extends BaseActivity implements CollectionL
     @Override
     protected int setLayoutId() {
         return R.layout.activity_browsing_history;
-    }
-
-    @Override
-    public void getCollectionListSuccess(List<CollectionListBean.ResultdataBean> resultdataBeanList) {
-
-    }
-
-    @Override
-    public void getHistoryListSuccess(List<GoodsListBean.ResultdataBean> resultdataBeanList) {
-        if (page == 1) {
-            mAdapter.setDataArray(resultdataBeanList);
-        } else {
-            List<GoodsListBean.ResultdataBean> datas = mAdapter.getDatas();
-            datas.addAll(resultdataBeanList);
-            mAdapter.setDataArray(datas);
-        }
-        mAdapter.notifyDataSetChanged();
     }
 
 

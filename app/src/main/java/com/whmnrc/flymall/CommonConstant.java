@@ -1,14 +1,13 @@
 package com.whmnrc.flymall;
 
 /**
- *
  * @author yjyvi
  * @date 2018/1/30
  */
 
 public class CommonConstant {
 
-    public   static  class Common {
+    public static class Common {
 
         /**
          * 第一次启动
@@ -41,7 +40,6 @@ public class CommonConstant {
         public static final int PAY_METHOD_WX = 4;
 
 
-
         /**
          * 微信APP ID
          */
@@ -56,6 +54,17 @@ public class CommonConstant {
          * 当前的选择的货币
          */
         public static final String CURRENT_CURRENCY = "current_currency";
+        /**
+         * 当前获取种类
+         */
         public static final String CURRENT_CURRENCY_CODE = "currency_code";
+        /**
+         * 商品历史记录
+         */
+        public static final String HISTORY_GOODS = "history_goods";
+        /**
+         * 用户协议
+         */
+        public static final String AGREEMENT = "http://flymall.store/Agreement.html";
     }
 }

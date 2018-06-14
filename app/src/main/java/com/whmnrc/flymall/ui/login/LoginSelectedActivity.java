@@ -17,6 +17,7 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.UserBean;
 import com.whmnrc.flymall.presener.LoginPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.flymall.ui.CommonH5WebView;
 import com.whmnrc.flymall.ui.HomeTableActivity;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.SPUtils;
@@ -108,6 +109,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                 selectedView(mLlWechatLogin);
                 break;
             case R.id.tv_agreement:
+                CommonH5WebView.startCommonH5WebView(view.getContext(),CommonConstant.Common.AGREEMENT,"User Agreement");
                 break;
             default:
                 break;

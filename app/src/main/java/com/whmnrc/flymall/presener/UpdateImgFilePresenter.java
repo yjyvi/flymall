@@ -33,36 +33,6 @@ public class UpdateImgFilePresenter extends PresenterBase {
         this.mUpdateHeadImgListener = updateUpdateHeadImgListener;
     }
 
-//    public void updateHeadImg(File imgData, final int position) {
-//
-//            if (OKHttpManager.getIsConnected()) {
-//                return;
-//            }
-//
-//            OkHttpUtils.post()
-//                    .addFile("photo", imgData.getName(), imgData)
-//                    .addParams("userId", UserManager.getUser().getId())
-//                    .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getNick()) ? "img" : UserManager.getUser().getNick())
-//                .url(getUrl(R.string.UploadFile))
-//                .build().execute(new StringCallback() {
-//            @Override
-//            public void onError(Call call, Exception e, int id) {
-//
-//            }
-//
-//            @Override
-//            public void onResponse(String response, int id) {
-//                BaseBean<String> netBaseBean = JSON.parseObject(response, BaseBean.class);
-//                if (netBaseBean.getType() == 1) {
-//                    mUpdateHeadImgListener.loadSuccess(netBaseBean.getResultdata(), position);
-//                } else {
-//                    ToastUtils.showToast(netBaseBean.getMessage());
-//                }
-//            }
-//        });
-//
-//
-//    }
 
 
     public void updateHeadImg(final List<LocalMedia> datas, final int position) {
