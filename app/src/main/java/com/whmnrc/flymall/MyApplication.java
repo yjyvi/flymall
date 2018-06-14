@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
-import android.view.View;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -14,7 +13,6 @@ import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
 import com.scwang.smartrefresh.layout.api.RefreshFooter;
 import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.umeng.commonsdk.UMConfigure;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
@@ -24,6 +22,8 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.mine.OrderDetailsActivity;
+import com.whmnrc.flymall.utils.SPUtils;
+import com.whmnrc.flymall.views.MyClassicsFooter;
 import com.whmnrc.flymall.views.MyClassicsHeader;
 
 /**
@@ -55,8 +55,7 @@ public class MyApplication extends MultiDexApplication {
             @Override
             public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
                 //指定为经典Footer，默认是 BallPulseFooter
-                ClassicsFooter classicsFooter = new ClassicsFooter(context).setDrawableSize(20);
-                classicsFooter.setVisibility(View.GONE);
+                MyClassicsFooter classicsFooter = new MyClassicsFooter(context);
                 return classicsFooter;
             }
         });
@@ -92,6 +91,7 @@ public class MyApplication extends MultiDexApplication {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
+                SPUtils.put(applicationContext, CommonConstant.Common.DEVICE_TOKEN, deviceToken);
                 Log.e("deviceToken", deviceToken);
             }
 

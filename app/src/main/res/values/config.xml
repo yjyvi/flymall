@@ -317,6 +317,19 @@
         long OrderId// 订单编号-->
     <string name="Pay">/api/PaySuccess/Notify</string>
 
+    <!--接口名称：用户生成订单成功，选择tt支付
+    说明：用户生成订单成功，选择tt支付
+    地址：/PaySuccess/SubmitOrders
+    请求方法：post
+    参数：
+    // 用户ID
+    int UserId { get; set; }
+    // 订单ID
+    long OrderId { get; set; }
+    // 支付方式ID   1.TT支付
+    int TypeId { get; set; } -->
+    <string name="TTPay">/api/PaySuccess/SubmitOrders</string>
+
 
 
 

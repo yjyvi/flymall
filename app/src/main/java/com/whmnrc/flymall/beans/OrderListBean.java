@@ -208,6 +208,16 @@ public class OrderListBean  {
             private int productId;
             private String productName;
 
+            private  boolean isComment;
+
+            public boolean isComment() {
+                return isComment;
+            }
+
+            public void setComment(boolean comment) {
+                isComment = comment;
+            }
+
             protected ItemInfoBean(Parcel in) {
                 Unit = in.readString();
                 count = in.readInt();

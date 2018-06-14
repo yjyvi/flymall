@@ -57,10 +57,10 @@ public class SettingActivity extends BaseActivity {
             case R.id.ll_tv_clear_cache:
                 new ActionSheetDialog(this)
                         .builder()
-                        .setTitle("确定要清理缓存")
+                        .setTitle("Be sure to clear the cache")
                         .setCancelable(false)
                         .setCanceledOnTouchOutside(false)
-                        .addSheetItem("确定", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        .addSheetItem("confirm", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
                                 mTvCache.post(new clearCache());
@@ -97,11 +97,11 @@ public class SettingActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
-                    ToastUtils.showToast("清理完成");
+                    ToastUtils.showToast("Clean up completed");
                     CleanUpCaching();
                     break;
                 case 1:
-                    ToastUtils.showToast("清理失败");
+                    ToastUtils.showToast("Cleaning failed");
                     break;
                 default:
                     break;

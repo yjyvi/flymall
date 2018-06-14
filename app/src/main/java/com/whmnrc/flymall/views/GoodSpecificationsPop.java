@@ -64,8 +64,6 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     private int selectTwoListPosition = 0;
     private int mTotalNumber;
     private String mProductAttrIds = "";
-    public TagFlowLayout.OnTagClickListener mOnTagClickListener;
-    public TagFlowLayout.OnTagClickListener mOnTagClickListener2;
     private GoodsSpecificationsPresenter mGoodsSpecificationsPresenter;
     public int mGoodsId;
     private String versionSkuId = "0";
@@ -157,20 +155,19 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         tvPrice.setText(PlaceholderUtils.pricePlaceholder(mGoodsSpecificationBean.getProduct().getMinSalePrice()));
         mGoodsId = mGoodsSpecificationBean.getProduct().getId();
 
-        mOnTagClickListener = new TagFlowLayout.OnTagClickListener() {
+        recyclerView1.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
                 selectOneListPosition = position;
-                if (mGoodsSpecificationBean.getColor().size() == 0 || mGoodsSpecificationBean.getVersion().size() == 0 || !TextUtils.equals(mColorSkuId, "0") || !TextUtils.equals(versionSkuId, "0")) {
+                if (mGoodsSpecificationBean.getColor().size() == 0 | mGoodsSpecificationBean.getVersion().size() == 0 | !TextUtils.equals(mColorSkuId, "0") | !TextUtils.equals(versionSkuId, "0")) {
                     mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
                 }
                 return true;
             }
-        };
-        recyclerView1.setOnTagClickListener(mOnTagClickListener);
+        });
 
-        mOnTagClickListener2 = new TagFlowLayout.OnTagClickListener() {
+        recyclerView2.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 selectTwoListPosition = position;
@@ -180,24 +177,23 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
                 if (mGoodsSpecificationBean.getColor() != null && mGoodsSpecificationBean.getColor().size() > 0 &&
                         TextUtils.equals(mColorSkuId, "0")) {
                     ToastUtils.showToast("请选择颜色");
-                    return false;
+                    return true;
                 }
 
                 if (mGoodsSpecificationBean.getSize() != null && mGoodsSpecificationBean.getSize().size() > 0 &&
                         TextUtils.equals(mSizeSkuId, "0")) {
                     ToastUtils.showToast("请选择尺寸");
-                    return false;
+                    return true;
                 }
                 if (mGoodsSpecificationBean.getVersion() != null && mGoodsSpecificationBean.getVersion().size() > 0 &&
                         TextUtils.equals(versionSkuId, "0")) {
                     ToastUtils.showToast("请选择型号");
-                    return false;
+                    return true;
                 }
                 mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
                 return true;
             }
-        };
-        recyclerView2.setOnTagClickListener(mOnTagClickListener2);
+        });
 
 
         ivMinus.setOnClickListener(new View.OnClickListener() {
@@ -298,7 +294,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         this.mSpecificationBean = resultdataBean;
         mTotalNumber = resultdataBean.getStock();
         tvPrice.setText(PlaceholderUtils.pricePlaceholder(resultdataBean.getSalePrice()));
-        tvSelectTag.setText(String.format("Chosen“%s”“%s”", resultdataBean.getSize(), resultdataBean.getColor()));
+        tvSelectTag.setText(String.format("Chosen %s %s ", resultdataBean.getSize(), resultdataBean.getColor()));
 
     }
 

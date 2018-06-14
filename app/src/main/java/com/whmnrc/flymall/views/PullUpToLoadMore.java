@@ -132,7 +132,7 @@ public class PullUpToLoadMore extends ViewGroup {
                     if (dy > 0 && currPosition == 0) {
                         if (dy >= scaledTouchSlop) {
                             isIntercept = true;//拦截事件
-                            lastY=y;
+                            lastY = y;
                         }
                     }
                 }
@@ -180,6 +180,9 @@ public class PullUpToLoadMore extends ViewGroup {
                     if (yVelocity < 0 && yVelocity < -speed) {
                         smoothScroll(position1Y);
                         currPosition = 1;
+                        if (mCallBack != null) {
+                            mCallBack.onCurrentPositionChangedListener(currPosition);
+                        }
                     } else {
                         smoothScroll(0);
                     }
@@ -187,6 +190,9 @@ public class PullUpToLoadMore extends ViewGroup {
                     if (yVelocity > 0 && yVelocity > speed) {
                         smoothScroll(0);
                         currPosition = 0;
+                        if (mCallBack != null) {
+                            mCallBack.onCurrentPositionChangedListener(currPosition);
+                        }
                     } else {
                         smoothScroll(position1Y);
                     }
@@ -215,7 +221,6 @@ public class PullUpToLoadMore extends ViewGroup {
     }
 
 
-
     //通过Scroller实现弹性滑动
     private void smoothScroll(int tartY) {
         int dy = tartY - getScrollY();
@@ -225,10 +230,13 @@ public class PullUpToLoadMore extends ViewGroup {
 
 
     //滚动到顶部
-    public void scrollToTop(){
+    public void scrollToTop() {
         smoothScroll(0);
-        currPosition=0;
-        topScrollView.smoothScrollTo(0,0);
+        currPosition = 0;
+        if (mCallBack != null) {
+            mCallBack.onCurrentPositionChangedListener(currPosition);
+        }
+        topScrollView.smoothScrollTo(0, 0);
     }
 
     @Override
@@ -239,4 +247,13 @@ public class PullUpToLoadMore extends ViewGroup {
         }
     }
 
+    private CallBack mCallBack;
+
+    public interface CallBack {
+        void onCurrentPositionChangedListener(int currentPosition);
+    }
+
+    public void setCallBack(CallBack callBack) {
+        this.mCallBack = callBack;
+    }
 }

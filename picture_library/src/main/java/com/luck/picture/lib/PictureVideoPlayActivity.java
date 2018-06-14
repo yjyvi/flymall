@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 public class PictureVideoPlayActivity extends PictureBaseActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, View.OnClickListener {
@@ -21,6 +22,10 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements Med
     private ImageView iv_play;
     private int mPositionWhenPaused = -1;
     private ProgressBar pb;
+    private String goodsDescription;
+    private String goodsId;
+    private TextView mTvDesc;
+    private TextView mTvBuy;
 
 
     @Override
@@ -29,12 +34,24 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements Med
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.picture_activity_video_play);
+
+
         video_path = getIntent().getStringExtra("video_path");
+        goodsDescription = getIntent().getStringExtra("goodsDescription");
+        goodsId = getIntent().getStringExtra("goodsId");
+
         picture_left_back = (ImageView) findViewById(R.id.picture_left_back);
         mVideoView = (VideoView) findViewById(R.id.video_view);
         mVideoView.setBackgroundColor(Color.BLACK);
         iv_play = (ImageView) findViewById(R.id.iv_play);
         pb = (ProgressBar) findViewById(R.id.image_buffer);
+
+        mTvDesc = (TextView) findViewById(R.id.tv_desc);
+        mTvBuy = (TextView) findViewById(R.id.tv_buy);
+
+        mTvDesc.setText(goodsDescription);
+        mTvBuy.setOnClickListener(this);
+
         mMediaController = new MediaController(this);
         mVideoView.setOnCompletionListener(this);
         mVideoView.setOnPreparedListener(this);
@@ -49,6 +66,14 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements Med
     public static void start(Context context, String videoPath) {
         Intent starter = new Intent(context, PictureVideoPlayActivity.class);
         starter.putExtra("video_path", videoPath);
+        context.startActivity(starter);
+    }
+
+    public static void start(Context context, String videoPath, String goodsDescription, String goodsId) {
+        Intent starter = new Intent(context, PictureVideoPlayActivity.class);
+        starter.putExtra("video_path", videoPath);
+        starter.putExtra("goodsDescription", goodsDescription);
+        starter.putExtra("goodsId", goodsId);
         context.startActivity(starter);
     }
 
@@ -111,6 +136,8 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements Med
         } else if (id == R.id.iv_play) {
             mVideoView.start();
             iv_play.setVisibility(View.INVISIBLE);
+        }else if(id==R.id.tv_buy){
+
         }
     }
 

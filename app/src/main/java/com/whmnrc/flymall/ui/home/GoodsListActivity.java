@@ -81,13 +81,13 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     public SearchGoodsListPresenter mSearchGoodsListPresenter;
     private int rows = 10;
     private int page = 1;
-    public String mCid = "";
-    private String aid = "";
+    public String mCid = "0";
+    private String aid = "0";
     private String orderKey = "1";
     private String orderType = "1";
     private List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList;
     private LoadingDialog mLoadingDialog;
-    private String mBid = "";
+    private String mBid = "0";
     public String mSearchContent;
 
     @Override
@@ -106,7 +106,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         selectedView(mTvTabSynthesize);
         mIvArrow.setSelected(false);
 
-        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, "", "1", page, rows);
+        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -119,7 +119,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     mSearchContent = view.getText().toString().trim();
 
                     if (!TextUtils.isEmpty(mSearchContent)) {
-                        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, "", aid, orderKey, orderType, page, rows);
+                        mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
                         return true;
                     }
                 }

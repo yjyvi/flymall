@@ -11,11 +11,12 @@
         android:layout_height="@dimen/dm_376">
 
 
+
         <LinearLayout
 
             android:id="@+id/fl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dm_20"
             android:background="@color/withe"
             android:orientation="vertical">
@@ -68,13 +69,14 @@
 
 
             <android.support.v4.widget.NestedScrollView
-                android:layout_marginBottom="@dimen/dm_40"
+                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dm_400">
+                android:layout_marginBottom="@dimen/dm_49"
+                android:layout_height="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm_400"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <TextView
@@ -83,7 +85,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/dm_15"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dm_16"
+                        android:textSize="@dimen/dm_14"
                         android:text="Size"/>
 
                     <com.zhy.view.flowlayout.TagFlowLayout
@@ -102,7 +104,7 @@
                         android:layout_height="wrap_content"
                         android:paddingLeft="@dimen/dm_15"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/dm_16"
+                        android:textSize="@dimen/dm_14"
                         android:text="Color"/>
 
                     <com.zhy.view.flowlayout.TagFlowLayout
@@ -135,7 +137,7 @@
                             android:includeFontPadding="false"
                             android:text="Quantity"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/dm_16"/>
+                            android:textSize="@dimen/dm_14"/>
 
                         <LinearLayout
                             android:layout_marginBottom="@dimen/dm_10"

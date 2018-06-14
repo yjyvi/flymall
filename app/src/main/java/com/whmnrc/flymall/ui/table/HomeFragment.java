@@ -146,7 +146,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mTvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsListActivity.start(v.getContext(), "");
+                GoodsListActivity.start(v.getContext(), "0");
             }
         });
 

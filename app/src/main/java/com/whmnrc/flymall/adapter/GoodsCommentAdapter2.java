@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,17 +37,19 @@ public class GoodsCommentAdapter2 extends CommonAdapter<GoodsDetailsBean.Resultd
         view.setClickable(false);
         view.setStar(bean.getStars(), false);
         GlideUtils.LoadCircleImage(mContext, bean.getPhoto(), (ImageView) holder.getView(R.id.iv_user_img));
-        holder.setText(R.id.tv_user_name, bean.getNick());
-        holder.setText(R.id.tv_goods_spec, bean.getColor() + bean.getSize() + bean.getVersion());
         holder.setText(R.id.tv_goods_comment_content, bean.getCommentContent());
+        holder.setText(R.id.tv_user_name, bean.getNick());
 
+        String spec = bean.getColor() + bean.getSize() + bean.getVersion();
+
+        if (!TextUtils.isEmpty(spec)) {
+            holder.setText(R.id.tv_goods_spec, spec);
+        } else {
+            holder.setVisible(R.id.tv_goods_spec, false);
+        }
         TimeUtils.setTime((TextView) holder.getView(R.id.tv_comment_time), bean.getCreateDate());
 
-
         RecyclerView rvGoodsCommentImg = holder.getView(R.id.rv_goods_comment_img);
-        rvGoodsCommentImg.setLayoutManager(new GridLayoutManager(mContext, 3));
-
-        EvaluateImgVideoAdapter evaluateImgVideoAdapter = new EvaluateImgVideoAdapter(mContext, R.layout.item_goods_comment_img);
 
         List<MediaBean> mediaBeanList = new ArrayList<>();
         //视频
@@ -57,20 +60,24 @@ public class GoodsCommentAdapter2 extends CommonAdapter<GoodsDetailsBean.Resultd
             mediaBean.setNetVideoPath(bean.getVideoUrl());
             mediaBean.setType(1);
             mediaBeanList.add(mediaBean);
-        }
+        } else if (!TextUtils.isEmpty(bean.getImages())) {
+            String images = bean.getImages();
+            String[] split = images.split(",");
+            for (int i = 0; i < split.length; i++) {
+                mediaBean = new MediaBean();
+                mediaBean.setNetimgPath(split[i]);
+                mediaBean.setType(0);
+                mediaBeanList.add(mediaBean);
+            }
 
+            rvGoodsCommentImg.setLayoutManager(new GridLayoutManager(mContext, 3));
+            EvaluateImgVideoAdapter evaluateImgVideoAdapter = new EvaluateImgVideoAdapter(mContext, R.layout.item_goods_comment_img);
 
-        //图片集合
-        String images = bean.getImages();
-        String[] split = images.split(",");
-        for (int i = 0; i < split.length; i++) {
-            mediaBean = new MediaBean();
-            mediaBean.setNetimgPath(split[i]);
-            mediaBean.setType(0);
-            mediaBeanList.add(mediaBean);
+            evaluateImgVideoAdapter.setDataArray(mediaBeanList);
+            rvGoodsCommentImg.setAdapter(evaluateImgVideoAdapter);
+        } else {
+            rvGoodsCommentImg.setVisibility(View.GONE);
         }
-        evaluateImgVideoAdapter.setDataArray(mediaBeanList);
-        rvGoodsCommentImg.setAdapter(evaluateImgVideoAdapter);
 
     }
 }

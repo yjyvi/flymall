@@ -35,6 +35,7 @@ import com.whmnrc.flymall.ui.mine.ConfirmOrderActivity;
 import com.whmnrc.flymall.ui.shop.ShoppingCartActivity;
 import com.whmnrc.flymall.utils.HistoryGoodsBeanUtils;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.views.GoodSpecificationsPop;
 import com.whmnrc.flymall.views.LoadingDialog;
@@ -69,7 +70,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener, GoodsIsCollectionPresenter.GoodsIsCollectionListener, GoodsCommitOrderPresenter.GoodsNoAttrCommitListener {
+public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPresenter.GoodsDetailsListener, AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, GoodSpecificationsPop.PopListener, AddShoppingCartPresenter.AddShoppingCartListListener, GoodsIsCollectionPresenter.GoodsIsCollectionListener, GoodsCommitOrderPresenter.GoodsNoAttrCommitListener, PullUpToLoadMore.CallBack {
 
 
     @BindView(R.id.ptlm_specialist_tour_detail)
@@ -123,6 +124,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     public AddShoppingCartPresenter mAddShoppingCartPresenter;
     public GoodsIsCollectionPresenter mGoodsIsCollectionPresenter;
     public GoodsCommitOrderPresenter mGoodsCommitOrderPresenter;
+    private int mCurrentPostion;
 
     @Override
     protected int setLayoutId() {
@@ -146,6 +148,8 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
         mRbStar.setClickable(false);
+
+        mPtlmSpecialistTourDetail.setCallBack(this);
     }
 
     private void initBanner(List<String> img) {
@@ -238,7 +242,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
         mVpOrder.setCurrentItem(0);
 
-
     }
 
 
@@ -300,6 +303,15 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         }
     }
 
+    @Override
+    protected void back() {
+        if (mCurrentPostion == 1) {
+            mPtlmSpecialistTourDetail.scrollToTop();
+        } else {
+            super.back();
+        }
+    }
+
     private void isCollection(boolean isSelect, boolean isRequestApi) {
         if (isSelect) {
             mIvLike.setSelected(true);
@@ -348,10 +360,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
     /**
      * 保存存历史记录
+     *
      * @param product
      */
     private void saveHistory(GoodsDetailsBean.ResultdataBean.ProductBean product) {
-        HistoryGoodsBean historyGoodsBean = new HistoryGoodsBean(String.valueOf(product.getId()),product.getProductName(), product.getMinSalePrice(), product.getMarketPrice(), String.valueOf(product.getSaleCounts()), product.getImagePath());
+        HistoryGoodsBean historyGoodsBean = new HistoryGoodsBean(String.valueOf(product.getId()), product.getProductName(), product.getMinSalePrice(), product.getMarketPrice(), String.valueOf(product.getSaleCounts()), product.getImagePath());
         HistoryGoodsBeanUtils.saveGoods(historyGoodsBean);
     }
 
@@ -415,6 +428,14 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
     }
 
+
+    @Subscribe
+    public void changeToComment(GoodsCommentEvent goodsCommentEvent) {
+        if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_TO_COMMENT) {
+            mVpOrder.setCurrentItem(1);
+        }
+    }
+
     @Subscribe
     public void tabChangeEvent(HomeTableChangeEvent homeTableChangeEvent) {
         if (homeTableChangeEvent.getEventType() == HomeTableChangeEvent.GO_TO_HOME) {
@@ -474,5 +495,10 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 mGoodSpecificationsPop.dissmiss();
             }
         }
+    }
+
+    @Override
+    public void onCurrentPositionChangedListener(int currentPosition) {
+        this.mCurrentPostion = currentPosition;
     }
 }

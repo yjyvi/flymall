@@ -633,6 +633,15 @@ public class OrderDeitalsBean {
             private String SkuId;
             private String ThumbnailsUrl;
             private String Version;
+            private  boolean isComment;
+
+            public boolean isComment() {
+                return isComment;
+            }
+
+            public void setComment(boolean comment) {
+                isComment = comment;
+            }
 
             protected OrderItemInfoBean(Parcel in) {
                 Color = in.readString();

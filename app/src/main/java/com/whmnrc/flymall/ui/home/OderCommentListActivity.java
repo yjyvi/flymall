@@ -9,9 +9,9 @@ import android.view.View;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.OrderCommentGoodListAdapter;
-import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.presener.GetCommentStatusPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 
 import java.util.ArrayList;
@@ -23,17 +23,20 @@ import butterknife.BindView;
  * @data 2018/6/7.
  */
 
-public class OderCommentListActivity extends BaseActivity {
+public class OderCommentListActivity extends BaseActivity implements GetCommentStatusPresenter.GetCommentStatusListener {
 
     @BindView(R.id.rv_goods_list)
     RecyclerView mRvGoodsList;
 
-
+    private String goodsId;
     private OrderCommentGoodListAdapter mAdapter;
     public ArrayList<OrderListBean.ResultdataBean.ItemInfoBean> mGoodsBean;
     public String mOrderId;
     private ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean> goodsBeanDeitals;
+
+
     public boolean mIsOrderDeitals;
+    public GetCommentStatusPresenter mMGetCommentStatusPresenter;
 
     @Override
     protected void initViewData() {
@@ -44,9 +47,11 @@ public class OderCommentListActivity extends BaseActivity {
         } else {
             mGoodsBean = getIntent().getParcelableArrayListExtra("goodsBean");
         }
+
+        mMGetCommentStatusPresenter = new GetCommentStatusPresenter(this);
         mOrderId = getIntent().getStringExtra("orderId");
         mRvGoodsList.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new OrderCommentGoodListAdapter(this, R.layout.item_goods_list_vertical_order_comment, mIsOrderDeitals);
+        mAdapter = new OrderCommentGoodListAdapter(this, R.layout.item_goods_list_vertical_order_comment, mIsOrderDeitals, mOrderId);
         RecyclerView.ItemDecoration mItemDecoration = new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
@@ -57,17 +62,20 @@ public class OderCommentListActivity extends BaseActivity {
                 outRect.bottom = 20;
             }
         };
+
         mRvGoodsList.addItemDecoration(mItemDecoration);
-
-        mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        mAdapter.setGoodsCommentListener(new OrderCommentGoodListAdapter.GoodsCommentListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                GoodsCommentActivity.start(view.getContext(), mOrderId, String.valueOf(mGoodsBean.get(position).getProductId()));
-            }
+            public void commentClick(int position) {
 
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+                if (mIsOrderDeitals) {
+                    goodsId = String.valueOf(goodsBeanDeitals.get(position).getProductId());
+                } else {
+                    goodsId = String.valueOf(mGoodsBean.get(position).getProductId());
+                }
+
+                mMGetCommentStatusPresenter.getGetCommentStatus(mOrderId, goodsId, position);
+
             }
         });
         if (mIsOrderDeitals) {
@@ -97,5 +105,32 @@ public class OderCommentListActivity extends BaseActivity {
         starter.putExtra("orderId", orderId);
         starter.putExtra("isOrderDeitals", isOrderDeitals);
         context.startActivity(starter);
+    }
+
+    @Override
+    public void getState(int state, int position) {
+        OrderDeitalsBean.ResultdataBean.OrderItemInfoBean deitals;
+        OrderListBean.ResultdataBean.ItemInfoBean orderList;
+
+        if (state == 0) {
+            if (mIsOrderDeitals) {
+                deitals = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) mAdapter.getDatas().get(position);
+                deitals.setComment(true);
+            } else {
+                orderList = (OrderListBean.ResultdataBean.ItemInfoBean) mAdapter.getDatas().get(position);
+                orderList.setComment(true);
+            }
+            GoodsCommentActivity.start(OderCommentListActivity.this, mOrderId, goodsId);
+        } else {
+            if (mIsOrderDeitals) {
+                deitals = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) mAdapter.getDatas().get(position);
+                deitals.setComment(false);
+            } else {
+                orderList = (OrderListBean.ResultdataBean.ItemInfoBean) mAdapter.getDatas().get(position);
+                orderList.setComment(false);
+            }
+        }
+
+        mAdapter.notifyItemChanged(position);
     }
 }

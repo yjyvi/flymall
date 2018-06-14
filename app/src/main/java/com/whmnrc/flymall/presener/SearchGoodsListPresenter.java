@@ -1,6 +1,5 @@
 package com.whmnrc.flymall.presener;
 
-import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.SearchResultBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -27,16 +26,16 @@ public class SearchGoodsListPresenter extends PresenterBase {
     public void getSearchGoodsList(String searchContent, String cid, String bid, String aid, String orderKey, String orderType, int page, int rows) {
 
         HashMap<String, String> paramters = new HashMap<>(8);
-        paramters.put("keywords", searchContent);
-        paramters.put("cid", cid);
-        paramters.put("bid", bid);
-        paramters.put("aid", aid);
-        paramters.put("orderKey", orderKey);
-        paramters.put("orderType", orderType);
-        paramters.put("pageNo", String.valueOf(page));
-        paramters.put("pageSize", String.valueOf(rows));
+        paramters.put("keyword", searchContent);
+        paramters.put("CategoryId", cid);
+        paramters.put("BrandId", bid);
+        paramters.put("AttrIds", aid);
+        paramters.put("OrderKey", orderKey);
+        paramters.put("OrderType", orderType);
+        paramters.put("PageNo", String.valueOf(page));
+        paramters.put("PageSize", String.valueOf(rows));
 
-        OKHttpManager.postString(getUrl(R.string.Search), JSON.toJSONString(paramters), new CommonCallBack<SearchResultBean>() {
+        OKHttpManager.get(getUrl(R.string.Search), paramters, new CommonCallBack<SearchResultBean>() {
             @Override
             protected void onSuccess(SearchResultBean data) {
                 if (data.getType() == 1) {

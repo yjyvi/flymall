@@ -29,6 +29,7 @@ public class EvaluateListPresenter extends PresenterBase {
         params.put("productId", goodsId);
         params.put("pageNo", String.valueOf(page));
         params.put("pageSize", String.valueOf(rows));
+        params.put("type", String.valueOf(type));
 
         OKHttpManager.get(getUrl(R.string.GetEvaluateItem), params, new CommonCallBack<GoodsEvaluateListBean>() {
             @Override

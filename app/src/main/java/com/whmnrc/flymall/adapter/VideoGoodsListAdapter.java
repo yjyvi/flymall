@@ -38,7 +38,7 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
                 } else {
                     videoUrl = data.getVideoUrl();
                 }
-                PictureVideoPlayActivity.start(v.getContext(), videoUrl);
+                PictureVideoPlayActivity.start(v.getContext(), videoUrl,data.getDescription(), String.valueOf(data.getProductId()));
             }
         });
 
@@ -46,7 +46,7 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
         holder.setOnClickListener(R.id.tv_name, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailsActivity.start(v.getContext(), String.valueOf(data.getId()));
+                GoodsDetailsActivity.start(v.getContext(), String.valueOf(data.getProductId()));
             }
         });
     }

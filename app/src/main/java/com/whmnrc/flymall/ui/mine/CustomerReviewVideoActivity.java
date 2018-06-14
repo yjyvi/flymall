@@ -18,8 +18,6 @@ import com.whmnrc.flymall.presener.AllVideoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 
-import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -80,13 +78,13 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
 
     @Override
     public void loadSuccess(AllVideoBean allVideoBean) {
-        if (page == 1) {
+//        if (page == 1) {
             mVideoGoodsListAdapter.setDataArray(allVideoBean.getResultdata());
-        } else {
-            List<AllVideoBean.ResultdataBean> datas = mVideoGoodsListAdapter.getDatas();
-            datas.addAll(allVideoBean.getResultdata());
-            mVideoGoodsListAdapter.setDataArray(datas);
-        }
+//        } else {
+//            List<AllVideoBean.ResultdataBean> datas = mVideoGoodsListAdapter.getDatas();
+//            datas.addAll(allVideoBean.getResultdata());
+//            mVideoGoodsListAdapter.setDataArray(datas);
+//        }
         mVideoGoodsListAdapter.notifyDataSetChanged();
     }
 

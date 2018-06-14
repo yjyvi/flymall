@@ -1,13 +1,10 @@
 package com.whmnrc.flymall.presener;
 
-import android.text.TextUtils;
-
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.GoodsSpecificationsBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
-import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
 
@@ -35,8 +32,6 @@ public class GoodsSpecificationsPresenter extends PresenterBase {
             protected void onSuccess(GoodsSpecificationsBean data) {
                 if (data.getType() == 1) {
                     mGoodsSpecificationsListener.getGoodsSpecificationsSuccess(data.getResultdata());
-                } else {
-                    ToastUtils.showToast(data.getMessage());
                 }
             }
         });

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewStub;
 import android.widget.TextView;
 
-import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.GoodsCommentAdapter;
 import com.whmnrc.flymall.beans.GoodsEvaluateListBean;
@@ -41,8 +40,8 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
     TextView mTvBadReview;
     @BindView(R.id.tv_images)
     TextView mTvImages;
-    @BindView(R.id.refresh_like)
-    SmartRefreshLayout mRefreshLike;
+//    @BindView(R.id.refresh_like)
+//    SmartRefreshLayout mRefreshLike;
 
 
     private GoodsCommentAdapter mGoodsCommentAdapter;
@@ -50,7 +49,9 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
     public EvaluateListPresenter mEvaluateListPresenter;
     private int page = 1;
     private int rows = 10;
-    private int mEvaluationType = 1;
+    private int mEvaluationType = 0;
+
+
 
     @Override
     protected int contentViewLayoutID() {
@@ -61,6 +62,7 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
     protected void initViewData() {
         mEvaluateListPresenter = new EvaluateListPresenter(this);
         mRvEvaluationList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRvEvaluationList.setNestedScrollingEnabled(false);
         mGoodsCommentAdapter = new GoodsCommentAdapter(getActivity(), R.layout.item_goods_comment);
         mGoodsId = getArguments().getString("goodsId");
         mEvaluateListPresenter.getEvaluateList(mGoodsId, page, rows, mEvaluationType);
@@ -99,23 +101,23 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_type_all:
-                mEvaluationType = 1;
+                mEvaluationType = 0;
                 selectedView(mTvTypeAll);
                 break;
             case R.id.tv_type_praise:
-                mEvaluationType = 2;
+                mEvaluationType = 1;
                 selectedView(mTvTypePraise);
                 break;
             case R.id.tv_average:
-                mEvaluationType = 3;
+                mEvaluationType = 2;
                 selectedView(mTvAverage);
                 break;
             case R.id.tv_bad_review:
-                mEvaluationType = 4;
+                mEvaluationType = 3;
                 selectedView(mTvBadReview);
                 break;
             case R.id.tv_images:
-                mEvaluationType = 5;
+                mEvaluationType = 4;
                 selectedView(mTvImages);
                 break;
             default:

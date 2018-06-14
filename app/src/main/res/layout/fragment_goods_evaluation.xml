@@ -5,15 +5,15 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical">
 
-        <com.scwang.smartrefresh.layout.SmartRefreshLayout
-            android:id="@+id/refresh_like"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--<com.scwang.smartrefresh.layout.SmartRefreshLayout-->
+            <!--android:id="@+id/refresh_like"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <!--<LinearLayout-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent">-->
 
                 <LinearLayout
                     android:layout_marginTop="@dimen/dm_15"
@@ -130,8 +130,8 @@
                     android:layout_height="wrap_content"
                     android:background="@color/back_gray"/>
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
 
-        </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+        <!--</com.scwang.smartrefresh.layout.SmartRefreshLayout>-->
 </LinearLayout>

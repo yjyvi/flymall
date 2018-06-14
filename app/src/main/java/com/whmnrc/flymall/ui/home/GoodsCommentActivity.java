@@ -99,6 +99,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
 
         selectPremissions();
         mRbStar.setStar(5,false);
+        mRbStar.setStarCount(5);
         rvPhoto.setLayoutManager(new GridLayoutManager(this, 3));
         localMediaMultiItemTypeAdapter = new MultiItemTypeAdapter<>(this);
         localMediaMultiItemTypeAdapter.addItemViewDelegate(new PublishImgArrayAdapter(new PublishImgArrayAdapter.OnClick() {
@@ -172,7 +173,6 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
     public void upLoadVideo(final List<LocalMedia> mediaData) {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setMessage("Uploading");
             progressDialog.setTitle("提示");
             progressDialog.setMax(100);

@@ -1,36 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/black"
+              android:orientation="vertical">
 
-    <VideoView
-        android:id="@+id/video_view"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/black">
 
-    <ImageView
-        android:id="@+id/iv_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/ic_video_play"
-        android:visibility="invisible" />
+        <VideoView
+            android:id="@+id/video_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
 
-    <ImageView
-        android:id="@+id/picture_left_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:padding="15dp"
-        android:src="@drawable/picture_back" />
+        <ImageView
+            android:id="@+id/iv_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_video_play"
+            android:visibility="invisible"/>
 
-    <ProgressBar
-        android:id="@+id/image_buffer"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:layout_centerInParent="true"
-        android:indeterminateDrawable="@drawable/jc_loading"
-        android:visibility="gone"/>
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/picture_left_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:padding="15dp"
+            android:src="@drawable/picture_back"/>
+
+        <ProgressBar
+            android:id="@+id/image_buffer"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerInParent="true"
+            android:indeterminateDrawable="@drawable/jc_loading"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_buy"
+            android:background="#FFF465"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:text="Buy"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+</LinearLayout>

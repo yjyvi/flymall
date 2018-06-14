@@ -25,8 +25,8 @@ public class AllVideoPresenter extends PresenterBase {
 
     public void getAllVideo(int page, int rows) {
         HashMap<String, String> params = new HashMap<>(3);
-        params.put("Page", String.valueOf(page));
-        params.put("Rows", String.valueOf(rows));
+//        params.put("Page", String.valueOf(page));
+//        params.put("Rows", String.valueOf(rows));
                 OKHttpManager.get(getUrl(R.string.GetAllVideo), params, new CommonCallBack<AllVideoBean>() {
             @Override
             protected void onSuccess(AllVideoBean data) {

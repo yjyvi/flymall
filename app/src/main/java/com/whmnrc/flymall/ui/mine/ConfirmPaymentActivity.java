@@ -16,6 +16,7 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.presener.PayPPPresenter;
+import com.whmnrc.flymall.presener.TTPayPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.pay.PayPalUtils;
@@ -37,7 +38,7 @@ import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_ZFB;
  * @data 2018/5/19.
  */
 
-public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresenter.PayPPListener {
+public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresenter.PayPPListener, TTPayPresenter.TTPayOrderListener {
     @BindView(R.id.tv_total_price)
     TextView mTvTotalPrice;
     @BindView(R.id.tv_order_no)
@@ -67,6 +68,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     public String mOrderId;
     private String mPaymentId;
     public String mTotalPrice;
+    public TTPayPresenter mTtPayPresenter;
     //    @BindView(R.id.iv_pay_up)
 //    ImageView mIvPayUp;
 
@@ -81,6 +83,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         AddressBean.ResultdataBean confirmAddressBean = JSON.parseObject(addressBean, AddressBean.ResultdataBean.class);
         mPayUtils = new PayUtils(this);
         mPayPPPresenter = new PayPPPresenter(this);
+        mTtPayPresenter = new TTPayPresenter(this);
 
         mTvOrderNo.setText(String.format("Order number：%s", mOrderId));
         mTvTotalPrice.setText(String.format("Total merchandise：%s", mTotalPrice));
@@ -169,10 +172,11 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         switch (payType) {
             case PAY_METHOD_PP:
                 PayPalUtils payPalUtils = new PayPalUtils();
-                payPalUtils.initPayPalUtils(ConfirmPaymentActivity.this,mOrderId,mTotalPrice);
+                payPalUtils.initPayPalUtils(ConfirmPaymentActivity.this, mOrderId, mTotalPrice);
 //                mPayPPPresenter.getPayPPToken();
                 break;
             case PAY_METHOD_TT:
+                mTtPayPresenter.ttPayOrder(mOrderId, 1);
                 break;
             case PAY_METHOD_ZFB:
                 mPayUtils.playPay(PAY_METHOD_ZFB, 1, "123123", new OKHttpManager.ObjectCallback() {
@@ -214,9 +218,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     }
 
     public void payPop(final String sign) {
-
         SampleActivity.start(this);
-
     }
 
 
@@ -256,8 +258,14 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 Log.i(PayPalUtils.TAG, "The user canceled.");
             } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-                Log.i(PayPalUtils.TAG,"An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+                Log.i(PayPalUtils.TAG, "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             }
         }
+    }
+
+    @Override
+    public void payOrderSuccess(boolean isSuccess) {
+        finish();
+        PayResultActivity.start(this,mOrderId,isSuccess);
     }
 }

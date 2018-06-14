@@ -94,6 +94,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
             mCollectionListPresenter.getCollectionList(1, page);
             checkedAll();
         }
+        mRefresh.autoRefresh();
     }
 
 

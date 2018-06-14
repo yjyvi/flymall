@@ -66,5 +66,9 @@ public class CommonConstant {
          * 用户协议
          */
         public static final String AGREEMENT = "http://flymall.store/Agreement.html";
+        /**
+         * 设备的ID
+         */
+        public static final String DEVICE_TOKEN = "device_token";
     }
 }

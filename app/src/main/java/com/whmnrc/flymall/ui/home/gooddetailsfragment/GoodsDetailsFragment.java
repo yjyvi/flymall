@@ -3,6 +3,7 @@ package com.whmnrc.flymall.ui.home.gooddetailsfragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -12,6 +13,10 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.GoodsCommentAdapter2;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 
@@ -39,6 +44,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
     @Override
     protected void initViewData() {
 
+        EventBus.getDefault().register(this);
 
         String evaluate = getArguments().getString("evaluate");
         mEvaluateBean = JSON.parseObject(evaluate, GoodsDetailsBean.ResultdataBean.ProductCommentInfo.class);
@@ -50,6 +56,13 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
         mRvGoodsComment.setAdapter(mGoodsCommentAdapter);
         mGoodsCommentAdapter.setDataArray(mEvaluateBean.getModels());
         initWeb(goodsContent);
+
+        mTvMoreComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_TO_COMMENT));
+            }
+        });
 
     }
 
@@ -97,5 +110,18 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
         args.putString("evaluate", evaluate);
         fragment.setArguments(args);
         return fragment;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe
+    public void changeToComment(GoodsCommentEvent goodsCommentEvent){
+
     }
 }

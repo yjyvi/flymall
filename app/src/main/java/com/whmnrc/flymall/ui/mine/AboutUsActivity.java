@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.ui.BaseActivity;
+import com.whmnrc.mylibrary.utils.GlideUtils;
 
 import butterknife.BindView;
 
 /**
- *
  * @author yong hao zeng
  * @date 2017/12/9
  */
@@ -36,14 +36,13 @@ public class AboutUsActivity extends BaseActivity {
     public void initViewData() {
         setTitle("About Us");
         setAppVersionName(this);
-
+        GlideUtils.LoadRoundImage(this, R.mipmap.ic_launcher, ivLogo);
     }
 
     public static void start(Context context) {
         Intent starter = new Intent(context, AboutUsActivity.class);
         context.startActivity(starter);
     }
-
 
 
     public void setAppVersionName(Context context) {
