@@ -50,12 +50,12 @@ public class ConfirmOrderGoodListAdapter extends CommonAdapter {
 //            holder.setText(R.id.tv_goods_spec, beans.getSpecAttr_Name());
             holder.setText(R.id.tv_order_goods_num, String.valueOf("X" + beans.getCount()));
 
-            holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    GoodsDetailsActivity.start(v.getContext(), String.valueOf(beans.getProductId()));
-                }
-            });
+//            holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    GoodsDetailsActivity.start(v.getContext(), String.valueOf(beans.getProductId()));
+//                }
+//            });
         } else if (mIsOrderDetails) {
             final OrderDeitalsBean.ResultdataBean.OrderItemInfoBean beans = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) bean;
             holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(beans.getProductName()) ? "" : beans.getProductName());

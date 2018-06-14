@@ -401,6 +401,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     @Override
     public void addCartSuccess() {
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
+        UserManager.refresh();
     }
 
     @Override

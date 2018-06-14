@@ -27,6 +27,7 @@ import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.presener.GetShoppingCartListPresenter;
 import com.whmnrc.flymall.presener.ShopCartListIsAddPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
+import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.mine.ConfirmOrderActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
@@ -388,6 +389,8 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
         page = 1;
         mGetShoppingCartListPresenter.getShoppingCartList(page);
+
+        UserManager.refresh();
     }
 
 

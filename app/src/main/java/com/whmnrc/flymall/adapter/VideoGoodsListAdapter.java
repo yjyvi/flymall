@@ -32,7 +32,13 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
         holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PictureVideoPlayActivity.start(v.getContext(), data.getVideoUrl());
+                String videoUrl;
+                if (!data.getVideoUrl().startsWith("http")) {
+                    videoUrl = mContext.getResources().getString(R.string.service_host_image) + data.getVideoUrl();
+                } else {
+                    videoUrl = data.getVideoUrl();
+                }
+                PictureVideoPlayActivity.start(v.getContext(), videoUrl);
             }
         });
 

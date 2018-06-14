@@ -162,7 +162,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
                 selectOneListPosition = position;
-                if (mGoodsSpecificationBean.getColor().size() == 0 && mGoodsSpecificationBean.getVersion().size() == 0) {
+                if (mGoodsSpecificationBean.getColor().size() == 0 || mGoodsSpecificationBean.getVersion().size() == 0 || !TextUtils.equals(mColorSkuId, "0") || !TextUtils.equals(versionSkuId, "0")) {
                     mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
                 }
                 return true;

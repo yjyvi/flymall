@@ -127,7 +127,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
             }
         });
 
-        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+        updateCartNum(UserManager.getUser().getShoppingCartNum());
 
         refresh.setOnRefreshLoadMoreListener(this);
     }
@@ -343,13 +343,16 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     @Subscribe
     public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
         if (sHopCartEvent.getEventType() == SHopCartEvent.SHOPPING_CARR_NUM) {
-            int data = (int) sHopCartEvent.getData();
-            if (data == 0) {
-                mTvCartNum.setVisibility(View.GONE);
-            } else {
-                mTvCartNum.setVisibility(View.VISIBLE);
-                mTvCartNum.setText(String.valueOf(data));
-            }
+            updateCartNum( (int) sHopCartEvent.getData());
+        }
+    }
+
+    private void updateCartNum(int cartNum) {
+        if (cartNum == 0) {
+            mTvCartNum.setVisibility(View.GONE);
+        } else {
+            mTvCartNum.setVisibility(View.VISIBLE);
+            mTvCartNum.setText(String.valueOf(cartNum));
         }
     }
 }

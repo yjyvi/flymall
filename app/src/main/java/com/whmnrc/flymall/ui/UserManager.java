@@ -50,7 +50,7 @@ public class UserManager {
             protected void onSuccess(UserBean data) {
                 saveUser(data.getResultdata());
                 EventBus.getDefault().post(new UserInfoEvent().setEventType(UserInfoEvent.UPDATE_USER_INFO));
-                EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
+                EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(UserManager.getUser().getShoppingCartNum()));
             }
         });
     }

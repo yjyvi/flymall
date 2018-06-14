@@ -238,7 +238,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             imageView.setFocusableInTouchMode(false);
             createView(imageView, getResources().getDimensionPixelOffset(R.dimen.dm_8), R.drawable.rect_home_brands_false);
             mLlPoint.addView(imageView);
-            scaleView(imageView, 30, 8);
+//            scaleView(imageView, 30, 8);
         }
     }
 
@@ -251,7 +251,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
      */
     private void pointChange(int position) {
         View childAt = mLlPoint.getChildAt(position);
-
         if (lastView != null) {
             createView(lastView, getResources().getDimensionPixelOffset(R.dimen.dm_8), R.drawable.rect_home_brands_false);
             scaleView(childAt, 30, 8);

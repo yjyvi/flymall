@@ -12,9 +12,10 @@
 
 
         <LinearLayout
+
             android:id="@+id/fl"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm_400"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm_20"
             android:background="@color/withe"
             android:orientation="vertical">
@@ -34,8 +35,7 @@
                     android:includeFontPadding="false"
                     android:lines="1"
                     android:textColor="@color/good_price_red"
-                    android:textSize="@dimen/dm_18"
-                    android:text="$99"/>
+                    android:textSize="@dimen/dm_18"/>
 
                 <TextView
                     android:id="@+id/tv_select_tag"
@@ -68,12 +68,13 @@
 
 
             <android.support.v4.widget.NestedScrollView
+                android:layout_marginBottom="@dimen/dm_40"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dm_300">
+                android:layout_height="@dimen/dm_400">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/dm_400"
                     android:orientation="vertical">
 
                     <TextView
@@ -120,6 +121,7 @@
                         android:orientation="vertical"
                         android:id="@+id/rl_number"
                         android:layout_width="match_parent"
+                        android:layout_marginBottom="@dimen/dm_15"
                         android:layout_height="wrap_content"
                         android:background="@color/withe"
                         >
