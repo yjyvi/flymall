@@ -56,10 +56,13 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
     TextView mTvAgreement;
     private UMShareAPI mShareAPI;
     public LoginPresenter mLoginPresenter;
+    public boolean mIsExit;
 
     @Override
     protected void back() {
-        HomeTableActivity.startHomeTableView(this, 0);
+        if (mIsExit) {
+            HomeTableActivity.startHomeTableView(this, 0);
+        }
         finish();
     }
 
@@ -71,16 +74,26 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
 
     @Override
     protected void initViewData() {
-
+        mIsExit = getIntent().getBooleanExtra("isExit", false);
         mLoginPresenter = new LoginPresenter(this);
         String agreement = mTvAgreement.getText().toString().trim();
         TextColorChangeUtils.changeTextColor(mTvAgreement, agreement, 34, agreement.length() - 1, ContextCompat.getColor(this, R.color.normal_red));
         setTitle(getResources().getString(R.string.login));
+
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(LoginSelectedActivity.this).setShareConfig(config);
     }
 
 
     public static void start(Context context) {
         Intent starter = new Intent(context, LoginSelectedActivity.class);
+        context.startActivity(starter);
+    }
+
+    public static void start(Context context, boolean isExit) {
+        Intent starter = new Intent(context, LoginSelectedActivity.class);
+        starter.putExtra("isExit", isExit);
         context.startActivity(starter);
     }
 
@@ -93,7 +106,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                 break;
             case R.id.ll_mail_login:
                 selectedView(mLlMailLogin);
-                LoginActivity.start(view.getContext());
+                LoginActivity.start(view.getContext(), mIsExit);
                 finish();
                 break;
             case R.id.ll_facebook_login:
@@ -109,7 +122,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                 selectedView(mLlWechatLogin);
                 break;
             case R.id.tv_agreement:
-                CommonH5WebView.startCommonH5WebView(view.getContext(),CommonConstant.Common.AGREEMENT,"User Agreement");
+                CommonH5WebView.startCommonH5WebView(view.getContext(), CommonConstant.Common.AGREEMENT, "User Agreement");
                 break;
             default:
                 break;
@@ -131,20 +144,17 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
     }
 
 
-    String unionid;//微信id
-    String nikeName;//昵称
-    String sex;//性别   1男2女
-    String headIcon;//头像
-    String originate;//1微信2qq3微博
+    String unionid = "";//微信id
+    String nikeName = "";//昵称
+    String sex = "";//性别   1男2女
+    String headIcon = "";//头像
+    String originate = "";//1微信2qq3微博
 
 
     public void quickLogin(SHARE_MEDIA shareMedia) {
-        UMShareConfig config = new UMShareConfig();
-        config.isNeedAuthOnGetUserInfo(true);
-        UMShareAPI.get(LoginSelectedActivity.this).setShareConfig(config);
-
         mShareAPI = UMShareAPI.get(LoginSelectedActivity.this);
         mShareAPI.getPlatformInfo(LoginSelectedActivity.this, shareMedia, umAuthListener);
+        mShareAPI.deleteOauth(LoginSelectedActivity.this, shareMedia, null);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
@@ -166,7 +176,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                     originate = "2";
                     break;
                 case WEIXIN://微信授权回调
-                    unionid = data.get("unionid");
+                    unionid = data.get("uid");
                     headIcon = data.get("profile_image_url");
                     nikeName = data.get("screen_name");
                     sex = data.get("gender").equals("男") ? "1" : "2";
@@ -185,21 +195,14 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
 
             }
             //第三方登录的请求
-            if (nikeName.length() > 6) {
-                name = nikeName.substring(0, 5);
-                nikeName = name;
-            }
-//            if (TextUtils.isEmpty(headIcon)) {
-//                headIcon = getResources().getString(R.string.service_host_address_photo) + "img/user.jpg";
-//            }
-            ToastUtils.showToast("授权成功");
+            ToastUtils.showToast("Successfully authorized");
             mLoginPresenter.emailLogin(unionid, "", originate, headIcon, sex, nikeName);
         }
 
 
         @Override
         public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
-            ToastUtils.showToast("授权失败");
+            ToastUtils.showToast("Authorization failed");
         }
 
         @Override
@@ -219,6 +222,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
         SPUtils.put(this, CommonConstant.Common.LAST_LOGIN_ID, userBean.getId());
         UserManager.saveUser(userBean);
         HomeTableActivity.startHomeTableView(LoginSelectedActivity.this, 0);
+        umAuthListener = null;
         finish();
     }
 }

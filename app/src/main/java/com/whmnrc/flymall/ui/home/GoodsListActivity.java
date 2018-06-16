@@ -129,6 +129,8 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         });
         if (UserManager.getUser() != null) {
             updateCartNum(UserManager.getUser().getShoppingCartNum());
+        }else {
+            mTvCartNum.setVisibility(View.GONE);
         }
 
         refresh.setOnRefreshLoadMoreListener(this);
@@ -206,6 +208,9 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 finish();
                 break;
             case R.id.ll_to_cart:
+                if (!UserManager.getIsLogin(this)) {
+                    return;
+                }
                 ShoppingCartActivity.start(view.getContext());
                 break;
             case R.id.tv_tab_synthesize:

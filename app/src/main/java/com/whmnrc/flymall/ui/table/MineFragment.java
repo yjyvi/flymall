@@ -149,6 +149,11 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
             R.id.tv_record, R.id.tv_collection, R.id.tv_video, R.id.tv_coupons
     })
     public void onClick(View view) {
+
+        if (!UserManager.getIsLogin(getActivity())) {
+            return;
+        }
+
         switch (view.getId()) {
             case R.id.iv_setting:
                 SettingActivity.start(view.getContext());

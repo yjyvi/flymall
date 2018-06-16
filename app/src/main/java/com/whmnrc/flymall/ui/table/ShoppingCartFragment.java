@@ -168,12 +168,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         mRvOtherGoods.requestFocus();
 
 
-        mRlRightTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editShopCart(!mRlRightTitle.isSelected());
-            }
-        });
+
 
         mShoppingCartAdapter.setOperationShoppingCartListener(new ShoppingCartAdapter.OperationShoppingCartListener() {
             @Override
@@ -256,9 +251,17 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     }
 
 
-    @OnClick({R.id.iv_all_check, R.id.tv_entry, R.id.tv_to_home})
+    @OnClick({R.id.iv_all_check, R.id.tv_entry, R.id.tv_to_home,R.id.rl_right_title})
     public void onClick(View view) {
+
+        if (!UserManager.getIsLogin(getActivity())) {
+            return;
+        }
+
         switch (view.getId()) {
+            case R.id.rl_right_title:
+                editShopCart(!mRlRightTitle.isSelected());
+                break;
             case R.id.iv_all_check:
                 checkedAll();
                 break;

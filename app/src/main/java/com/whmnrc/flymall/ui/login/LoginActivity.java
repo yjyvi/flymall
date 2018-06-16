@@ -47,16 +47,26 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
 
     private boolean mIsShow;
     public LoginPresenter mEmailLoginPresenter;
+    public boolean mIsExit;
 
     @Override
     protected int setLayoutId() {
         return R.layout.activity_login;
     }
 
+    @Override
+    protected void back() {
+        if (mIsExit) {
+            HomeTableActivity.startHomeTableView(this, 0);
+        } else {
+            super.back();
+        }
+    }
 
     @Override
     protected void initViewData() {
         setTitle(getResources().getString(R.string.login));
+        mIsExit = getIntent().getBooleanExtra("isExit", false);
         String agreement = mTvAgreement.getText().toString().trim();
         TextColorChangeUtils.changeTextColor(mTvAgreement, agreement, 34, agreement.length() - 1, ContextCompat.getColor(this, R.color.normal_red));
         mEmailLoginPresenter = new LoginPresenter(this);
@@ -76,7 +86,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
                 break;
             case R.id.tv_agreement:
                 //用户协议
-                CommonH5WebView.startCommonH5WebView(view.getContext(),CommonConstant.Common.AGREEMENT,"User Agreement");
+                CommonH5WebView.startCommonH5WebView(view.getContext(), CommonConstant.Common.AGREEMENT, "User Agreement");
                 break;
 
             default:
@@ -110,6 +120,12 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
 
     public static void start(Context context) {
         Intent starter = new Intent(context, LoginActivity.class);
+        context.startActivity(starter);
+    }
+
+    public static void start(Context context, boolean isExit) {
+        Intent starter = new Intent(context, LoginActivity.class);
+        starter.putExtra("isExit", isExit);
         context.startActivity(starter);
     }
 

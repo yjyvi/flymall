@@ -80,6 +80,11 @@ public class SPUtils {
         return sp.getBoolean(key, false);
     }
 
+    public static String  getStringToken(Context context, String key) {
+        SharedPreferences sp = context.getSharedPreferences("token", Context.MODE_PRIVATE);
+        return sp.getString(key,"");
+    }
+
     /**
      * 清空首选项
      *

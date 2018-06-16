@@ -91,7 +91,7 @@ public class MyApplication extends MultiDexApplication {
             @Override
             public void onSuccess(String deviceToken) {
                 //注册成功会返回device token
-                SPUtils.put(applicationContext, CommonConstant.Common.DEVICE_TOKEN, deviceToken);
+                SPUtils.putTokend(applicationContext, CommonConstant.Common.DEVICE_TOKEN, deviceToken);
                 Log.e("deviceToken", deviceToken);
             }
 
@@ -115,18 +115,15 @@ public class MyApplication extends MultiDexApplication {
         @Override
         public void handleMessage(Context context, UMessage uMessage) {
             super.handleMessage(context, uMessage);
-            Log.e("MyApplication", uMessage.custom);
             JSONObject jsonObject = JSON.parseObject(uMessage.custom);
             int msageType = jsonObject.getInteger("AppMsgType");
-            String appId;
+            String appID = jsonObject.getString("AppID");
             switch (msageType) {
                 case 1:
-                    appId = jsonObject.getString("AppID");
-                    OrderDetailsActivity.start(context, appId);
+                    OrderDetailsActivity.start(context, appID);
                     break;
                 case 2:
-                    appId = jsonObject.getString("AppID");
-                    GoodsDetailsActivity.start(context, appId);
+                    GoodsDetailsActivity.start(context, appID);
                     break;
                 default:
                     break;

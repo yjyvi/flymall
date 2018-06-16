@@ -35,7 +35,7 @@ public class LoginPresenter extends PresenterBase {
         params.put("HeadImg", headImg);
         params.put("Sex", sex);
         params.put("NickName", nickname);
-        params.put("DeviceID", SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.DEVICE_TOKEN));
+        params.put("DeviceID", SPUtils.getStringToken(MyApplication.applicationContext, CommonConstant.Common.DEVICE_TOKEN));
         params.put("LoginDevice", "0");
         OKHttpManager.postString(getUrl(R.string.Login), JSON.toJSONString(params), new CommonCallBack<UserBean>() {
             @Override

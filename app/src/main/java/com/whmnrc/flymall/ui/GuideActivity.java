@@ -14,8 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.ui.login.LoginActivity;
+import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
         mRl = (RelativeLayout) findViewById(R.id.rl);
 
         //权限初始化
-        SPUtils.putTokend(this, CommonConstant.Common.FIRST_LAUNCHER, true);
+        SPUtils.putTokend(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER, true);
         mGestureDetector = new GestureDetector(this, myGestureListener);
         //将主容器的监听交给本activity，本activity再交给mGestureDetector
         mViewpager.setOnTouchListener(this);
@@ -113,7 +114,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        LoginActivity.start(GuideActivity.this);
+                        LoginSelectedActivity.start(GuideActivity.this);
                         finish();
                     }
                 });
@@ -137,7 +138,7 @@ public class GuideActivity extends BaseActivity implements View.OnClickListener,
             float x2 = e2.getX() - e1.getX();
             if (x > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {
                 if (arg2tem == 2) {
-                    LoginActivity.start(GuideActivity.this);
+                    LoginSelectedActivity.start(GuideActivity.this);
                     finish();
                 }
             } else if (x2 > FLING_MIN_DISTANCE && Math.abs(velocityX) > FLING_MIN_VELOCITY) {

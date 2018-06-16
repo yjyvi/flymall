@@ -4,13 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.SPUtils;
 
 import butterknife.BindView;
@@ -56,12 +55,12 @@ public class AdvertisingActivity extends BaseActivity {
     }
 
     private void goToHome() {
-        if (SPUtils.getBooleanToken(getApplicationContext(), CommonConstant.Common.FIRST_LAUNCHER)) {
-            if (TextUtils.isEmpty(SPUtils.getString(getApplicationContext(), CommonConstant.Common.LAST_LOGIN_ID))) {
-                LoginSelectedActivity.start(AdvertisingActivity.this);
-            } else {
+        if (SPUtils.getBooleanToken(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER)) {
+//            if (TextUtils.isEmpty(SPUtils.getString(getApplicationContext(), CommonConstant.Common.LAST_LOGIN_ID))) {
+//                LoginSelectedActivity.start(AdvertisingActivity.this);
+//            } else {
                 HomeTableActivity.startHomeTableView(AdvertisingActivity.this, 0);
-            }
+//            }
         } else {
             GuideActivity.startGuideActivity(AdvertisingActivity.this);
         }

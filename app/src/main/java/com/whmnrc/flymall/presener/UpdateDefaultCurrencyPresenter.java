@@ -24,6 +24,9 @@ public class UpdateDefaultCurrencyPresenter extends PresenterBase {
     }
 
     public void updateDefaultCurrency(String currencyID) {
+        if (UserManager.getUser() == null) {
+            return;
+        }
         HashMap<String, String> paramters = new HashMap<>(2);
         paramters.put("Currency_ID", currencyID);
         paramters.put("UserInfo_ID", UserManager.getUser().getId());

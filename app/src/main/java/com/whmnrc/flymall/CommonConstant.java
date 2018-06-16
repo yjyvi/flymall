@@ -86,5 +86,9 @@ public class CommonConstant {
          * 分类缓存数据
          */
         public static final String CLASSIFY_DATA = "classify_data";
+        /**
+         * 首次设置货币显示
+         */
+        public static final String FIRST_SETTING_CURRENCY = "first_setting_currency";
     }
 }

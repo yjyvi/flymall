@@ -154,7 +154,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             }
         });
 
-        if (SPUtils.getBoolean(getActivity(), CommonConstant.Common.FIRST_LAUNCHER)) {
+        if (!SPUtils.getBoolean(MyApplication.applicationContext, CommonConstant.Common.FIRST_SETTING_CURRENCY)) {
             mGetAllCurrencyPresenter.getAllCurrency();
         }
 
@@ -547,10 +547,14 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
                     return;
                 }
 
-                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId);
+//                mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(currencyId);
                 mCurrencyPrice = currencyPrice;
                 mCurrencyCode = code;
                 mPopCurrenty.dismiss();
+                SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
+                SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
+                SPUtils.put(MyApplication.applicationContext,CommonConstant.Common.FIRST_SETTING_CURRENCY,true);
+                EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_CURRENCY));
             }
         });
     }

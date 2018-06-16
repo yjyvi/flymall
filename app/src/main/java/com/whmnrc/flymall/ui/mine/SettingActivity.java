@@ -37,7 +37,7 @@ public class SettingActivity extends BaseActivity {
     protected void initViewData() {
         EventBus.getDefault().register(this);
         setTitle("System settings");
-        CleanUpCaching();
+        cleanUpCaching();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SettingActivity extends BaseActivity {
                         .addSheetItem("confirm", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-                                mTvCache.post(new clearCache());
+                                mTvCache.post(new ClearCache());
                             }
 
 
@@ -73,18 +73,18 @@ public class SettingActivity extends BaseActivity {
                 AboutUsActivity.start(view.getContext());
                 break;
             case R.id.tv_sign_out:
+                finish();
+//                EventBus.getDefault().post(new HomeTableChangeEvent().setEventType(HomeTableChangeEvent.CHANGE_TAB).setData(0));
                 UserManager.clearUser();
                 SPUtils.put(SettingActivity.this, CommonConstant.Common.LAST_LOGIN_ID, "");
-                LoginSelectedActivity.start(SettingActivity.this);
-                finish();
-                EventBus.getDefault().post(new HomeTableChangeEvent().setEventType(HomeTableChangeEvent.CHANGE_TAB).setData(0));
+                LoginSelectedActivity.start(SettingActivity.this,true);
                 break;
             default:
                 break;
         }
     }
 
-    private void CleanUpCaching() {
+    private void cleanUpCaching() {
         try {
             mTvCache.setText(DataCleanManager.getTotalCacheSize(this));
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class SettingActivity extends BaseActivity {
             switch (msg.what) {
                 case 0:
                     ToastUtils.showToast("Clean up completed");
-                    CleanUpCaching();
+                    cleanUpCaching();
                     break;
                 case 1:
                     ToastUtils.showToast("Cleaning failed");
@@ -117,7 +117,7 @@ public class SettingActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    class clearCache implements Runnable {
+    class ClearCache implements Runnable {
         @Override
         public void run() {
             try {
