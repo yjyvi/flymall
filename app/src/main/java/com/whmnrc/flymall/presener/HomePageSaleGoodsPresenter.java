@@ -34,7 +34,14 @@ public class HomePageSaleGoodsPresenter extends PresenterBase {
                     mHomeSaleGoodsListener.loadHomeSaleGoodsSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
+                    mHomeSaleGoodsListener.laodHomeSaleField();
                 }
+            }
+
+            @Override
+            protected void onError(String msg) {
+                super.onError(msg);
+                mHomeSaleGoodsListener.laodHomeSaleField();
             }
         });
     }
@@ -42,6 +49,7 @@ public class HomePageSaleGoodsPresenter extends PresenterBase {
 
     public interface HomeSaleGoodsListener {
         void loadHomeSaleGoodsSuccess(List<HomeSaleGoodsBean.ResultdataBean> resultdataBean);
+        void laodHomeSaleField();
     }
 
 }

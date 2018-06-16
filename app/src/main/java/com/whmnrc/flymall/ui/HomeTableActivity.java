@@ -126,8 +126,9 @@ public class HomeTableActivity extends BaseActivity {
         ft.commit();
         mIndex = position;
 
-
-        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+        if (UserManager.getUser() != null) {
+            showCartNum(UserManager.getUser().getShoppingCartNum());
+        }
     }
 
 
@@ -171,12 +172,20 @@ public class HomeTableActivity extends BaseActivity {
     public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
         if (sHopCartEvent.getEventType() == SHopCartEvent.SHOPPING_CARR_NUM) {
             int data = (int) sHopCartEvent.getData();
-            if (data == 0) {
-                mTvCartNum.setVisibility(View.GONE);
-            } else {
-                mTvCartNum.setVisibility(View.VISIBLE);
-                mTvCartNum.setText(String.valueOf(data));
-            }
+            showCartNum(data);
+        }
+    }
+
+    /**
+     * 显示购物车数量
+     * @param data
+     */
+    private void showCartNum(int data) {
+        if (data == 0) {
+            mTvCartNum.setVisibility(View.GONE);
+        } else {
+            mTvCartNum.setVisibility(View.VISIBLE);
+            mTvCartNum.setText(String.valueOf(data));
         }
     }
 

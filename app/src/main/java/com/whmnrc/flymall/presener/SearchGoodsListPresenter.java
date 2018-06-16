@@ -1,5 +1,7 @@
 package com.whmnrc.flymall.presener;
 
+import android.text.TextUtils;
+
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.SearchResultBean;
 import com.whmnrc.flymall.network.CommonCallBack;
@@ -26,14 +28,27 @@ public class SearchGoodsListPresenter extends PresenterBase {
     public void getSearchGoodsList(String searchContent, String cid, String bid, String aid, String orderKey, String orderType, int page, int rows) {
 
         HashMap<String, String> paramters = new HashMap<>(8);
-        paramters.put("keyword", searchContent);
-        paramters.put("CategoryId", cid);
-        paramters.put("BrandId", bid);
-        paramters.put("AttrIds", aid);
+
+        if (!TextUtils.isEmpty(searchContent)) {
+            paramters.put("keyword", searchContent);
+        }
+
+        if (!TextUtils.isEmpty(cid)) {
+            paramters.put("CategoryId", cid);
+        }
+
+        if (!TextUtils.isEmpty(bid)) {
+            paramters.put("BrandId", bid);
+        }
+
+        if (!TextUtils.isEmpty(aid)) {
+            paramters.put("AttrIds", aid);
+        }
+
         paramters.put("OrderKey", orderKey);
         paramters.put("OrderType", orderType);
         paramters.put("PageNo", String.valueOf(page));
-        paramters.put("PageSize", String.valueOf(rows));
+        paramters.put("PageSize", "10");
 
         OKHttpManager.get(getUrl(R.string.Search), paramters, new CommonCallBack<SearchResultBean>() {
             @Override

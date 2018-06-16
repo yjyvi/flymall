@@ -43,8 +43,7 @@ public class CouponsActivity extends BaseActivity implements CouponListPresenter
 
     @Override
     protected void initViewData() {
-
-            setTitle("Coupon");
+        setTitle("Coupon");
         EventBus.getDefault().register(this);
         mCouponListPresenter = new CouponListPresenter(this);
         mCouponListPresenter.getCouponList(page, rows);
@@ -85,7 +84,7 @@ public class CouponsActivity extends BaseActivity implements CouponListPresenter
 
     public void showEmpty() {
         if (mCouponsAdapter != null && mCouponsAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true,"No coupon", R.mipmap.no_coupon, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No coupon", R.mipmap.no_coupon, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
                 mVsEmpty.setVisibility(View.GONE);

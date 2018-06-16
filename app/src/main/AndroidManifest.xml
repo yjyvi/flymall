@@ -231,10 +231,9 @@
         <activity android:name="com.paypal.android.sdk.payments.ProfileSharingConsentActivity" />
         <activity android:name=".ui.mine.AboutUsActivity"/>
         <activity android:name=".ui.mine.PayResultActivity"/>
+        <activity android:name=".views.MyVideoPlayGoods"/>
 
-        <service
-            android:name="com.paypal.android.sdk.payments.PayPalService"
-            android:exported="false" />
+        <service android:name="com.paypal.android.sdk.payments.PayPalService"/>
     </application>
 
 </manifest>

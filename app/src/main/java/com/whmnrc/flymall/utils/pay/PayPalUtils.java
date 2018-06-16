@@ -9,6 +9,7 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalPaymentDetails;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
+import com.whmnrc.flymall.presener.TTPayPresenter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
  * @data 2018/6/7.
  */
 
-public class PayPalUtils {
+public class PayPalUtils implements TTPayPresenter.TTPayOrderListener {
 
     public static final String TAG = "paymentExample";
     /**
@@ -35,8 +36,8 @@ public class PayPalUtils {
 
     private static PayPalConfiguration paypalConfig = new PayPalConfiguration()
             .environment(Config.PAYPAL_ENVIRONMENT)
-            .defaultUserEmail("sql_316-buyer@163.com")
-            .merchantName("sql_316-facilitator@163.com")
+            .defaultUserEmail("sql_316-test@163.com")
+            .sandboxUserPassword("1234567890")
             .clientId(Config.PAYPAL_CLIENT_ID);
 
     private Activity mContext;
@@ -44,10 +45,15 @@ public class PayPalUtils {
     private String orderId;
     public static final int REQUEST_CODE_PAYMENT = 1;
 
+    @Override
+    public void payOrderSuccess(boolean isSuccess) {
+
+    }
+
 
     public class Config {
         // PayPal app configuration
-        public static final String PAYPAL_CLIENT_ID = "AUY01sO4jBJWL-fk8K0M55Zq_syV_9PTGlsMaJSydTMZ9yHJZ1V4kn7WguQSwuU9599lndppg_jjn2fS";
+        public static final String PAYPAL_CLIENT_ID = "Ac-IqWBpbeR4mMtVIW6rQiNFbuWs1rI30zBlfn9ND7MX6j4HagcnGIIVu9KGsOzRr4-jVL7Nq0rx6KJn";
         public static final String PAYPAL_CLIENT_SECRET = "secret 前端用不到";
         //正式环境
         // private public final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
@@ -55,9 +61,13 @@ public class PayPalUtils {
         public static final String PAYMENT_INTENT = PayPalPayment.PAYMENT_INTENT_SALE;
         public static final String DEFAULT_CURRENCY = "USD";//美元
 
+
+
+
     }
 
     public  void initPayPalUtils(Activity context,String orderId,String orderMoney) {
+
         this.mContext = context;
         this.orderId = orderId;
         this.orderMoney= orderMoney;
@@ -79,7 +89,7 @@ public class PayPalUtils {
 
 //        PayPalPayment thingsToBuy = prepareFinalCart();
 
-        PayPalPayment payment = new PayPalPayment(new BigDecimal("1.75"), "USD", "sample item",
+        PayPalPayment payment = new PayPalPayment(new BigDecimal(orderMoney), "USD", orderId,
                 PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent intent = new Intent(mContext, PaymentActivity.class);

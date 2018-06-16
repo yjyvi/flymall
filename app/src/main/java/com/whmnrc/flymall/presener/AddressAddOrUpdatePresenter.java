@@ -25,20 +25,22 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
     }
 
 
-    public void addOrUpdateAddress(final boolean isAdd, String tel, String firstName, String lastName, String detail, String city, String provice, String region, String addressDetail2, String addressZipCode, int defaultAddress) {
+    public void addOrUpdateAddress(final boolean isAdd,String addressId, String tel, String firstName, String lastName, String address, String city, String provice, String country, String address2, String addressZipCode, int defaultAddress,String stringName) {
         HashMap<String, String> paramters = new HashMap<>();
         paramters.put("UserId", UserManager.getUser().getId());
+        paramters.put("Id", addressId);
         paramters.put("Phone", tel);
         paramters.put("ShipTo", firstName);
         paramters.put("Address_LastName", lastName);
-        paramters.put("Address", detail);
+        paramters.put("Address", address);
+        paramters.put("Address_Address2", address2);
         paramters.put("Address_City", city);
-        paramters.put("Address_Country", region);
+        paramters.put("Address_Country", country);
         paramters.put("Address_Provice", provice);
-        paramters.put("Address_Address2", addressDetail2);
         paramters.put("Address_ZipCode", addressZipCode);
         paramters.put("Address_IsDefault", String.valueOf(defaultAddress));
-        String url= getUrl(R.string.AddAddress);
+        paramters.put("Address_StateProvince", stringName);
+        String url = getUrl(R.string.AddAddress);
         OKHttpManager.postString(url, JSON.toJSONString(paramters), new CommonCallBack<AddressBean>() {
             @Override
             protected void onSuccess(AddressBean data) {

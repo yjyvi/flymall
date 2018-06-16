@@ -14,9 +14,9 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.CollectionAdapter;
 import com.whmnrc.flymall.beans.CollectionListBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
 import com.whmnrc.flymall.presener.AddOrDelCollectionGoodsPresenter;
 import com.whmnrc.flymall.presener.CollectionListPresenter;
+import com.whmnrc.flymall.presener.MultipleDelCollectionPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
@@ -34,7 +34,7 @@ import butterknife.OnClick;
  * @data 2018/5/23.
  */
 
-public class CollectionActivity extends BaseActivity implements AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, CollectionAdapter.CollectionOpertionListener, CollectionListPresenter.CollectionListListener, OnRefreshLoadMoreListener {
+public class CollectionActivity extends BaseActivity implements AddOrDelCollectionGoodsPresenter.AddOrDelCollectionGoodsListener, CollectionAdapter.CollectionOpertionListener, CollectionListPresenter.CollectionListListener, OnRefreshLoadMoreListener, MultipleDelCollectionPresenter.MultipleDelCollectionListener {
 
     @BindView(R.id.vs_empty)
     ViewStub mVsEmpty;
@@ -52,11 +52,13 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
     private CollectionListBean.ResultdataBean mDelGoodsBean;
     private Map<String, Integer> collections = new TreeMap<>();
     private boolean isAllChecked;
+    public MultipleDelCollectionPresenter mMultipleDelCollectionPresenter;
+    private boolean isPageMax;
 
     @Override
     protected void initViewData() {
         setTitle("My favorite");
-
+        mMultipleDelCollectionPresenter = new MultipleDelCollectionPresenter(this);
         mAddOrDelCollectionGoodsPresenter = new AddOrDelCollectionGoodsPresenter(this);
         mCollectionListPresenter = new CollectionListPresenter(this);
         mCollectionListPresenter.getCollectionList(1, page);
@@ -106,17 +108,21 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
                 break;
             case R.id.tv_entry:
                 if (collections.size() <= 0) {
-                    ToastUtils.showToast("请选择要删除的商品");
+                    ToastUtils.showToast("Please select the item to be deleted");
                     return;
                 }
                 StringBuilder cartIdSt = new StringBuilder();
                 for (String cartId : collections.keySet()) {
                     cartIdSt.append(cartId).append(",");
                 }
+                String result;
+                if (collections.size() > 1) {
+                    result = cartIdSt.toString().substring(0, cartIdSt.toString().length() - 1);
+                } else {
+                    result = cartIdSt.toString();
+                }
 
-                String result = cartIdSt.toString().substring(0, cartIdSt.toString().length() - 1);
-
-                isCancelCollection(result);
+                isCancelCollection(result, false);
                 break;
             default:
                 break;
@@ -149,17 +155,21 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
     @Override
     public void delCollection(final CollectionListBean.ResultdataBean good) {
         mDelGoodsBean = good;
-        isCancelCollection(String.valueOf(good.getId()));
+        isCancelCollection(String.valueOf(good.getId()), true);
     }
 
-    private void isCancelCollection(final String collectionId) {
+    private void isCancelCollection(final String collectionId, final boolean isOne) {
         new AlertDialog(this).builder().setTitle("Warning!")
                 .setMsg("Are you sure you want to delete the collection goods?")
                 .setCancelable(true)
                 .setPositiveButton("agree", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mAddOrDelCollectionGoodsPresenter.delCollection(collectionId);
+                        if (isOne) {
+                            mAddOrDelCollectionGoodsPresenter.delCollection(collectionId);
+                        } else {
+                            mMultipleDelCollectionPresenter.multipleDelCollection(collectionId);
+                        }
                     }
                 })
                 .setNegativeButton("cancel", new View.OnClickListener() {
@@ -182,7 +192,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
 
     public void showEmpty() {
         if (mCollectionAdapter != null && mCollectionAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, "No Collections", R.mipmap.no_search,mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No Collections", R.mipmap.no_search, mVsEmpty);
         } else {
             mVsEmpty.setVisibility(View.GONE);
         }
@@ -197,21 +207,27 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
             datas.addAll(resultdataBeanList);
             mCollectionAdapter.setDataArray(datas);
         }
+        if (resultdataBeanList == null) {
+            isPageMax = true;
+        } else {
+            isPageMax = false;
+        }
         mCollectionAdapter.notifyDataSetChanged();
 
         showEmpty();
     }
 
-    @Override
-    public void getHistoryListSuccess(List<GoodsListBean.ResultdataBean> resultdataBeanList) {
 
-    }
 
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
+        refreshLayout.finishLoadMore();
+        if (isPageMax) {
+            mRefresh.setNoMoreData(true);
+            return;
+        }
         page++;
         mCollectionListPresenter.getCollectionList(1, page);
-        refreshLayout.finishLoadMore();
     }
 
     @Override
@@ -219,5 +235,10 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
         page = 1;
         mCollectionListPresenter.getCollectionList(1, page);
         refreshLayout.finishRefresh();
+    }
+
+    @Override
+    public void delMultipleCollectionSuccess() {
+        mRefresh.autoRefresh();
     }
 }

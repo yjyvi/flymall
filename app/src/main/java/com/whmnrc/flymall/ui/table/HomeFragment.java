@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -35,14 +36,15 @@ import com.whmnrc.flymall.presener.HomePageSaleGoodsPresenter;
 import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.home.ActivityGoodsListActivity;
-import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.home.GoodsListActivity;
 import com.whmnrc.flymall.ui.home.homebrands.HomeBrandsFragment;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.UIUtils;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
 import com.whmnrc.flymall.views.LoadingDialog;
+import com.whmnrc.flymall.views.MyVideoPlayGoods;
 import com.whmnrc.flymall.views.PopCurrency;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 import com.youth.banner.Banner;
@@ -114,6 +116,10 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
     public HomePageSaleGoodsPresenter mHomePageSaleGoodsPresenter;
     private LoadingDialog mLoadingDialog;
     private String mCurrencyCode;
+    /**
+     * 品牌的一页显示的最大数据
+     */
+    private int pageMax = 10;
 
     @Override
     protected int contentViewLayoutID() {
@@ -124,32 +130,29 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
     @Override
     protected void initViewData() {
 
-        mLoadingDialog = new LoadingDialog(getActivity());
-        mLoadingDialog.show();
-
         EventBus.getDefault().register(this);
 
-        showEmpty();
+        mLoadingDialog = new LoadingDialog(getActivity());
+        mLoadingDialog.show();
 
         mRefresh.setOnRefreshLoadMoreListener(this);
 
         requestNoTouch();
-
-
         initVideoList();
         initSaleList();
 
         mGetAllCurrencyPresenter = new GetAllCurrencyPresenter(this);
         mUpdateDefaultCurrencyPresenter = new UpdateDefaultCurrencyPresenter(this);
         mHomePageActivityGoodsPresenter = new HomePageActivityGoodsPresenter(this);
+
         mHomePageActivityGoodsPresenter.getHomePageActivityGoods();
+
         mTvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 GoodsListActivity.start(v.getContext(), "0");
             }
         });
-
 
         if (SPUtils.getBoolean(getActivity(), CommonConstant.Common.FIRST_LAUNCHER)) {
             mGetAllCurrencyPresenter.getAllCurrency();
@@ -197,7 +200,14 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                GoodsDetailsActivity.start(view.getContext(), String.valueOf(mAdapter.getDatas().get(position).getProductId()));
+                HomeDataBean.ResultdataBean.VideosBean videosBean = mAdapter.getDatas().get(position);
+                String videoUrl;
+                if (!videosBean.getVideoUrl().startsWith("http")) {
+                    videoUrl = getResources().getString(R.string.service_host_image) + videosBean.getVideoUrl();
+                } else {
+                    videoUrl = videosBean.getVideoUrl();
+                }
+                MyVideoPlayGoods.start(view.getContext(), videoUrl, videosBean.getDescription(), String.valueOf(videosBean.getProductId()));
             }
 
             @Override
@@ -221,24 +231,38 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         mRvSaleList.setAdapter(mGoodListAdapter);
     }
 
+    /**
+     * 请求轮播图、视频、品牌数据
+     */
     private void initData() {
         mHomePageBannerPresenter = new HomePageDataPresenter(this);
         mHomePageBannerPresenter.getHomePageBanner();
+
+        showCahceData();
+    }
+
+    /**
+     * 显示缓存数据
+     */
+    private void showCahceData() {
+        String homeData2 = SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA2);
+
+        if (!TextUtils.isEmpty(homeData2)) {
+            List<HomeActivityGoodsBean.ResultdataBean> resultdataBean = JSON.parseArray(homeData2, HomeActivityGoodsBean.ResultdataBean.class);
+            initHomeActivityData(resultdataBean);
+        }
+
     }
 
     /**
      * 创建点
      */
-
     private void addPoint(int brandsPage) {
         mLlPoint.removeAllViews();
         for (int i = 0; i < brandsPage; i++) {
             View imageView = new View(getActivity());
-            imageView.setFocusable(false);
-            imageView.setFocusableInTouchMode(false);
             createView(imageView, getResources().getDimensionPixelOffset(R.dimen.dm_8), R.drawable.rect_home_brands_false);
             mLlPoint.addView(imageView);
-//            scaleView(imageView, 30, 8);
         }
     }
 
@@ -253,14 +277,19 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         View childAt = mLlPoint.getChildAt(position);
         if (lastView != null) {
             createView(lastView, getResources().getDimensionPixelOffset(R.dimen.dm_8), R.drawable.rect_home_brands_false);
-            scaleView(childAt, 30, 8);
         }
 
         lastView = childAt;
         createView(childAt, getResources().getDimensionPixelOffset(R.dimen.dm_30), R.drawable.rect_home_brands_true);
-        scaleView(childAt, 8, 30);
     }
 
+    /**
+     * 创建品牌页面点
+     *
+     * @param childAt
+     * @param width
+     * @param resid
+     */
     private void createView(View childAt, int width, int resid) {
         childAt.setBackgroundResource(resid);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -269,15 +298,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         layoutParams.setMargins(0, 0, 10, 0);
         childAt.setLayoutParams(layoutParams);
     }
-
-    private void scaleView(View view, int star, int end) {
-//        ScaleAnimation scaleAnimation = new ScaleAnimation(star, end, 0, 0);
-//        scaleAnimation.setDuration(500);
-//        view.setAnimation(scaleAnimation);
-//        scaleAnimation.start();
-//        scaleAnimation.setFillAfter(true);
-    }
-
 
     /**
      * 初始化实例
@@ -315,12 +335,6 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         EventBus.getDefault().post(new HomeTableChangeEvent().setEventType(HomeTableChangeEvent.CHANGE_TAB).setData(2));
     }
 
-    @Subscribe
-    public void tabChangeEvent(HomeTableChangeEvent homeTableChangeEvent) {
-
-    }
-
-
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
         mRefresh.finishLoadMore(1000);
@@ -340,6 +354,47 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
     @Override
     public void loadHomeData(HomeDataBean homeDataBean) {
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA1, JSON.toJSONString(homeDataBean));
+        initHomeData(homeDataBean);
+    }
+
+    @Override
+    public void laodHomeDataField() {
+        String homeData1 = SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA1);
+        if (!TextUtils.isEmpty(homeData1)) {
+            initHomeData(JSON.parseObject(homeData1, HomeDataBean.class));
+        }
+    }
+
+    @Override
+    public void loadActivityGoodsSuccess(final List<HomeActivityGoodsBean.ResultdataBean> resultdataBean) {
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA2, JSON.toJSONString(resultdataBean));
+        initHomeActivityData(resultdataBean);
+    }
+
+    @Override
+    public void loadHomeSaleGoodsSuccess(List<HomeSaleGoodsBean.ResultdataBean> resultdataBean) {
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA3, JSON.toJSONString(resultdataBean));
+        initSaleGoodsList(resultdataBean);
+        mLoadingDialog.dismiss();
+    }
+
+    @Override
+    public void laodHomeSaleField() {
+        String homeData3 = SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.HOME_CACHE_DATA3);
+        if (!TextUtils.isEmpty(homeData3)) {
+            List<HomeSaleGoodsBean.ResultdataBean> resultdataBean = JSON.parseArray(homeData3, HomeSaleGoodsBean.ResultdataBean.class);
+            initSaleGoodsList(resultdataBean);
+        }
+    }
+
+
+    /**
+     * 显示首页轮播图、视频、品眚数据
+     *
+     * @param homeDataBean
+     */
+    private void initHomeData(HomeDataBean homeDataBean) {
         mBanner.setDelayTime(3000).setImages(homeDataBean.getResultdata().getBanners()).setImageLoader(new ImageLoader() {
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
@@ -366,14 +421,14 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
         List<HomeDataBean.ResultdataBean.BrandsBean> brands = homeDataBean.getResultdata().getBrands();
         int size = brands.size();
-        int brandsPage = (size / pageMax) + 1;
+        int brandsPage = (size / pageMax);
 
         ArrayList<ArrayList<HomeDataBean.ResultdataBean.BrandsBean>> onPageVideoLists = new ArrayList<>();
         ArrayList<HomeDataBean.ResultdataBean.BrandsBean> onPageVideoList;
         for (int i = 0; i < brandsPage; i++) {
             onPageVideoList = new ArrayList<>();
             int maxNum;
-            if (i == brandsPage - 1) {
+            if (i == brandsPage) {
                 maxNum = i * pageMax + size % pageMax;
             } else {
                 maxNum = i * pageMax + 10;
@@ -409,16 +464,15 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             }
         });
         pointChange(0);
-
-
     }
 
 
-    private int pageMax = 10;
-
-
-    @Override
-    public void loadActivityGoodsSuccess(final List<HomeActivityGoodsBean.ResultdataBean> resultdataBean) {
+    /**
+     * 显示首页活动数据
+     *
+     * @param resultdataBean
+     */
+    private void initHomeActivityData(final List<HomeActivityGoodsBean.ResultdataBean> resultdataBean) {
         GlideUtils.LoadImage(getActivity(), resultdataBean.get(0).getImageUrl(), mIvActivity1);
         GlideUtils.LoadImage(getActivity(), resultdataBean.get(1).getImageUrl(), mIvActivity2);
         GlideUtils.LoadImage(getActivity(), resultdataBean.get(2).getImageUrl(), mIvActivity3);
@@ -458,9 +512,13 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         });
     }
 
-    @Override
-    public void loadHomeSaleGoodsSuccess(List<HomeSaleGoodsBean.ResultdataBean> resultdataBean) {
 
+    /**
+     * 显示底部商品列表
+     *
+     * @param resultdataBean
+     */
+    private void initSaleGoodsList(List<HomeSaleGoodsBean.ResultdataBean> resultdataBean) {
         if (page == 1) {
             mGoodListAdapter.setDataArray(resultdataBean);
         } else {
@@ -472,7 +530,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         }
         mGoodListAdapter.notifyDataSetChanged();
 
-        mLoadingDialog.dismiss();
+
     }
 
 
@@ -502,6 +560,19 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
     public void updateSuccess(String msg) {
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
+        EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_CURRENCY));
+    }
 
+
+    /**
+     * 修改货币显示
+     *
+     * @param goodsCommentEvent
+     */
+    @Subscribe
+    public void changePrice(GoodsCommentEvent goodsCommentEvent) {
+        if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_CURRENCY) {
+            mGoodListAdapter.notifyDataSetChanged();
+        }
     }
 }

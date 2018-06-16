@@ -70,5 +70,21 @@ public class CommonConstant {
          * 设备的ID
          */
         public static final String DEVICE_TOKEN = "device_token";
+        /**
+         * 首页轮播图、视频、品牌缓存数据
+         */
+        public static final String HOME_CACHE_DATA1 = "home_cache_data1";
+        /**
+         * 首页活动列表缓存数据
+         */
+        public static final String HOME_CACHE_DATA2 = "home_cache_data2";
+        /**
+         * 首页销售商品列表缓存数据
+         */
+        public static final String HOME_CACHE_DATA3 = "home_cache_data3";
+        /**
+         * 分类缓存数据
+         */
+        public static final String CLASSIFY_DATA = "classify_data";
     }
 }

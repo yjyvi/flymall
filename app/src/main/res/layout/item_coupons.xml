@@ -11,37 +11,39 @@
     android:orientation="vertical"
     android:padding="@dimen/dm_7">
 
-
-    <TextView
-        android:id="@+id/tv_coupons_title"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dm_140"
-        android:layout_marginRight="@dimen/dm_15"
-        android:text="100 coupons can be used"
-        android:textColor="@color/normal_gray"
-        android:textSize="@dimen/dm_13"/>
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/dm_165"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_coupons_money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_coupons_title"
-        android:layout_marginLeft="@dimen/dm_140"
-        android:text="$50.5669"
-        android:textColor="@color/good_price_red"
-        android:textSize="@dimen/dm_24"/>
+        <TextView
+            android:id="@+id/tv_coupons_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dm_15"
+            android:text="100 coupons can be used"
+            android:textColor="@color/normal_gray"
+            android:textSize="@dimen/dm_13"/>
 
-    <TextView
-        android:id="@+id/tv_coupons_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_coupons_money"
-        android:layout_marginLeft="@dimen/dm_140"
-        android:paddingBottom="@dimen/dm_5"
-        android:text="Voucher"
-        android:textColor="@color/black"
-        android:textSize="@dimen/dm_12"/>
+        <TextView
+            android:id="@+id/tv_coupons_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$50.5669"
+            android:textColor="@color/good_price_red"
+            android:textSize="@dimen/dm_24"/>
+
+        <TextView
+            android:id="@+id/tv_coupons_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dm_5"
+            android:text="Voucher"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dm_12"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_coupons_time"

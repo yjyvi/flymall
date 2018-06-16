@@ -36,8 +36,12 @@ public class HomeSaleGoodListAdapter extends CommonAdapter<HomeSaleGoodsBean.Res
 
         if (goodsBean != null) {
             holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(goodsBean.getProductName()) ? "" : goodsBean.getProductName());
+            String imagePath = goodsBean.getImagePath();
             if (goodsBean.getImagePath() != null) {
-                GlideUtils.LoadImage(mContext, goodsBean.getImagePath(), (ImageView) holder.getView(R.id.iv_goods_img));
+                if (!goodsBean.getImagePath().endsWith(".png") || !goodsBean.getImagePath().endsWith(".jpg")) {
+                    imagePath += "/1.png";
+                }
+                GlideUtils.LoadImage(mContext, imagePath, (ImageView) holder.getView(R.id.iv_goods_img));
             }
 
             holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(goodsBean.getMinSalePrice()));

@@ -18,14 +18,14 @@ import com.whmnrc.flymall.adapter.ConfirmOrderGoodListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.presener.CancelOrReceiptOrderPresenter;
+import com.whmnrc.flymall.presener.CheckPaymentStatusForTTPresenter;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.WxShareUtils;
 import com.whmnrc.flymall.views.AlertDialog;
 import com.whmnrc.flymall.views.LoadingDialog;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -35,7 +35,7 @@ import butterknife.OnClick;
  * @data 2018/5/22.
  */
 
-public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener {
+public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener, CheckPaymentStatusForTTPresenter.CheckPaymentStatusForTTListener {
 
     @BindView(R.id.rv_goods_list)
     RecyclerView rvGoodsList;
@@ -71,6 +71,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     public ConfirmOrderGoodListAdapter mMOrderListAdapter;
     private OrderDeitalsBean.ResultdataBean orderBean;
     public CancelOrReceiptOrderPresenter mCancelOrReceiptOrderPresenter;
+    private CheckPaymentStatusForTTPresenter mCheckPaymentStatusForTTPresenter;
 
     @Override
     protected void initViewData() {
@@ -78,11 +79,12 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
         mCancelOrReceiptOrderPresenter = new CancelOrReceiptOrderPresenter(this);
         mLoadingDialog = new LoadingDialog(this);
-
+        mLoadingDialog.show();
         rvGoodsList.setNestedScrollingEnabled(false);
 
         mOrderId = getIntent().getStringExtra("orderId");
         mOrderDetailsPresenter = new OrderDetailsPresenter(this);
+        mCheckPaymentStatusForTTPresenter = new CheckPaymentStatusForTTPresenter(this);
         mOrderDetailsPresenter.getOrderDetails(mOrderId);
 
         rvGoodsList.setLayoutManager(new LinearLayoutManager(this));
@@ -139,36 +141,20 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 mTvCancelOrder.setText("Cancel");
                 mTvPayOrder.setText("Pay now");
                 break;
-//            case 1:
-//                mTvCancelOrder.setVisibility(View.GONE);
-//                mTvPayOrder.setVisibility(View.GONE);
-//                ll_bottom.setVisibility(View.GONE);
-//                break;
             case 2:
                 mTvCancelOrder.setVisibility(View.GONE);
                 mTvPayOrder.setVisibility(View.GONE);
                 ll_bottom.setVisibility(View.GONE);
                 break;
-            case 5:
-                ll_bottom.setVisibility(View.VISIBLE);
-                mTvCancelOrder.setVisibility(View.GONE);
-                mTvPayOrder.setText("evaluated");
-
-                break;
-//            case 4:
-//                mTvCancelOrder.setVisibility(View.GONE);
-//                mTvPayOrder.setVisibility(View.GONE);
-//                ll_bottom.setVisibility(View.GONE);
-//                break;
-//            case 5:
-//                mTvCancelOrder.setVisibility(View.GONE);
-//                mTvPayOrder.setVisibility(View.GONE);
-//                ll_bottom.setVisibility(View.GONE);
-//                break;
             case 3:
                 ll_bottom.setVisibility(View.VISIBLE);
                 mTvCancelOrder.setVisibility(View.GONE);
                 mTvPayOrder.setText("Confirm receipt");
+                break;
+            case 5:
+                ll_bottom.setVisibility(View.VISIBLE);
+                mTvCancelOrder.setVisibility(View.GONE);
+                mTvPayOrder.setText("evaluated");
                 break;
             default:
                 mTvCancelOrder.setVisibility(View.GONE);
@@ -177,9 +163,9 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 break;
         }
 
-
         mMOrderListAdapter.setDataArray(resultdataBean.getOrderItemInfo());
         mMOrderListAdapter.notifyDataSetChanged();
+        mLoadingDialog.dismiss();
     }
 
 
@@ -202,29 +188,26 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
                 //设置要传递的内容。
 //                intent.setData(Uri.parse(guanzhu_URL));
-
+                if (!WxShareUtils.isApplicationAvilible(this, "com.tencent.mm")) {
+                    ToastUtils.showToast("应用未安装");
+                    return;
+                }
                 intent.setPackage("com.tencent.mm");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 break;
             case R.id.tv_cancel_order:
-                if (orderBean.getOrderStatus() == 0) {
+                if (orderBean.getOrderStatus() == 1) {
                     receipOrCancelOrder(view, "Are you sure you want to Cancel the order?", true);
                 }
                 break;
             case R.id.tv_pay_order:
                 switch (orderBean.getOrderStatus()) {
                     case 1:
-
-//                        GoodsCommentActivity.start(view.getContext(), mOrderId, "");
-                        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
-                        addressBean.setAddress(orderBean.getAddress());
-                        addressBean.setPhone(orderBean.getCellPhone());
-                        addressBean.setAddress(orderBean.getShipTo());
-                        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), String.valueOf(orderBean.getProductTotalAmount()), JSON.toJSONString(addressBean));
+                        mCheckPaymentStatusForTTPresenter.getIsPayTT(String.valueOf(orderBean.getId()));
                         break;
                     case 5:
-                        OderCommentListActivity.start(view.getContext(), (ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean>) orderBean.getOrderItemInfo(), String.valueOf(orderBean.getId()), true);
+                        OderCommentListActivity.start(OrderDetailsActivity.this, JSON.toJSONString(orderBean.getOrderItemInfo()), String.valueOf(orderBean.getId()), true);
                         break;
                     case 3:
                         receipOrCancelOrder(view, "Do you want to confirm receipt?", false);
@@ -242,7 +225,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg(hinText)
                 .setCancelable(true)
-                .setPositiveButton("agree", new View.OnClickListener() {
+                .setPositiveButton("confirm", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (isCancel) {
@@ -268,6 +251,16 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
     @Override
     public void receiptSuccess() {
+
+    }
+
+    @Override
+    public void getIsPayTTSuccess(String orderId) {
+        AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
+        addressBean.setShipTo(orderBean.getShipTo());
+        addressBean.setPhone(orderBean.getCellPhone());
+        addressBean.setAddress(orderBean.getAddress());
+        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), orderBean.getProductTotalAmount(), JSON.toJSONString(addressBean));
 
     }
 }

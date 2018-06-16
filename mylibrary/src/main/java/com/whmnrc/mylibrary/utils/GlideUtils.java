@@ -100,10 +100,8 @@ public class GlideUtils {
     }
 
 
-    public static void LoadRoundImage(Context mContext, int path,
-                                      ImageView imageview) {
+    public static void LoadRoundImage(Context mContext, int path, ImageView imageview) {
         RequestOptions requestOptions = new RequestOptions();
-//        requestOptions.placeholder(R.color.back_gray);
         requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestOptions.transform(new GlideRoundTransform(mContext));
         requestOptions.placeholder(R.color.normal_gray);

@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.OrderCommentGoodListAdapter;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
@@ -15,6 +16,7 @@ import com.whmnrc.flymall.presener.GetCommentStatusPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -32,7 +34,7 @@ public class OderCommentListActivity extends BaseActivity implements GetCommentS
     private OrderCommentGoodListAdapter mAdapter;
     public ArrayList<OrderListBean.ResultdataBean.ItemInfoBean> mGoodsBean;
     public String mOrderId;
-    private ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean> goodsBeanDeitals;
+    private List<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean> goodsBeanDeitals;
 
 
     public boolean mIsOrderDeitals;
@@ -43,7 +45,7 @@ public class OderCommentListActivity extends BaseActivity implements GetCommentS
         setTitle("Product list");
         mIsOrderDeitals = getIntent().getBooleanExtra("isOrderDeitals", false);
         if (mIsOrderDeitals) {
-            goodsBeanDeitals = getIntent().getParcelableArrayListExtra("goodsBeanDeitals");
+            goodsBeanDeitals = JSON.parseArray(getIntent().getStringExtra("goodsBeanDeitals"), OrderDeitalsBean.ResultdataBean.OrderItemInfoBean.class);
         } else {
             mGoodsBean = getIntent().getParcelableArrayListExtra("goodsBean");
         }
@@ -99,9 +101,9 @@ public class OderCommentListActivity extends BaseActivity implements GetCommentS
     }
 
 
-    public static void start(Context context, ArrayList<OrderDeitalsBean.ResultdataBean.OrderItemInfoBean> goodsBean, String orderId, boolean isOrderDeitals) {
+    public static void start(Context context, String  goodsBean, String orderId, boolean isOrderDeitals) {
         Intent starter = new Intent(context, OderCommentListActivity.class);
-        starter.putParcelableArrayListExtra("goodsBeanDeitals", goodsBean);
+        starter.putExtra("goodsBeanDeitals", goodsBean);
         starter.putExtra("orderId", orderId);
         starter.putExtra("isOrderDeitals", isOrderDeitals);
         context.startActivity(starter);

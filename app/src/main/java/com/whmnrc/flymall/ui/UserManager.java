@@ -43,6 +43,11 @@ public class UserManager {
     }
 
     public static void refresh() {
+
+        if (UserManager.getUser() == null) {
+            return;
+        }
+
         HashMap<String, String> paramters = new HashMap<>(1);
         paramters.put("UserInfo_ID", String.valueOf(getUser().getId()));
         OKHttpManager.get(MyApplication.applicationContext.getResources().getString(R.string.service_host_address).concat(MyApplication.applicationContext.getResources().getString(R.string.GetUserInfo)), paramters, new CommonCallBack<UserBean>() {

@@ -15,7 +15,6 @@ import com.whmnrc.flymall.beans.SelectAddressBean;
 import com.whmnrc.flymall.presener.AddressAddOrUpdatePresenter;
 import com.whmnrc.flymall.presener.GetAddressCityPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.utils.PhoneUtils;
 import com.whmnrc.flymall.utils.TextColorChangeUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.AddressEvent;
@@ -82,14 +81,21 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     private String mParentId;
     private String mCityAreaId;
     private String mProvinceAreaId;
+    private boolean mIsInit;
+    private String addressId = "0";
+    public String mCityName;
+    public String mTelAre;
+    public String mProName;
+    private String mStringName;
+    public String mAddressStateProvince;
 
     @Override
     protected void initViewData() {
 
+        setTitle("New address");
         EventBus.getDefault().register(this);
         mGetAddressCityPresenter = new GetAddressCityPresenter(this);
         mCityPop = new CityPop(this, this, mEtFirstName);
-        setTitle("New address");
 
         mAddressAddOrUpdatePresenter = new AddressAddOrUpdatePresenter(this);
 
@@ -100,17 +106,40 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         }
 
         if (mResultdataBean != null) {
+            mIsInit = true;
+            addressId = String.valueOf(mResultdataBean.getId());
             mEtFirstName.setText(mResultdataBean.getShipTo());
             mEtLastName.setText(mResultdataBean.getAddress_LastName());
             mEtAddress.setText(mResultdataBean.getAddress());
             mEtTel.setText(mResultdataBean.getPhone());
             mEtCity.setText(mResultdataBean.getAddress_City());
-            mEtAddressContinued.setText(mResultdataBean.getRegionIdPath());
+            mEtAddressContinued.setText(mResultdataBean.getAddress_Address2());
+            mEtPostalCode.setText(mResultdataBean.getAddress_ZipCode());
+            mParentId = mResultdataBean.getAddress_Country();
+            mAddressStateProvince = mResultdataBean.getAddress_StateProvince();
+            mStringName = mAddressStateProvince;
+
+            if (!TextUtils.isEmpty(mAddressStateProvince)) {
+                String[] split = mAddressStateProvince.split(",");
+                String country = split[0];
+                mTvCountry.setText(country);
+                if (split.length > 1) {
+                    String province = split[1];
+                    mTvProvince.setText(province);
+                }
+                if (split.length > 2) {
+                    String telCode = split[2];
+                    mTvTel.setText(telCode);
+                }
+            }
+
             if (mResultdataBean.getAddress_IsDefault() == 1) {
                 mTvIsDefault.setSelected(true);
             } else {
                 mTvIsDefault.setSelected(false);
             }
+
+
         }
 
         redTextColor(mTvIndicates);
@@ -147,6 +176,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_country:
+                mIsInit = false;
                 mGetAddressCityPresenter.getTheAddress("0", true);
                 break;
             case R.id.tv_province:
@@ -179,17 +209,18 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     }
 
     private void addOrUpdateAddress(boolean isAdd) {
-        mAddressAddOrUpdatePresenter.addOrUpdateAddress(isAdd,
+        mStringName = mCityName + "," + mProName + "," + mTelAre;
+        mAddressAddOrUpdatePresenter.addOrUpdateAddress(isAdd, addressId,
                 mEtTel.getText().toString().trim(),
                 mEtFirstName.getText().toString().trim(),
                 mEtLastName.getText().toString().trim(),
                 mEtAddress.getText().toString().trim(),
-                mCityAreaId,
-                mProvinceAreaId,
                 mEtCity.getText().toString().trim(),
-                mEtAddress.getText().toString().trim(),
+                mProvinceAreaId,
+                mCityAreaId,
                 mEtAddressContinued.getText().toString().trim(),
-                mTvIsDefault.isSelected() ? 1 : 0
+                mEtPostalCode.getText().toString().trim(),
+                mTvIsDefault.isSelected() ? 1 : 0, mStringName
         );
     }
 
@@ -223,10 +254,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             ToastUtils.showToast("Please enter City");
             return false;
         }
-        if (TextUtils.isEmpty(mTvDestinationCountry.getText().toString().trim())) {
-            ToastUtils.showToast("Please selectToPrice Destination Country");
-            return false;
-        }
+//        if (TextUtils.isEmpty(mTvDestinationCountry.getText().toString().trim())) {
+//            ToastUtils.showToast("Please selectToPrice Destination Country");
+//            return false;
+//        }
         if (TextUtils.isEmpty(mTvStateProvinceRegion.getText().toString().trim())) {
             ToastUtils.showToast("Please selectToPrice State Province Region");
             return false;
@@ -239,10 +270,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             ToastUtils.showToast("Please enter phone number");
             return false;
         }
-        if (!PhoneUtils.isMobileNO(mEtTel.getText().toString().trim())) {
-            ToastUtils.showToast("please enter a valid phone number");
-            return false;
-        }
+//        if (!PhoneUtils.isMobileNO(mEtTel.getText().toString().trim())) {
+//            ToastUtils.showToast("please enter a valid phone number");
+//            return false;
+//        }
         return true;
     }
 
@@ -255,13 +286,16 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
 
     @Override
     public void upadteSuccess() {
-
+        EventBus.getDefault().post(new AddressEvent().setEventType(AddressEvent.ADD_ADDRESS_SUCCESS));
+        finish();
     }
 
     @Override
     public void getTheAddressSuccess(List<SelectAddressBean.ResultdataBean> resultdataBeans, boolean isCountry) {
-        mCityPop.setOneList(resultdataBeans);
-        mCityPop.show(isCountry);
+        if (!mIsInit) {
+            mCityPop.setOneList(resultdataBeans);
+            mCityPop.show(isCountry);
+        }
     }
 
 
@@ -270,11 +304,14 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         if (isCountry) {
             this.mParentId = parentId;
             this.mCityAreaId = areaId;
-            mTvCountry.setText(cityName);
-            mTvTel.setText(telAre);
+            mCityName = cityName;
+            mTvCountry.setText(mCityName);
+            mTelAre = telAre;
+            mTvTel.setText(mTelAre);
         } else {
             this.mProvinceAreaId = areaId;
-            mTvProvince.setText(cityName);
+            mProName = cityName;
+            mTvProvince.setText(mProName);
         }
 
     }

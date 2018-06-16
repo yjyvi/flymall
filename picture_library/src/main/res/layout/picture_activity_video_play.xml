@@ -49,7 +49,9 @@
 
         <TextView
             android:id="@+id/tv_desc"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@color/white"

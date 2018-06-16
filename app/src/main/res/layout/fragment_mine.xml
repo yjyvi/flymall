@@ -80,13 +80,12 @@
                     android:layout_width="wrap_content"
                     android:lines="1"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm_25"
+                    android:layout_marginLeft="@dimen/dm_20"
                     android:layout_marginRight="@dimen/dm_10"
                     android:layout_weight="1"
-                    android:text="Lilis."
                     android:ellipsize="end"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/dm_17"/>
+                    android:textSize="@dimen/dm_15"/>
 
                 <TextView
                     android:id="@+id/tv_coupons"
@@ -95,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/dm_25"
                     android:drawableTop="@mipmap/icon_coupon"
-                    android:text="5 Coupons"
+                    android:text="0 Coupons"
                     android:textColor="@color/black"/>
             </LinearLayout>
 

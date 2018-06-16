@@ -26,7 +26,7 @@ public class GoodsIsCollectionPresenter extends PresenterBase {
     public void getIsCollection(String productId) {
         TreeMap<String, String> paramters = new TreeMap<>();
         paramters.put("productId", productId);
-        paramters.put("userId", UserManager.getUser().getId());
+        paramters.put("userId", UserManager.getUser() == null ? "" : UserManager.getUser().getId());
         OKHttpManager.get(getUrl(R.string.IsFavorite), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

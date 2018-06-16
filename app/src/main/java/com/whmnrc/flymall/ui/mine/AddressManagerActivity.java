@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewStub;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.AddressManagerAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
@@ -31,7 +33,7 @@ import butterknife.OnClick;
  * @data 2018/5/19.
  */
 
-public class AddressManagerActivity extends BaseActivity implements AddressListPresenter.AddressListListener, AddressEditPresenter.AddressEditListener {
+public class AddressManagerActivity extends BaseActivity implements AddressListPresenter.AddressListListener, AddressEditPresenter.AddressEditListener, OnRefreshListener {
 
     @BindView(R.id.vs_empty)
     ViewStub mVsEmpty;
@@ -92,6 +94,8 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
                 return true;
             }
         });
+
+        mRefresh.setOnRefreshListener(this);
     }
 
     @Override
@@ -130,12 +134,6 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
     }
 
 
-    @Override
-    public void setDefaultSuccess() {
-
-    }
-
-
     public void showEmpty() {
         if (mAddressManagerAdapter != null && mAddressManagerAdapter.getDatas().size() == 0) {
             EmptyListUtils.loadEmpty(true, "No Address", R.mipmap.no_address,mVsEmpty);
@@ -158,5 +156,11 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
         if (addressEvent.getEventType() == AddressEvent.ADD_ADDRESS_SUCCESS) {
             mAddressListPresenter.getAddressList();
         }
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        mAddressListPresenter.getAddressList();
+        refreshLayout.finishRefresh();
     }
 }

@@ -31,15 +31,25 @@ public class HomePageDataPresenter extends PresenterBase {
                 if (data.getType() == 1) {
                     mHomePageDataListener.loadHomeData(data);
                 } else {
+                    mHomePageDataListener.laodHomeDataField();
                     ToastUtils.showToast(data.getMessage());
                 }
             }
+
+            @Override
+            protected void onError(String msg) {
+                super.onError(msg);
+                mHomePageDataListener.laodHomeDataField();
+            }
         });
+
+
     }
 
 
     public interface HomePageBannerListener {
         void loadHomeData(HomeDataBean homeBannerBean);
+        void laodHomeDataField();
     }
 
 }

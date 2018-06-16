@@ -23,6 +23,9 @@ import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -48,7 +51,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
     private GetAllCurrencyPresenter mGetAllCurrencyPresenter;
     public UpdateDefaultCurrencyPresenter mUpdateDefaultCurrencyPresenter;
     public String mCurrencyId;
-    private double mCurrencyPrice;
+    private String  mCurrencyPrice;
     private String mCurrencyCode;
 
     @Override
@@ -67,7 +70,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 selectedView(view);
                 mCurrencyId = mCurrencyAdapter.getDatas().get(position).getCurrency_ID();
-                mCurrencyPrice = mCurrencyAdapter.getDatas().get(position).getCurrency_Price();
+                mCurrencyPrice = String.valueOf(mCurrencyAdapter.getDatas().get(position).getCurrency_Price());
                 mCurrencyCode = mCurrencyAdapter.getDatas().get(position).getCode();
             }
 
@@ -125,6 +128,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
         ToastUtils.showToast(msg);
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
+        EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_CURRENCY));
         finish();
     }
 

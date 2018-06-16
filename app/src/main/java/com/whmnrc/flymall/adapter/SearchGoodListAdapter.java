@@ -36,8 +36,12 @@ public class SearchGoodListAdapter extends CommonAdapter<SearchResultBean.Result
 
         holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(bean.getProductName()) ? "" : bean.getProductName());
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(bean.getMinSalePrice()));
-        if (bean.getImagePath() != null) {
-            GlideUtils.LoadImage(mContext, bean.getImagePath(), (ImageView) holder.getView(R.id.iv_goods_img));
+        String imagePath = bean.getImagePath();
+        if (imagePath != null) {
+            if (!imagePath.endsWith(".png") || !imagePath.endsWith(".jpg")) {
+                imagePath += "/1.png";
+            }
+            GlideUtils.LoadImage(mContext, imagePath, (ImageView) holder.getView(R.id.iv_goods_img));
         }
         holder.setText(R.id.tv_source_price, PlaceholderUtils.pricePlaceholder(bean.getMarketPrice()));
         TextView tvSourcePrice = holder.getView(R.id.tv_source_price);

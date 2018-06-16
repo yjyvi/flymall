@@ -37,8 +37,12 @@ public class GoodListAdapter extends CommonAdapter<GoodsListBean.ResultdataBean>
 
         holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(bean.getGoods_Name()) ? "" : bean.getGoods_Name());
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(bean.getGoodsPrice_Price()));
-        if (bean.getGoods_ImaPath() != null) {
-            GlideUtils.LoadImage(mContext, bean.getGoods_ImaPath(), (ImageView) holder.getView(R.id.iv_goods_img));
+        String imaPath = bean.getGoods_ImaPath();
+        if (!TextUtils.isEmpty(imaPath )) {
+//            if (imaPath.endsWith(".jpg") || imaPath.endsWith(".png")) {
+//
+//            }
+            GlideUtils.LoadImage(mContext, imaPath, (ImageView) holder.getView(R.id.iv_goods_img));
         }
 
         holder.setText(R.id.tv_source_price, PlaceholderUtils.pricePlaceholder(bean.getGoods_SourcePrice()));

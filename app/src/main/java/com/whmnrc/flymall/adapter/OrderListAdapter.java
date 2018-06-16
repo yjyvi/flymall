@@ -13,7 +13,6 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
-import com.whmnrc.flymall.ui.mine.OrderDetailsActivity;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 
 import java.util.ArrayList;
@@ -112,14 +111,6 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
         rvGoodsList.setFocusableInTouchMode(false);
 
         mOrderListAdapter.setDataArray(resultdataBean.getItemInfo());
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                OrderDetailsActivity.start(v.getContext(), String.valueOf(resultdataBean.getId()));
-            }
-        });
-
 
         holder.setOnClickListener(R.id.tv_order_pay, new View.OnClickListener() {
             @Override

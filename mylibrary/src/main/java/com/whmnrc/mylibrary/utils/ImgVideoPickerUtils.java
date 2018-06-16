@@ -96,7 +96,7 @@ public class ImgVideoPickerUtils {
                 .showCropGrid(true)
                 .rotateEnabled(false)
                 .isDragFrame(true)
-                .cropWH(500, 500)
+                .cropWH(200, 200)
                 .showCropFrame(true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为 false   true or false
 //                            .selectionMedia()// 是否传入已选图片 List<LocalMedia> list
                 .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调 onActivityResult code

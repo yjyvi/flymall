@@ -30,6 +30,7 @@ import com.whmnrc.flymall.ui.mine.PersonalInformationActivity;
 import com.whmnrc.flymall.ui.mine.SettingActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.UIUtils;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
 import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
 import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.mylibrary.utils.GlideUtils;
@@ -210,6 +211,18 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
             mTvUserName.setText(UserManager.getUser().getNick());
             GlideUtils.LoadCircleImage(getActivity(), UserManager.getUser().getPhoto(), mIvUserImg);
             mTvCoupons.setText(String.format("%s Coupons", UserManager.getUser().getCouponNum()));
+        }
+    }
+
+    /**
+     * 修改货币显示
+     *
+     * @param goodsCommentEvent
+     */
+    @Subscribe
+    public void changePrice(GoodsCommentEvent goodsCommentEvent) {
+        if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_CURRENCY) {
+            mAdapter.notifyDataSetChanged();
         }
     }
 

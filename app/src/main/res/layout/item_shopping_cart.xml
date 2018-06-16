@@ -49,7 +49,6 @@
                 android:layout_toRightOf="@id/iv_goods_img"
                 android:ellipsize="end"
                 android:lines="2"
-                android:text="Plumberry Women's Striped Off-Shoulder Top"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dm_15"/>
 
@@ -62,7 +61,6 @@
                 android:layout_toRightOf="@id/iv_goods_img"
                 android:ellipsize="end"
                 android:lines="1"
-                android:text="M Red wine"
                 android:textColor="@color/normal_gray"
                 android:textSize="@dimen/dm_15"/>
 
@@ -73,7 +71,6 @@
                 android:layout_below="@id/tv_goods_spec"
                 android:layout_marginLeft="@dimen/dm_10"
                 android:layout_toRightOf="@id/iv_goods_img"
-                android:text="$99"
                 android:textColor="@color/good_price_red"
                 android:textSize="@dimen/dm_15"/>
 

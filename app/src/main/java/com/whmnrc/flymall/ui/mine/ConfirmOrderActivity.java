@@ -27,6 +27,7 @@ import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.AddressEvent;
 import com.whmnrc.flymall.utils.evntBusBean.CouponsEvent;
+import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
@@ -132,7 +133,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
             mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(sourcePrice));
             mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
             mTvOrderFreight.setText("0");
-            mMoney = sourcePrice - currentPrice;
+            mMoney = sourcePrice - (sourcePrice - currentPrice);
             mTvOrderTotalPrice.setText(PlaceholderUtils.pricePlaceholder(mMoney));
             mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(mMoney));
             initSaleList();
@@ -209,7 +210,9 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 if (mIsGoodsDetails) {
                     mCreateOrderPresenter.goodsDetailsCreateOrder(productAttrIds, mAddressId, mCouponId, String.valueOf(mGoodsNum), mGoodsBean.get(0).getGoods_Name(), mEtRemark.getText().toString().trim());
                 } else {
-                     productAttrIds = productAttrIds.substring(0, productAttrIds.length() - 1);
+                    if (productAttrIds.split(",").length > 1) {
+                        productAttrIds = productAttrIds.substring(0, productAttrIds.length() - 1);
+                    }
                     mCreateOrderPresenter.shopCartCreateOrder(productAttrIds, mAddressId, mCouponId, mEtRemark.getText().toString().trim());
                 }
                 mLoadingDialog.show();
@@ -224,15 +227,27 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
     @Override
     public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean resultdataBean) {
-        mLoadingDialog.dismiss();
-        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getProductTotalAmount()), JSON.toJSONString(addressEventData));
-        finish();
+        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount());
     }
+
 
     @Override
     public void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean resultdataBean) {
-        ConfirmPaymentActivity.start(this, String.valueOf(resultdataBean.getId()), PlaceholderUtils.pricePlaceholder(resultdataBean.getCommisTotalAmount()), JSON.toJSONString(addressEventData));
+        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount());
+    }
+
+
+    /**
+     * 创建成功跳转
+     *
+     * @param orderId
+     * @param price
+     */
+    private void createSuccess(String orderId, double price) {
         mLoadingDialog.dismiss();
+        //刷新购物车
+        EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
+        ConfirmPaymentActivity.start(this, orderId, price, JSON.toJSONString(addressEventData));
         finish();
     }
 
@@ -259,7 +274,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
             });
             mAddressId = String.valueOf(resultdataBeans.get(0).getId());
             mTvAddressDesc.setText(resultdataBeans.get(0).getAddress());
-            mTvAddressName.setText(String.format("Receiver：%s", resultdataBeans.get(0).getRegionFullName()));
+            mTvAddressName.setText(String.format("Receiver：%s", resultdataBeans.get(0).getShipTo() + resultdataBeans.get(0).getAddress_LastName()));
             mTvAddressTel.setText(resultdataBeans.get(0).getPhone());
         }
 
@@ -289,9 +304,9 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     public void selectCouponsEvent(CouponsEvent couponsEvent) {
         if (couponsEvent.getEventType() == CouponsEvent.SELECT_COUPONS) {
             CouponBean.ResultdataBean data = (CouponBean.ResultdataBean) couponsEvent.getData();
-            mCouponId = data.getCoupon_ID();
-            mTvOrderCoupon.setText(data.getCoupon_Name());
-            mCouponFullQuota = data.getCoupon_FullQuota();
+            mCouponId = String.valueOf(data.getCouponId());
+            mTvOrderCoupon.setText(data.getCouponName());
+            mCouponFullQuota = data.getOrderAmount();
             mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(mCouponFullQuota));
             mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(mMoney - mCouponFullQuota));
         }

@@ -82,13 +82,14 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     private int rows = 10;
     private int page = 1;
     public String mCid = "0";
-    private String aid = "0";
+    private String aid = "";
     private String orderKey = "1";
     private String orderType = "1";
     private List<SearchResultBean.ResultdataBean.CategoryBean> mCategoryList;
     private LoadingDialog mLoadingDialog;
     private String mBid = "0";
     public String mSearchContent;
+    public int mTotalPages;
 
     @Override
     protected void initViewData() {
@@ -126,8 +127,9 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 return false;
             }
         });
-
-        updateCartNum(UserManager.getUser().getShoppingCartNum());
+        if (UserManager.getUser() != null) {
+            updateCartNum(UserManager.getUser().getShoppingCartNum());
+        }
 
         refresh.setOnRefreshLoadMoreListener(this);
     }
@@ -254,8 +256,11 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
             default:
                 break;
         }
-
-        mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+        if (UserManager.getUser() != null) {
+            mTvCartNum.setText(String.valueOf(UserManager.getUser().getShoppingCartNum()));
+        } else {
+            mTvCartNum.setText(String.valueOf(0));
+        }
     }
 
     private void setTab(List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
@@ -292,6 +297,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 
     @Override
     public void getSearchGoodsSuccess(SearchResultBean.ResultdataBean dataBean) {
+
         if (page == 1) {
             if (dataBean == null) {
                 if (mAdapter.getDatas() != null) {
@@ -310,6 +316,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         }
 
         if (dataBean != null) {
+            mTotalPages = dataBean.getPagingInfo().getTotalPages();
             mCategoryList = dataBean.getCategory();
         }
         mAdapter.notifyDataSetChanged();
@@ -319,10 +326,17 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
 
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
+        refreshLayout.finishLoadMore();
+
+        if (mTotalPages == page) {
+            refreshLayout.setNoMoreData(true);
+            return;
+        }
+
         page++;
         rows = 10;
         mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
-        refreshLayout.finishLoadMore();
+
     }
 
     @Override
@@ -343,7 +357,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     @Subscribe
     public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
         if (sHopCartEvent.getEventType() == SHopCartEvent.SHOPPING_CARR_NUM) {
-            updateCartNum( (int) sHopCartEvent.getData());
+            updateCartNum((int) sHopCartEvent.getData());
         }
     }
 

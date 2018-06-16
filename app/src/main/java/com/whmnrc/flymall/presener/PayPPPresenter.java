@@ -1,9 +1,15 @@
 package com.whmnrc.flymall.presener;
 
+import android.text.TextUtils;
+
+import com.alibaba.fastjson.JSON;
+import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.BaseBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
+import com.whmnrc.flymall.ui.UserManager;
+import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.HashMap;
 
@@ -12,30 +18,37 @@ import java.util.HashMap;
  * @data 2018/6/4.
  */
 
-public class PayPPPresenter  extends PresenterBase{
+public class PayPPPresenter extends PresenterBase {
 
-    private  PayPPListener mPayPPListener;
+    private PayPPListener mPayPPListener;
 
-    public PayPPPresenter(PayPPListener payPPListener){
+    public PayPPPresenter(PayPPListener payPPListener) {
         this.mPayPPListener = payPPListener;
 
     }
 
-    public void getPayPPToken(){
-        OKHttpManager.get("http://192.168.0.113:8064/Api/PayPal/GetToken", new HashMap<String, String>(), new CommonCallBack<BaseBean>() {
+    public void payPalNotify(String orderId, int type, String payPalResultId) {
+        HashMap<String, String> paramters = new HashMap<>(4);
+        paramters.put("PayType", String.valueOf(type));
+        paramters.put("Token", payPalResultId);
+        paramters.put("OrderId", orderId);
+        paramters.put("UserName", UserManager.getUser().getUserName());
+        OKHttpManager.postString(getUrl(R.string.PayPalNotify), JSON.toJSONString(paramters), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
-                if (data.getType()==1) {
-                    String  resultdata = (String) data.getResultdata();
-                    mPayPPListener.getPPTokenSuccess(resultdata);
+                if (data.getType() == 1) {
+                    String resultdata = (String) data.getResultdata();
+                    mPayPPListener.getPayPalSuccess(TextUtils.equals(resultdata, "0"));
+                } else {
+                    ToastUtils.showToast(data.getMessage());
                 }
             }
         });
     }
 
 
-    public interface PayPPListener{
-        void getPPTokenSuccess(String toke);
+    public interface PayPPListener {
+        void getPayPalSuccess(boolean token);
     }
 
 }

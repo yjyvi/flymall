@@ -11,6 +11,7 @@ import com.whmnrc.flymall.utils.NetworkUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.https.HttpsUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +29,6 @@ import okhttp3.Call;
 import okhttp3.MediaType;
 
 /**
- *
  * @author yjyvi
  * @date 2018/1/30
  */
@@ -38,25 +38,20 @@ public class OKHttpManager {
 
     private Request.Builder mOkHttpClient;
 
-    public void setCertificates(Context context, InputStream... certificates)
-    {
-        try
-        {
+    public void setCertificates(Context context, InputStream... certificates) {
+        try {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
             KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
             keyStore.load(null);
             int index = 0;
-            for (InputStream certificate : certificates)
-            {
+            for (InputStream certificate : certificates) {
                 String certificateAlias = Integer.toString(index++);
                 keyStore.setCertificateEntry(certificateAlias, certificateFactory.generateCertificate(certificate));
 
-                try
-                {
+                try {
                     if (certificate != null)
                         certificate.close();
-                } catch (IOException e)
-                {
+                } catch (IOException e) {
                 }
             }
 
@@ -67,18 +62,20 @@ public class OKHttpManager {
 
             //初始化keystore
             KeyStore clientKeyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-            clientKeyStore.load(context.getAssets().open("zhy_client.jks"), "123456".toCharArray());
+            InputStream inputStream = context.getAssets().open("zhy_client.jks");
+            clientKeyStore.load(inputStream, "123456".toCharArray());
 
             KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
             keyManagerFactory.init(clientKeyStore, "123456".toCharArray());
+
+            HttpsUtils.getSslSocketFactory(certificates, context.getAssets().open("zhy_client.jks"), "123456");
 
             mOkHttpClient = new Request.Builder();
             sslContext.init(keyManagerFactory.getKeyManagers(), trustManagerFactory.getTrustManagers(), new SecureRandom());
             mOkHttpClient.setSslSocketFactory(sslContext.getSocketFactory());
 
 
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -110,6 +107,7 @@ public class OKHttpManager {
 
     /**
      * 是否有网络
+     *
      * @return
      */
     public static boolean getIsConnected() {
@@ -126,12 +124,14 @@ public class OKHttpManager {
 
         if (getIsConnected()) return;
 
+
         try {
             if (BuildConfig.DEBUG) {
                 Log.e("请求参数=", url + JSON.toJSONString(paramters));
             }
             OkHttpUtils
                     .get()
+
                     .url(url)
                     .params(paramters)
                     .build()
@@ -157,30 +157,6 @@ public class OKHttpManager {
     }
 
 
-
-
-
-
-    //上传文件
-    public static void uploadFile(Map<String, String> params, final StringCallback callback) {
-
-        if (getIsConnected()) return;
-
-        String url = MyApplication.applicationContext.getString(R.string.service_host_address).concat(MyApplication.applicationContext.getResources().getString(R.string.UploadFile));
-
-        postString(url, JSON.toJSONString(params), new ObjectCallback() {
-            @Override
-            public void onSuccess(String st) {
-                callback.onResponse(st, 0);
-            }
-
-            @Override
-            public void onFailure(int code, String errorMsg) {
-
-            }
-        });
-    }
-
     public static void postString(String url, String gsonString, final ObjectCallback objectCallback) {
 
         if (getIsConnected()) return;
@@ -205,8 +181,6 @@ public class OKHttpManager {
             }
         });
     }
-
-
 
 
     public interface ObjectCallback {

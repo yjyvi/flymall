@@ -613,7 +613,7 @@ public class OrderDeitalsBean {
 
             private String Color;
             private double CommisRate;
-            private int CostPrice;
+            private double CostPrice;
             private int DiscountAmount;
             private Object EnabledRefundAmount;
             private int Id;
@@ -623,10 +623,10 @@ public class OrderDeitalsBean {
             private int ProductId;
             private String ProductName;
             private int Quantity;
-            private int RealTotalPrice;
+            private double RealTotalPrice;
             private int RefundPrice;
             private int ReturnQuantity;
-            private int SalePrice;
+            private double SalePrice;
             private int ShopId;
             private String Size;
             private String SKU;
@@ -694,11 +694,11 @@ public class OrderDeitalsBean {
                 this.CommisRate = CommisRate;
             }
 
-            public int getCostPrice() {
+            public double getCostPrice() {
                 return CostPrice;
             }
 
-            public void setCostPrice(int CostPrice) {
+            public void setCostPrice(double CostPrice) {
                 this.CostPrice = CostPrice;
             }
 
@@ -774,11 +774,11 @@ public class OrderDeitalsBean {
                 this.Quantity = Quantity;
             }
 
-            public int getRealTotalPrice() {
+            public double getRealTotalPrice() {
                 return RealTotalPrice;
             }
 
-            public void setRealTotalPrice(int RealTotalPrice) {
+            public void setRealTotalPrice(double RealTotalPrice) {
                 this.RealTotalPrice = RealTotalPrice;
             }
 
@@ -798,11 +798,11 @@ public class OrderDeitalsBean {
                 this.ReturnQuantity = ReturnQuantity;
             }
 
-            public int getSalePrice() {
+            public double getSalePrice() {
                 return SalePrice;
             }
 
-            public void setSalePrice(int SalePrice) {
+            public void setSalePrice(double SalePrice) {
                 this.SalePrice = SalePrice;
             }
 
@@ -863,7 +863,7 @@ public class OrderDeitalsBean {
             public void writeToParcel(Parcel dest, int flags) {
                 dest.writeString(Color);
                 dest.writeDouble(CommisRate);
-                dest.writeInt(CostPrice);
+                dest.writeDouble(CostPrice);
                 dest.writeInt(DiscountAmount);
                 dest.writeInt(Id);
                 dest.writeByte((byte) (IsLimitBuy ? 1 : 0));
@@ -871,10 +871,10 @@ public class OrderDeitalsBean {
                 dest.writeInt(ProductId);
                 dest.writeString(ProductName);
                 dest.writeInt(Quantity);
-                dest.writeInt(RealTotalPrice);
+                dest.writeDouble(RealTotalPrice);
                 dest.writeInt(RefundPrice);
                 dest.writeInt(ReturnQuantity);
-                dest.writeInt(SalePrice);
+                dest.writeDouble(SalePrice);
                 dest.writeInt(ShopId);
                 dest.writeString(Size);
                 dest.writeString(SKU);

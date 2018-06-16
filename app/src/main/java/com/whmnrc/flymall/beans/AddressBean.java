@@ -174,7 +174,7 @@ public class AddressBean {
             this.UserId = UserId;
         }
 
-        public Object getAddress_Provice() {
+        public String  getAddress_Provice() {
             return Address_Provice;
         }
 
@@ -214,7 +214,7 @@ public class AddressBean {
             this.Address_IsDefault = Address_IsDefault;
         }
 
-        public Object getAddress_ZipCode() {
+        public String getAddress_ZipCode() {
             return Address_ZipCode;
         }
 

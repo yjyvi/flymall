@@ -2,7 +2,6 @@ package com.whmnrc.flymall.presener;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.CollectionListBean;
-import com.whmnrc.flymall.beans.GoodsListBean;
 import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
@@ -33,37 +32,25 @@ public class CollectionListPresenter extends PresenterBase {
         params.put("pageSize", "10");
         params.put("pageNo", String.valueOf(page));
 
-        if (type == 1) {
-            OKHttpManager.get(getUrl(R.string.ListCollectionAndFootMark), params, new CommonCallBack<CollectionListBean>() {
-                @Override
-                protected void onSuccess(CollectionListBean data) {
-                    if (data.getType() == 1) {
+        OKHttpManager.get(getUrl(R.string.ListCollectionAndFootMark), params, new CommonCallBack<CollectionListBean>() {
+            @Override
+            protected void onSuccess(CollectionListBean data) {
+                if (data.getType() == 1) {
+                    if (data != null) {
                         mCollectionListListener.getCollectionListSuccess(data.getResultdata());
-                    } else {
-                        ToastUtils.showToast(data.getMessage());
                     }
+                } else {
+                    ToastUtils.showToast(data.getMessage());
                 }
-            });
+            }
+        });
 
-        } else {
-            OKHttpManager.get(getUrl(R.string.ListCollectionAndFootMark), params, new CommonCallBack<GoodsListBean>() {
-                @Override
-                protected void onSuccess(GoodsListBean data) {
-                    if (data.getType() == 1) {
-                        mCollectionListListener.getHistoryListSuccess(data.getResultdata());
-                    } else {
-                        ToastUtils.showToast(data.getMessage());
-                    }
-                }
-            });
-        }
+
     }
 
 
     public interface CollectionListListener {
         void getCollectionListSuccess(List<CollectionListBean.ResultdataBean> resultdataBeanList);
-
-        void getHistoryListSuccess(List<GoodsListBean.ResultdataBean> resultdataBeanList);
     }
 
 }

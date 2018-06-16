@@ -30,6 +30,7 @@ import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.FileUtils;
 import com.whmnrc.flymall.utils.MediaUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.flymall.views.RatingBarView;
 import com.whmnrc.mylibrary.utils.ImgVideoPickerUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -71,6 +72,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
     public String mGoodsId;
     private String videoThumbUrl;
     public UpdateImgFilePresenter mUpdateImgFilePresenter;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
@@ -96,9 +98,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
 
 
     private void initRv() {
-
+        mLoadingDialog = new LoadingDialog(this);
         selectPremissions();
-        mRbStar.setStar(5,false);
+        mRbStar.setStar(5, false);
         mRbStar.setStarCount(5);
         rvPhoto.setLayoutManager(new GridLayoutManager(this, 3));
         localMediaMultiItemTypeAdapter = new MultiItemTypeAdapter<>(this);
@@ -160,6 +162,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                 if (mediaList.get(0).getMimeType() == PictureConfig.TYPE_VIDEO) {
                     upLoadVideo(mediaList);
                 } else {
+                    if (!mLoadingDialog.isShowing()) {
+                        mLoadingDialog.show();
+                    }
                     uploadImg(mediaList, 0);
                 }
             }
@@ -174,7 +179,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Uploading");
-            progressDialog.setTitle("提示");
+            progressDialog.setTitle("prompt!");
             progressDialog.setMax(100);
             progressDialog.setIndeterminate(false);
             progressDialog.setCancelable(true);
@@ -214,7 +219,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
             public void onError(Call call, Exception e, int id) {
                 isUpload = true;
                 progressDialog.dismiss();
-                ToastUtils.showToast("上传失败，请重新上传");
+                ToastUtils.showToast("Upload failed, please upload again");
             }
 
             @Override
@@ -273,14 +278,11 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                 ImgVideoPickerUtils.openVideo(GoodsCommentActivity.this);
                 break;
             case R.id.tv_submit:
-
                 int starCount = mRbStar.getStarCount();
-
-
                 String content = mEtContent.getText().toString().trim();
 
                 if (TextUtils.isEmpty(content)) {
-                    ToastUtils.showToast("请输入评论内容");
+                    ToastUtils.showToast("Please enter comment content");
                     return;
                 }
 
@@ -295,7 +297,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                     imgsChange = imgs.toString().substring(0, imgs.toString().length() - 1);
                 }
 
-
+                if (!mLoadingDialog.isShowing()) {
+                    mLoadingDialog.dismiss();
+                }
                 mAddEvaluatePresenter.addEvaluate(starCount, content, imgsChange, videosUrl, videoThumbUrl, mOrderId, mGoodsId);
 
                 break;
@@ -306,6 +310,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
 
     @Override
     public void addEvaluateSuccess() {
+        if (mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
         finish();
     }
 
@@ -317,6 +324,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         mediaBean.setSort(position);
         mediaMap.put(datas.get(position), mediaBean);
         uploadImg(datas, position + 1);
+        if (mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
     }
 
 }

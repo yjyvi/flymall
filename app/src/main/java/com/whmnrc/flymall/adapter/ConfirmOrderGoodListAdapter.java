@@ -59,7 +59,7 @@ public class ConfirmOrderGoodListAdapter extends CommonAdapter {
         } else if (mIsOrderDetails) {
             final OrderDeitalsBean.ResultdataBean.OrderItemInfoBean beans = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) bean;
             holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(beans.getProductName()) ? "" : beans.getProductName());
-            holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(beans.getCostPrice()));
+            holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(beans.getSalePrice()));
             if (beans.getThumbnailsUrl() != null) {
                 GlideUtils.LoadImage(mContext, beans.getThumbnailsUrl(), (ImageView) holder.getView(R.id.iv_goods_img));
             }

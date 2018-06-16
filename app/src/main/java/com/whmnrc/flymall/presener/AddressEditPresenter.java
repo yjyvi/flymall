@@ -21,7 +21,6 @@ public class AddressEditPresenter extends PresenterBase {
 
     public AddressEditPresenter(AddressEditListener addressEditListener) {
         this.mAddressEditListener = addressEditListener;
-
     }
 
     public void delAddress(String addressId) {
@@ -33,19 +32,14 @@ public class AddressEditPresenter extends PresenterBase {
             protected void onSuccess(AddressBean data) {
                 if (data.getType() == 1) {
                     mAddressEditListener.delSuccess();
-                } else {
-                    ToastUtils.showToast(data.getMessage());
                 }
+                ToastUtils.showToast(data.getMessage());
             }
         });
     }
 
 
-
     public interface AddressEditListener {
-
         void delSuccess();
-
-        void setDefaultSuccess();
     }
 }

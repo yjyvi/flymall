@@ -11,12 +11,14 @@ public class CouponBean {
 
 
     /**
-     * type : 操作状态码
-     * message : 返回消息
-     * resultdata : [{"Coupon_ID":"优惠券主键","Goods_ID":"商品ID(暂时无用)","Coupon_Name":"优惠券名称","Coupon_FullQuota":"满多少额度减免","Coupon_ReduceQuota":"减免多少额度","Coupon_Time":"优惠券到期日期","Coupon_TimeNum":"优惠券使用天数（只针对模块优惠券有用）","Coupon_UserId":"使用者ID：管理员添加的模板默认为\u201c管理员\u201d。","Coupon_State":"使用状态：0：未使用；1：已使用；2：已过期；","Coupon_Num":"多少人使用（只针对管理员用户）","Coupon_ParentID":"优惠券模板ID"}]
+     * type : 1
+     * code : 0
+     * message : 请求成功
+     * resultdata : [{"CouponId":59,"CouponName":"满500减100","CreateTime":"2018-06-14 12:52:00","EndTime":"2019-02-20 12:00:00","Num":10000,"OrderAmount":100,"OrderId":null,"PerMax":1,"Price":10,"ShopId":266,"ShopLogo":null,"ShopName":null,"StartTime":"2018-06-14 12:00:00","UserId":4109,"UseStatus":1,"UseTime":"2018-06-14 04:54:40","VShop":null,"VShopId":null},{"CouponId":58,"CouponName":"满100使用71","CreateTime":"2018-06-11 05:23:45","EndTime":"2019-03-29 12:00:00","Num":10000,"OrderAmount":10,"OrderId":null,"PerMax":1,"Price":5,"ShopId":266,"ShopLogo":null,"ShopName":null,"StartTime":"2018-06-11 12:00:00","UserId":4109,"UseStatus":1,"UseTime":"2018-06-14 04:59:22","VShop":null,"VShopId":null}]
      */
 
     private int type;
+    private int code;
     private String message;
     private List<ResultdataBean> resultdata;
 
@@ -26,6 +28,14 @@ public class CouponBean {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMessage() {
@@ -46,117 +56,187 @@ public class CouponBean {
 
     public static class ResultdataBean {
         /**
-         * Coupon_ID : 优惠券主键
-         * Goods_ID : 商品ID(暂时无用)
-         * Coupon_Name : 优惠券名称
-         * Coupon_FullQuota : 满多少额度减免
-         * Coupon_ReduceQuota : 减免多少额度
-         * Coupon_Time : 优惠券到期日期
-         * Coupon_TimeNum : 优惠券使用天数（只针对模块优惠券有用）
-         * Coupon_UserId : 使用者ID：管理员添加的模板默认为“管理员”。
-         * Coupon_State : 使用状态：0：未使用；1：已使用；2：已过期；
-         * Coupon_Num : 多少人使用（只针对管理员用户）
-         * Coupon_ParentID : 优惠券模板ID
+         * CouponId : 59
+         * CouponName : 满500减100
+         * CreateTime : 2018-06-14 12:52:00
+         * EndTime : 2019-02-20 12:00:00
+         * Num : 10000
+         * OrderAmount : 100.0
+         * OrderId : null
+         * PerMax : 1
+         * Price : 10.0
+         * ShopId : 266
+         * ShopLogo : null
+         * ShopName : null
+         * StartTime : 2018-06-14 12:00:00
+         * UserId : 4109
+         * UseStatus : 1
+         * UseTime : 2018-06-14 04:54:40
+         * VShop : null
+         * VShopId : null
          */
 
-        private String Coupon_ID;
-        private String Goods_ID;
-        private String Coupon_Name;
-        private double Coupon_FullQuota;
-        private double Coupon_ReduceQuota;
-        private String Coupon_Time;
-        private String Coupon_TimeNum;
-        private String Coupon_UserId;
-        private int Coupon_State;
-        private String Coupon_Num;
-        private String Coupon_ParentID;
+        private int CouponId;
+        private String CouponName;
+        private String CreateTime;
+        private String EndTime;
+        private int Num;
+        private double OrderAmount;
+        private Object OrderId;
+        private int PerMax;
+        private double Price;
+        private int ShopId;
+        private Object ShopLogo;
+        private Object ShopName;
+        private String StartTime;
+        private int UserId;
+        private int UseStatus;
+        private String UseTime;
+        private Object VShop;
+        private Object VShopId;
 
-        public String getCoupon_ID() {
-            return Coupon_ID;
+        public int getCouponId() {
+            return CouponId;
         }
 
-        public void setCoupon_ID(String Coupon_ID) {
-            this.Coupon_ID = Coupon_ID;
+        public void setCouponId(int CouponId) {
+            this.CouponId = CouponId;
         }
 
-        public String getGoods_ID() {
-            return Goods_ID;
+        public String getCouponName() {
+            return CouponName;
         }
 
-        public void setGoods_ID(String Goods_ID) {
-            this.Goods_ID = Goods_ID;
+        public void setCouponName(String CouponName) {
+            this.CouponName = CouponName;
         }
 
-        public String getCoupon_Name() {
-            return Coupon_Name;
+        public String getCreateTime() {
+            return CreateTime;
         }
 
-        public void setCoupon_Name(String Coupon_Name) {
-            this.Coupon_Name = Coupon_Name;
+        public void setCreateTime(String CreateTime) {
+            this.CreateTime = CreateTime;
         }
 
-        public double getCoupon_FullQuota() {
-            return Coupon_FullQuota;
+        public String getEndTime() {
+            return EndTime;
         }
 
-        public void setCoupon_FullQuota(double Coupon_FullQuota) {
-            this.Coupon_FullQuota = Coupon_FullQuota;
+        public void setEndTime(String EndTime) {
+            this.EndTime = EndTime;
         }
 
-        public double getCoupon_ReduceQuota() {
-            return Coupon_ReduceQuota;
+        public int getNum() {
+            return Num;
         }
 
-        public void setCoupon_ReduceQuota(double Coupon_ReduceQuota) {
-            this.Coupon_ReduceQuota = Coupon_ReduceQuota;
+        public void setNum(int Num) {
+            this.Num = Num;
         }
 
-        public String getCoupon_Time() {
-            return Coupon_Time;
+        public double getOrderAmount() {
+            return OrderAmount;
         }
 
-        public void setCoupon_Time(String Coupon_Time) {
-            this.Coupon_Time = Coupon_Time;
+        public void setOrderAmount(double OrderAmount) {
+            this.OrderAmount = OrderAmount;
         }
 
-        public String getCoupon_TimeNum() {
-            return Coupon_TimeNum;
+        public Object getOrderId() {
+            return OrderId;
         }
 
-        public void setCoupon_TimeNum(String Coupon_TimeNum) {
-            this.Coupon_TimeNum = Coupon_TimeNum;
+        public void setOrderId(Object OrderId) {
+            this.OrderId = OrderId;
         }
 
-        public String getCoupon_UserId() {
-            return Coupon_UserId;
+        public int getPerMax() {
+            return PerMax;
         }
 
-        public void setCoupon_UserId(String Coupon_UserId) {
-            this.Coupon_UserId = Coupon_UserId;
+        public void setPerMax(int PerMax) {
+            this.PerMax = PerMax;
         }
 
-        public int getCoupon_State() {
-            return Coupon_State;
+        public double getPrice() {
+            return Price;
         }
 
-        public void setCoupon_State(int Coupon_State) {
-            this.Coupon_State = Coupon_State;
+        public void setPrice(double Price) {
+            this.Price = Price;
         }
 
-        public String getCoupon_Num() {
-            return Coupon_Num;
+        public int getShopId() {
+            return ShopId;
         }
 
-        public void setCoupon_Num(String Coupon_Num) {
-            this.Coupon_Num = Coupon_Num;
+        public void setShopId(int ShopId) {
+            this.ShopId = ShopId;
         }
 
-        public String getCoupon_ParentID() {
-            return Coupon_ParentID;
+        public Object getShopLogo() {
+            return ShopLogo;
         }
 
-        public void setCoupon_ParentID(String Coupon_ParentID) {
-            this.Coupon_ParentID = Coupon_ParentID;
+        public void setShopLogo(Object ShopLogo) {
+            this.ShopLogo = ShopLogo;
+        }
+
+        public Object getShopName() {
+            return ShopName;
+        }
+
+        public void setShopName(Object ShopName) {
+            this.ShopName = ShopName;
+        }
+
+        public String getStartTime() {
+            return StartTime;
+        }
+
+        public void setStartTime(String StartTime) {
+            this.StartTime = StartTime;
+        }
+
+        public int getUserId() {
+            return UserId;
+        }
+
+        public void setUserId(int UserId) {
+            this.UserId = UserId;
+        }
+
+        public int getUseStatus() {
+            return UseStatus;
+        }
+
+        public void setUseStatus(int UseStatus) {
+            this.UseStatus = UseStatus;
+        }
+
+        public String getUseTime() {
+            return UseTime;
+        }
+
+        public void setUseTime(String UseTime) {
+            this.UseTime = UseTime;
+        }
+
+        public Object getVShop() {
+            return VShop;
+        }
+
+        public void setVShop(Object VShop) {
+            this.VShop = VShop;
+        }
+
+        public Object getVShopId() {
+            return VShopId;
+        }
+
+        public void setVShopId(Object VShopId) {
+            this.VShopId = VShopId;
         }
     }
 }

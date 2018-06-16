@@ -44,17 +44,4 @@ public class PlaceholderUtils {
         }
         return String.format("%s%2.2f", sCode, money * sCurrencyPrice);
     }
-
-
-    public static String pricePlaceholder(int money) {
-
-        initCurrency();
-
-        if (money <= 0) {
-            money = 0;
-        }
-        return String.format("%s%s", sCode, money * sCurrencyPrice);
-    }
-
-
 }

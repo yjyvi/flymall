@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.luck.picture.lib.PictureVideoPlayActivity;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.AllVideoBean;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.utils.GetViewHeightUtils;
+import com.whmnrc.flymall.views.MyVideoPlayGoods;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
 /**
@@ -38,7 +38,7 @@ public class VideoGoodsListAdapter extends CommonAdapter<AllVideoBean.Resultdata
                 } else {
                     videoUrl = data.getVideoUrl();
                 }
-                PictureVideoPlayActivity.start(v.getContext(), videoUrl,data.getDescription(), String.valueOf(data.getProductId()));
+                MyVideoPlayGoods.start(v.getContext(), videoUrl,data.getDescription(), String.valueOf(data.getProductId()));
             }
         });
 

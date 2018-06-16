@@ -14,7 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-public class PictureVideoPlayActivity extends PictureBaseActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, View.OnClickListener {
+public abstract class PictureVideoPlayActivity extends PictureBaseActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, View.OnClickListener {
     private String video_path = "";
     private ImageView picture_left_back;
     private MediaController mMediaController;
@@ -136,10 +136,13 @@ public class PictureVideoPlayActivity extends PictureBaseActivity implements Med
         } else if (id == R.id.iv_play) {
             mVideoView.start();
             iv_play.setVisibility(View.INVISIBLE);
-        }else if(id==R.id.tv_buy){
-
+        } else if (id == R.id.tv_buy) {
+            mVideoView.stopPlayback();
+            goToGoodsDetials(goodsId);
         }
     }
+
+    public abstract void  goToGoodsDetials(String goodsId);
 
     @Override
     protected void attachBaseContext(Context newBase) {

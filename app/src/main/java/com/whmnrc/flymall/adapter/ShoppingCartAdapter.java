@@ -31,7 +31,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
 
     @Override
     public void convert(ViewHolder holder, final ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean, final int position) {
-
+        holder.setIsRecyclable(false);
         GlideUtils.LoadImage(mContext, resultdataBean.getImgUrl(), (ImageView) holder.getView(R.id.iv_goods_img));
         holder.setText(R.id.tv_goods_name, resultdataBean.getName());
         holder.setText(R.id.tv_goods_spec, resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
@@ -52,7 +52,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         holder.getView(R.id.iv_goods_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsDetailsActivity.start(v.getContext(), "");
+                GoodsDetailsActivity.start(v.getContext(), String.valueOf(resultdataBean.getId()));
             }
         });
 
@@ -73,7 +73,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                 resultdataBean.setCount(buyCarNum);
                 goodsNum.setText(String.valueOf(buyCarNum));
                 if (resultdataBean.isSelect()) {
-                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getCartItemId()));
+                    mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), true, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
                 }
                 mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
 
@@ -89,7 +89,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
                     goodsNum.setText(String.valueOf(buyCarNum));
                     resultdataBean.setCount(buyCarNum);
                     if (resultdataBean.isSelect()) {
-                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getCartItemId()));
+                        mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice(), false, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
                     }
 
                     mOperationShoppingCartListener.addOrMinus(resultdataBean.getSkuId(), String.valueOf(buyCarNum));
@@ -102,7 +102,7 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
     public interface OperationShoppingCartListener {
         void delItem(int position);
 
-        void selectToPrice(int position, double goodsPrice, boolean isAdd, String cartId);
+        void selectToPrice(int position, double goodsPrice, boolean isAdd, String cartId, String cartItemId);
 
         void addOrMinus(String skuId, String count);
     }
@@ -112,11 +112,11 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         if (!resultdataBean.isSelect()) {
             view.setSelected(true);
             resultdataBean.setSelect(true);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, String.valueOf(resultdataBean.getCartItemId()));
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
         } else {
             view.setSelected(false);
             resultdataBean.setSelect(false);
-            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getCartItemId()));
+            mOperationShoppingCartListener.selectToPrice(position,resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
         }
 
     }

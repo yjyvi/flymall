@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -145,7 +146,9 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         mAddShoppingCartPresenter = new AddShoppingCartPresenter(this);
         mGoodsId = getIntent().getStringExtra("goodsId");
 //        mGoodsId = "1452";
-        mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
+        if (UserManager.getUser() != null) {
+            mGoodsIsCollectionPresenter.getIsCollection(mGoodsId);
+        }
         mGoodsDetailsPresenter.getGoodsDetial(mGoodsId);
         mRbStar.setClickable(false);
 
@@ -331,7 +334,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
     @Override
     public void getGoodsDetailsSuccess(GoodsDetailsBean.ResultdataBean goodsDetailsBean) {
-        mLoadingDialog.dismiss();
+
         mGoodsBean = goodsDetailsBean;
 
         if (goodsDetailsBean != null) {
@@ -353,9 +356,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mGoodSpecificationsPop = new GoodSpecificationsPop(this, goodsDetailsBean, mGoodsImg);
             mGoodSpecificationsPop.setPopListener(this);
 
-
+            Log.d("GoodsDetailsActivity", product.toString());
             saveHistory(product);
         }
+
+        mLoadingDialog.dismiss();
     }
 
     /**

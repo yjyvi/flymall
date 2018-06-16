@@ -5,10 +5,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.whmnrc.flymall.CommonConstant;
+import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.ClassifyLeftAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
@@ -17,6 +22,7 @@ import com.whmnrc.flymall.beans.OneBrandsBean;
 import com.whmnrc.flymall.presener.OneBrandListPresenter;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.classify.TwoClassifyFragment;
+import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.flymall.views.SmoothScrollLayoutManager;
 
@@ -87,8 +93,11 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
             }
         });
 
-
-//        selectedView(mIvMen);
+        String classifyData = SPUtils.getString(MyApplication.applicationContext, CommonConstant.Common.CLASSIFY_DATA);
+        if (!TextUtils.isEmpty(classifyData)) {
+            List<OneBrandsBean.ResultdataBean> resultdataBeans = JSONObject.parseArray(classifyData, OneBrandsBean.ResultdataBean.class);
+            initClassifyData(resultdataBeans);
+        }
     }
 
 
@@ -177,7 +186,11 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
 
     @Override
     public void getOneBrandListDataSuccess(List<OneBrandsBean.ResultdataBean> dataBean) {
+        SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CLASSIFY_DATA, JSON.toJSONString(dataBean));
+        initClassifyData(dataBean);
+    }
 
+    private void initClassifyData(List<OneBrandsBean.ResultdataBean> dataBean) {
         mClassifyLeftAdapter.setDataArray(dataBean);
         mClassifyData = dataBean;
         //默认显示第一个分类的数据

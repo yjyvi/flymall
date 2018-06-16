@@ -16,11 +16,13 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.adapter.OrderListAdapter;
+import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.presener.CancelOrReceiptOrderPresenter;
+import com.whmnrc.flymall.presener.CheckPaymentStatusForTTPresenter;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.presener.OrderListPresenter;
@@ -43,7 +45,7 @@ import butterknife.BindView;
  * @data 2018/5/21.
  */
 
-public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener, OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener {
+public class OrderFragment extends LazyLoadFragment implements OrderListPresenter.OrderListListener, OnRefreshLoadMoreListener, GetLikeGoodsPresenter.GetLikeGoodsListener, OrderListAdapter.OrderListOpertionListener, OrderDetailsPresenter.OrderDetailsListener, CancelOrReceiptOrderPresenter.OpertionOrderListener, CheckPaymentStatusForTTPresenter.CheckPaymentStatusForTTListener {
     @BindView(R.id.rv_order_list)
     RecyclerView mRvOrderList;
     @BindView(R.id.rv_goods_list)
@@ -64,6 +66,8 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     private LikeGoodListAdapter mAdapter;
     public OrderDetailsPresenter mOrderDetailsPresenter;
     private CancelOrReceiptOrderPresenter mCancelOrReceiptOrderPresenter;
+    private boolean isPageMax;
+    private CheckPaymentStatusForTTPresenter mCheckPaymentStatusForTTPresenter;
 
     @Override
     protected int contentViewLayoutID() {
@@ -80,7 +84,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
         mRvOrderList.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOrderListAdapter = new OrderListAdapter(mRvOrderList.getContext(), R.layout.item_order_list);
-
+        mCheckPaymentStatusForTTPresenter = new CheckPaymentStatusForTTPresenter(this);
         mGetLikeGoodsPresenter = new GetLikeGoodsPresenter(this);
 
         mRvOrderList.setFocusableInTouchMode(false);
@@ -90,7 +94,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
         showLoadingDialog();
         getOrder(mOrderType);
-
+        mOrderDetailsPresenter = new OrderDetailsPresenter(this);
         mCancelOrReceiptOrderPresenter = new CancelOrReceiptOrderPresenter(this);
         mRvGoodsList.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         mAdapter = new LikeGoodListAdapter(getActivity(), R.layout.item_goods_list);
@@ -114,7 +118,18 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         mRvGoodsList.setAdapter(mAdapter);
 
         mOrderListAdapter.setOrderListOpertionListener(this);
-        mOrderDetailsPresenter = new OrderDetailsPresenter(this);
+        mOrderListAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                OrderDetailsActivity.start(view.getContext(), String.valueOf(mOrderListAdapter.getDatas().get(position).getId()));
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+
 
         mLlEmptyGoods.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,12 +192,19 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     @Override
     public void getOrderListSuccess(List<OrderListBean.ResultdataBean> data) {
+
         if (page == 1) {
             mOrderListAdapter.setDataArray(data);
         } else {
             List<OrderListBean.ResultdataBean> datas = mOrderListAdapter.getDatas();
             datas.addAll(data);
             mOrderListAdapter.setDataArray(datas);
+        }
+
+        if (data != null && data.size() == 0) {
+            isPageMax = true;
+        } else {
+            isPageMax = false;
         }
 
         mOrderListAdapter.notifyDataSetChanged();
@@ -215,6 +237,10 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     @Override
     public void onLoadMore(RefreshLayout refreshLayout) {
         refreshLayout.finishLoadMore();
+        if (isPageMax) {
+            refreshLayout.setNoMoreData(true);
+            return;
+        }
         page++;
         mOrderListPresenter.getOrderList(mOrderType, page);
     }
@@ -237,7 +263,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg("Are you sure you want to Cancel the order?")
                 .setCancelable(true)
-                .setPositiveButton("agree", new View.OnClickListener() {
+                .setPositiveButton("confirm", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mCancelOrReceiptOrderPresenter.cancelOrder(String.valueOf(resultdataBean.getId()));
@@ -253,7 +279,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
 
     @Override
     public void payOrder(OrderListBean.ResultdataBean resultdataBean) {
-        mOrderDetailsPresenter.getOrderDetails(String.valueOf(resultdataBean.getId()));
+        mCheckPaymentStatusForTTPresenter.getIsPayTT(String.valueOf(resultdataBean.getId()));
     }
 
     @Override
@@ -261,7 +287,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         new AlertDialog(view.getContext()).builder().setTitle("Warning!")
                 .setMsg("Do you want to confirm receipt?")
                 .setCancelable(true)
-                .setPositiveButton("agree", new View.OnClickListener() {
+                .setPositiveButton("confirm", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mCancelOrReceiptOrderPresenter.receiptOrder(String.valueOf(resultdataBean.getId()));
@@ -281,7 +307,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         addressBean.setShipTo(resultdataBeans.getShipTo());
         addressBean.setPhone(resultdataBeans.getCellPhone());
         addressBean.setAddress(resultdataBeans.getAddress());
-        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), String.valueOf(resultdataBeans.getProductTotalAmount()), JSON.toJSONString(addressBean));
+        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), resultdataBeans.getProductTotalAmount(), JSON.toJSONString(addressBean));
     }
 
     @Override
@@ -294,5 +320,8 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         mRefresh.autoRefresh();
     }
 
-
+    @Override
+    public void getIsPayTTSuccess(String orderId) {
+        mOrderDetailsPresenter.getOrderDetails(orderId);
+    }
 }

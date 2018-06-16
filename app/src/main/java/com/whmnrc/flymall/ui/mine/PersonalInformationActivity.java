@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.presener.PayPPPresenter;
 import com.whmnrc.flymall.presener.UpdateImgFilePresenter;
 import com.whmnrc.flymall.presener.UpdateUserInfoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
@@ -20,6 +19,7 @@ import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.UIUtils;
 import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
 import com.whmnrc.flymall.views.ActionSheetDialog;
+import com.whmnrc.flymall.views.LoadingDialog;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 import com.whmnrc.mylibrary.utils.ImgVideoPickerUtils;
 
@@ -48,11 +48,13 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
     public UpdateImgFilePresenter mUpdateHeadImgPresenter;
     private String mResultImgUrl = "";
     public UpdateUserInfoPresenter mUpdateUserInfoPresenter;
-    public PayPPPresenter mPayPPPresenter;
     private int mCurrentSex = 0;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
+        mLoadingDialog = new LoadingDialog(this);
+
         EventBus.getDefault().register(this);
         mUpdateHeadImgPresenter = new UpdateImgFilePresenter(this);
         mUpdateUserInfoPresenter = new UpdateUserInfoPresenter(this);
@@ -130,15 +132,16 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
             case R.id.tv_save:
                 String nickName = mTvUserName.getText().toString().trim();
                 if (TextUtils.isEmpty(nickName)) {
-                    ToastUtils.showToast("昵称不能为空");
+                    ToastUtils.showToast("Nickname should be filled");
                     return;
                 }
 
                 if (TextUtils.isEmpty(mTvUserGender.getText().toString().trim())) {
-                    ToastUtils.showToast("性别不能为空");
+                    ToastUtils.showToast("Gender cannot be empty");
                     return;
                 }
                 mUpdateUserInfoPresenter.updateUserInfo(mResultImgUrl, nickName, String.valueOf(mCurrentSex));
+                mLoadingDialog.show();
                 break;
             default:
                 break;
@@ -164,6 +167,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
                 return;
             }
             UIUtils.loadCircleImg(mTvUserHeaderImg, headFile);
+            mLoadingDialog.show();
             mUpdateHeadImgPresenter.updateHeadImg(mediaList, 0);
         }
     }
@@ -171,6 +175,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
     @Override
     public void loadSuccess(String resultImgUrl, List<LocalMedia> datas, int position) {
         this.mResultImgUrl = resultImgUrl;
+        mLoadingDialog.dismiss();
     }
 
     @Override
@@ -181,6 +186,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
 
     @Override
     public void uploadUserInfoSuccess(String resultMsg) {
+        mLoadingDialog.dismiss();
         ToastUtils.showToast(resultMsg);
         UserManager.refresh();
         EventBus.getDefault().post(new UserInfoEvent().setEventType(UserInfoEvent.UPDATE_USER_INFO));

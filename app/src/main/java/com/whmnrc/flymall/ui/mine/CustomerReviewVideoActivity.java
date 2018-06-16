@@ -10,7 +10,7 @@ import android.view.ViewStub;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.VideoGoodsListAdapter;
 import com.whmnrc.flymall.beans.AllVideoBean;
@@ -25,7 +25,7 @@ import butterknife.BindView;
  * @data 2018/5/21.
  */
 
-public class CustomerReviewVideoActivity extends BaseActivity implements AllVideoPresenter.AllVideoListener, OnRefreshLoadMoreListener {
+public class CustomerReviewVideoActivity extends BaseActivity implements AllVideoPresenter.AllVideoListener, OnRefreshListener {
 
     @BindView(R.id.vs_empty)
     ViewStub mVsEmpty;
@@ -68,7 +68,7 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
             }
         });
         mRvList.setAdapter(mVideoGoodsListAdapter);
-        mRefresh.setOnRefreshLoadMoreListener(this);
+        mRefresh.setOnRefreshListener(this);
     }
 
     public static void start(Context context) {
@@ -88,12 +88,12 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
         mVideoGoodsListAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onLoadMore(RefreshLayout refreshLayout) {
-        page++;
-        mAllVideoPresenter.getAllVideo(page, rows);
-        refreshLayout.finishLoadMore();
-    }
+//    @Override
+//    public void onLoadMore(RefreshLayout refreshLayout) {
+//        page++;
+//        mAllVideoPresenter.getAllVideo(page, rows);
+//        refreshLayout.finishLoadMore();
+//    }
 
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
@@ -111,5 +111,6 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
             }
         }
     }
+
 
 }

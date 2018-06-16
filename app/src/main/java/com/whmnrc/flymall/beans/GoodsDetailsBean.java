@@ -264,6 +264,40 @@ public class GoodsDetailsBean {
         }
 
         public static class ProductBean {
+            @Override
+            public String toString() {
+                return "ProductBean{" +
+                        "AddedDate='" + AddedDate + '\'' +
+                        ", Address=" + Address +
+                        ", AuditStatus=" + AuditStatus +
+                        ", BrandId=" + BrandId +
+                        ", BrandName=" + BrandName +
+                        ", CategoryId=" + CategoryId +
+                        ", CategoryPath='" + CategoryPath + '\'' +
+                        ", ConcernedCount=" + ConcernedCount +
+                        ", DisplaySequence=" + DisplaySequence +
+                        ", EditStatus=" + EditStatus +
+                        ", FreightTemplateId=" + FreightTemplateId +
+                        ", HasSKU=" + HasSKU +
+                        ", Id=" + Id +
+                        ", ImagePath='" + ImagePath + '\'' +
+                        ", MarketPrice=" + MarketPrice +
+                        ", MeasureUnit='" + MeasureUnit + '\'' +
+                        ", MinSalePrice=" + MinSalePrice +
+                        ", ProductCode='" + ProductCode + '\'' +
+                        ", ProductName='" + ProductName + '\'' +
+                        ", Quantity=" + Quantity +
+                        ", SaleCounts=" + SaleCounts +
+                        ", SaleStatus=" + SaleStatus +
+                        ", ShopId=" + ShopId +
+                        ", ShortDescription='" + ShortDescription + '\'' +
+                        ", TypeId=" + TypeId +
+                        ", VistiCounts=" + VistiCounts +
+                        ", Volume=" + Volume +
+                        ", Weight=" + Weight +
+                        '}';
+            }
+
             /**
              * AddedDate : 2018-04-24 03:18:31
              * Address : null
@@ -294,6 +328,9 @@ public class GoodsDetailsBean {
              * Volume : 0
              * Weight : 0
              */
+
+
+
 
             private String AddedDate;
             private Object Address;
