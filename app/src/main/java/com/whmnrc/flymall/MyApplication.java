@@ -22,6 +22,7 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.ui.mine.OrderDetailsActivity;
+import com.whmnrc.flymall.utils.CrashHandler;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.views.MyClassicsFooter;
 import com.whmnrc.flymall.views.MyClassicsHeader;
@@ -76,10 +77,10 @@ public class MyApplication extends MultiDexApplication {
 //        LeakCanary.install(this);
 
         //-----------全局捕获异常日志----------------
-//        if (!BuildConfig.DEBUG) {
-//            CrashHandler crashHandler = CrashHandler.getInstance();
-//            crashHandler.init(getApplicationContext());
-//        }
+        if (!BuildConfig.DEBUG) {
+            CrashHandler crashHandler = CrashHandler.getInstance();
+            crashHandler.init(getApplicationContext());
+        }
 
         //友盟推送
         UMConfigure.init(this, "5b07c292f43e483b31000013", "", UMConfigure.DEVICE_TYPE_PHONE, "50194719f5daf7d21ae146523c86c2dc");
@@ -129,6 +130,9 @@ public class MyApplication extends MultiDexApplication {
                     break;
             }
         }
+
+
+
     };
 
 }

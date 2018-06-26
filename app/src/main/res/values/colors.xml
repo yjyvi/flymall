@@ -7,8 +7,7 @@
     <color name="translate_5">#50000000</color>
     <color name="normal_color">#FFF034</color>
     <color name="normal_gray">#999999</color>
-    <color name="normal_gray_back">#F5F5F5</color>
-    <color name="back_gray">#EEEEEE</color>
+    <color name="back_gray">#F7F7F7</color>
     <color name="gray_line">#FFC700</color>
     <color name="normal_gray_line">#CCCCCC</color>
     <color name="normal_red">#F23030</color>

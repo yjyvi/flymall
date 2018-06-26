@@ -54,7 +54,7 @@ public class PayResultActivity extends BaseActivity {
 
         if (mIsField) {
             mIvImg.setImageResource(R.mipmap.icon_order_pay_field);
-            mTvText.setText("Payment failed");
+            mTvText.setText("You have failed to pay");
         }
 
         mTvClick.setOnClickListener(new View.OnClickListener() {

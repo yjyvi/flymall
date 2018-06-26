@@ -2,8 +2,8 @@
 <resources>
 
     <!--<string name="service_host_address">http://hwscapi.whmnx.com</string>-->
-    <string name="service_host_address">http://flymall.store</string>
-    <string name="service_host_image">http://flymall.store</string>
+    <string name="service_host_address">https://flymall.store</string>
+    <string name="service_host_image">https://flymall.store</string>
 
 
     <!-- [HttpPost]      登录

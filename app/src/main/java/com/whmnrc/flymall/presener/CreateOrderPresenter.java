@@ -42,6 +42,7 @@ public class CreateOrderPresenter extends PresenterBase {
                         mCreateOrderListener.createMutOrderSuccess(data.getResultdata().get(0));
                     }
                 } else {
+                    mCreateOrderListener.createOrderField();
                     ToastUtils.showToast(data.getMessage());
                 }
             }
@@ -66,6 +67,7 @@ public class CreateOrderPresenter extends PresenterBase {
                     mCreateOrderListener.createOneOrderSuccess(data.getResultdata());
                 } else {
                     ToastUtils.showToast(data.getMessage());
+                    mCreateOrderListener.createOrderField();
                 }
             }
         });
@@ -76,6 +78,8 @@ public class CreateOrderPresenter extends PresenterBase {
         void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean orderId);
 
         void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean orderId);
+
+        void createOrderField();
     }
 
 

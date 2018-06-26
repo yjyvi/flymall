@@ -38,7 +38,13 @@ public class HistoryGoodListAdapter extends CommonAdapter<HistoryGoodsBean> {
         holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(bean.getGoodsName()) ? "" : bean.getGoodsName());
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(bean.getGoodsMinPrice()));
         if (bean.getGoodsImg() != null) {
-            GlideUtils.LoadImage(mContext, bean.getGoodsImg(), (ImageView) holder.getView(R.id.iv_goods_img));
+            String imagePath = bean.getGoodsImg();
+            if (imagePath != null) {
+                if (!imagePath.endsWith(".png") || !imagePath.endsWith(".jpg")) {
+                    imagePath += "/1.png";
+                }
+                GlideUtils.LoadImage(mContext, imagePath, (ImageView) holder.getView(R.id.iv_goods_img));
+            }
         }
         holder.setText(R.id.tv_sold, String.format("Sold: %s+ pis", bean.getGoodsSold()));
         holder.setText(R.id.tv_source_price, PlaceholderUtils.pricePlaceholder(bean.getGoodsMaxPrice()));

@@ -3,9 +3,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/back_gray</item>
-        <item name="colorPrimaryDark">@color/back_gray</item>
-        <item name="colorAccent">@color/back_gray</item>
+        <item name="colorPrimary">@color/normal_color</item>
+        <item name="colorPrimaryDark">@color/normal_color</item>
+        <item name="colorAccent">@color/normal_color</item>
         <item name="android:windowBackground">@color/back_gray</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

@@ -6,6 +6,7 @@ import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.PresenterBase;
 import com.whmnrc.flymall.ui.UserManager;
+import com.whmnrc.flymall.utils.ToastUtils;
 
 import java.util.TreeMap;
 
@@ -16,7 +17,7 @@ import java.util.TreeMap;
 
 public class MultipleDelCollectionPresenter extends PresenterBase {
 
-    private  MultipleDelCollectionListener mMultipleDelCollectionListener;
+    private MultipleDelCollectionListener mMultipleDelCollectionListener;
 
     public MultipleDelCollectionPresenter(MultipleDelCollectionListener multipleDelCollectionListener) {
         this.mMultipleDelCollectionListener = multipleDelCollectionListener;
@@ -29,7 +30,10 @@ public class MultipleDelCollectionPresenter extends PresenterBase {
         OKHttpManager.get(getUrl(R.string.DeleteFavoriteMulty), paramters, new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {
-                mMultipleDelCollectionListener.delMultipleCollectionSuccess();
+                if (data.getType() == 1) {
+                    mMultipleDelCollectionListener.delMultipleCollectionSuccess();
+                }
+                ToastUtils.showToast(data.getMessage());
             }
         });
     }

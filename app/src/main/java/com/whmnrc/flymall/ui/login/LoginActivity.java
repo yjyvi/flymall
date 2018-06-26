@@ -13,13 +13,17 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.UserBean;
 import com.whmnrc.flymall.presener.LoginPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.ui.CommonH5WebView;
 import com.whmnrc.flymall.ui.HomeTableActivity;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.PhoneUtils;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.TextColorChangeUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -48,6 +52,7 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
     private boolean mIsShow;
     public LoginPresenter mEmailLoginPresenter;
     public boolean mIsExit;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected int setLayoutId() {
@@ -63,8 +68,17 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
         }
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
     @Override
     protected void initViewData() {
+        EventBus.getDefault().register(this);
+        mLoadingDialog = new LoadingDialog(this);
         setTitle(getResources().getString(R.string.login));
         mIsExit = getIntent().getBooleanExtra("isExit", false);
         String agreement = mTvAgreement.getText().toString().trim();
@@ -81,12 +95,13 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
         switch (view.getId()) {
             case R.id.tv_login:
                 if (inputVerification()) {
+                    mLoadingDialog.show();
                     mEmailLoginPresenter.emailLogin(mEtMail.getText().toString().trim(), mEtPwd.getText().toString().trim(), "1", "", "", "");
                 }
                 break;
             case R.id.tv_agreement:
                 //用户协议
-                CommonH5WebView.startCommonH5WebView(view.getContext(), CommonConstant.Common.AGREEMENT, "User Agreement");
+                UserAgreementActivity.start(view.getContext());
                 break;
 
             default:
@@ -134,6 +149,13 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
         SPUtils.put(this, CommonConstant.Common.LAST_LOGIN_ID, userBean.getId());
         UserManager.saveUser(userBean);
         HomeTableActivity.startHomeTableView(LoginActivity.this, 0);
+        mLoadingDialog.dismiss();
         finish();
+        EventBus.getDefault().post(new UserInfoEvent().setEventType(UserInfoEvent.UPDATE_USER_INFO));
+    }
+
+    @Subscribe
+    public void userUpdateEvent(UserInfoEvent userInfoEvent) {
+
     }
 }

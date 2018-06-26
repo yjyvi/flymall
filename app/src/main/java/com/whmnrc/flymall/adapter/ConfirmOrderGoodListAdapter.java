@@ -12,6 +12,7 @@ import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
+import com.whmnrc.flymall.ui.mine.OrderDetailsActivity;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
@@ -22,11 +23,19 @@ import com.whmnrc.mylibrary.utils.GlideUtils;
 
 public class ConfirmOrderGoodListAdapter extends CommonAdapter {
 
+    private String mOrderId;
     private boolean mIsOrder;
     private boolean mIsOrderDetails;
 
     public ConfirmOrderGoodListAdapter(Context context, int layoutId) {
         super(context, layoutId);
+    }
+
+    public ConfirmOrderGoodListAdapter(Context context, int layoutId, boolean isOrder, boolean isOrderDetails, String orderId) {
+        super(context, layoutId);
+        this.mIsOrder = isOrder;
+        this.mOrderId = orderId;
+        this.mIsOrderDetails = isOrderDetails;
     }
 
     public ConfirmOrderGoodListAdapter(Context context, int layoutId, boolean isOrder, boolean isOrderDetails) {
@@ -47,15 +56,14 @@ public class ConfirmOrderGoodListAdapter extends CommonAdapter {
                 GlideUtils.LoadImage(mContext, beans.getImage(), (ImageView) holder.getView(R.id.iv_goods_img));
             }
 
-//            holder.setText(R.id.tv_goods_spec, beans.getSpecAttr_Name());
             holder.setText(R.id.tv_order_goods_num, String.valueOf("X" + beans.getCount()));
 
-//            holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    GoodsDetailsActivity.start(v.getContext(), String.valueOf(beans.getProductId()));
-//                }
-//            });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    OrderDetailsActivity.start(v.getContext(), mOrderId);
+                }
+            });
         } else if (mIsOrderDetails) {
             final OrderDeitalsBean.ResultdataBean.OrderItemInfoBean beans = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) bean;
             holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(beans.getProductName()) ? "" : beans.getProductName());
@@ -73,13 +81,19 @@ public class ConfirmOrderGoodListAdapter extends CommonAdapter {
                     GoodsDetailsActivity.start(v.getContext(), String.valueOf(beans.getProductId()));
                 }
             });
-        }else{
-            ConfirmBean beans = (ConfirmBean) bean;
+        } else {
+            final ConfirmBean beans = (ConfirmBean) bean;
             holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(beans.getGoods_Name()) ? "" : beans.getGoods_Name());
-            holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(beans.getGoods_SourcePrice()));
+            holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(beans.getGoodsPrice_Price()));
             if (beans.getGoods_ImaPath() != null) {
                 GlideUtils.LoadImage(mContext, beans.getGoods_ImaPath(), (ImageView) holder.getView(R.id.iv_goods_img));
             }
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    GoodsDetailsActivity.start(v.getContext(), String.valueOf(beans.getGoodsId()));
+                }
+            });
 
             holder.setText(R.id.tv_goods_spec, beans.getGoods_spec());
             holder.setText(R.id.tv_order_goods_num, String.valueOf("X" + beans.getGoodsNUm()));

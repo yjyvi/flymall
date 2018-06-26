@@ -66,8 +66,14 @@ public class PhotoViewActivity extends AppCompatActivity {
         initViewsAndEvents();
     }
 
-    public void initViewsAndEvents() {
+    public static void start(Context context, ArrayList<String> pics, int position) {
+        Intent starter = new Intent(context, PhotoViewActivity.class);
+        starter.putExtra("pics", pics);
+        starter.putExtra(PHOTO_POSITION, position);
+        context.startActivity(starter);
+    }
 
+    public void initViewsAndEvents() {
 
 
         Intent intent = getIntent();
@@ -201,7 +207,7 @@ public class PhotoViewActivity extends AppCompatActivity {
                 String filePath = Environment.getExternalStorageDirectory() + "/flymallloadImg/";
                 String fileName = "yuyou".concat(String.valueOf(System.currentTimeMillis())).concat(".jpg");
                 if (!url.contains("http")) {
-                    copyFile(url,filePath);
+                    copyFile(url, filePath);
                     Toast.makeText(activity, "save success", Toast.LENGTH_SHORT).show();
                 } else {
                     OkHttpUtils.get().url(url).build().execute(new FileCallBack(filePath, fileName) {
@@ -237,6 +243,7 @@ public class PhotoViewActivity extends AppCompatActivity {
 
     /**
      * //进行复制的函数
+     *
      * @param oldPath
      * @param newPath
      */
@@ -252,7 +259,7 @@ public class PhotoViewActivity extends AppCompatActivity {
                 FileOutputStream fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1024];
                 int length;
-                while ( (byteread = inStream.read(buffer)) != -1) {
+                while ((byteread = inStream.read(buffer)) != -1) {
                     //字节数 文件大小
                     bytesum += byteread;
                     System.out.println(bytesum);
@@ -260,8 +267,7 @@ public class PhotoViewActivity extends AppCompatActivity {
                 }
                 inStream.close();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("复制单个文件操作出错");
             e.printStackTrace();
 

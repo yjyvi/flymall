@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewStub;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.whmnrc.flymall.CommonConstant;
 import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.CurrencyAdapter;
-import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.AllCurrencyBean;
 import com.whmnrc.flymall.presener.GetAllCurrencyPresenter;
 import com.whmnrc.flymall.presener.UpdateDefaultCurrencyPresenter;
@@ -24,6 +22,7 @@ import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -53,49 +52,32 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
     public String mCurrencyId;
     private String  mCurrencyPrice;
     private String mCurrencyCode;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
         setTitle("Currency conversion");
         mRefresh.setOnRefreshListener(this);
-
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
         mGetAllCurrencyPresenter = new GetAllCurrencyPresenter(this);
         mUpdateDefaultCurrencyPresenter = new UpdateDefaultCurrencyPresenter(this);
         mGetAllCurrencyPresenter.getAllCurrency();
         mRvCurrencyList.setLayoutManager(new GridLayoutManager(this, 3));
-        mCurrencyAdapter = new CurrencyAdapter(this, R.layout.item_currency);
-        mRvCurrencyList.setAdapter(mCurrencyAdapter);
-        mCurrencyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        mCurrencyAdapter = new CurrencyAdapter(this, R.layout.item_currency, new CurrencyAdapter.CurrencyListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                selectedView(view);
-                mCurrencyId = mCurrencyAdapter.getDatas().get(position).getCurrency_ID();
-                mCurrencyPrice = String.valueOf(mCurrencyAdapter.getDatas().get(position).getCurrency_Price());
-                mCurrencyCode = mCurrencyAdapter.getDatas().get(position).getCode();
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+            public void selectResult(AllCurrencyBean.ResultdataBean.ModelsBean data) {
+                mCurrencyId = String.valueOf(data.getCurrency_ID());
+                mCurrencyPrice = String.valueOf(data.getCurrency_Price());
+                mCurrencyCode = data.getCode();
             }
         });
+        mRvCurrencyList.setAdapter(mCurrencyAdapter);
+
 
     }
 
-    private View lastView;
 
-    private void selectedView(View view) {
-        if (lastView != null) {
-            lastView.setSelected(false);
-        }
-        if (!view.isSelected()) {
-            view.setSelected(true);
-            lastView = view;
-        } else {
-            view.setSelected(false);
-        }
-
-    }
 
     @Override
     protected int setLayoutId() {
@@ -114,13 +96,15 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
             ToastUtils.showToast("Please Select Currency");
             return;
         }
+        mLoadingDialog.show();
         mUpdateDefaultCurrencyPresenter.updateDefaultCurrency(mCurrencyId);
     }
 
     @Override
-    public void loadSuccess(List<AllCurrencyBean.ResultdataBean> resultdataBean) {
+    public void loadSuccess(List<AllCurrencyBean.ResultdataBean.ModelsBean> resultdataBean) {
         mCurrencyAdapter.setDataArray(resultdataBean);
         mCurrencyAdapter.notifyDataSetChanged();
+        mLoadingDialog.dismiss();
     }
 
     @Override
@@ -129,6 +113,7 @@ public class CurrencyActivity extends BaseActivity implements GetAllCurrencyPres
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, mCurrencyPrice);
         SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, mCurrencyCode);
         EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_CURRENCY));
+        mLoadingDialog.dismiss();
         finish();
     }
 

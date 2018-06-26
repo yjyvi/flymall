@@ -249,6 +249,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     public void onRefresh(RefreshLayout refreshLayout) {
         refreshLayout.finishRefresh();
         page = 1;
+        refreshLayout.setNoMoreData(false);
         mOrderListPresenter.getOrderList(mOrderType, page);
     }
 
@@ -280,6 +281,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     @Override
     public void payOrder(OrderListBean.ResultdataBean resultdataBean) {
         mCheckPaymentStatusForTTPresenter.getIsPayTT(String.valueOf(resultdataBean.getId()));
+        mLoadingDialog.show();
     }
 
     @Override
@@ -307,7 +309,9 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         addressBean.setShipTo(resultdataBeans.getShipTo());
         addressBean.setPhone(resultdataBeans.getCellPhone());
         addressBean.setAddress(resultdataBeans.getAddress());
-        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), resultdataBeans.getProductTotalAmount(), JSON.toJSONString(addressBean));
+        addressBean.setAddress_LastName("");
+        mLoadingDialog.dismiss();
+        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), resultdataBeans.getProductTotalAmount() , resultdataBeans.getDiscountAmount(), JSON.toJSONString(addressBean));
     }
 
     @Override
@@ -323,5 +327,10 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
     @Override
     public void getIsPayTTSuccess(String orderId) {
         mOrderDetailsPresenter.getOrderDetails(orderId);
+    }
+
+    @Override
+    public void getIsPayField() {
+        mLoadingDialog.dismiss();
     }
 }

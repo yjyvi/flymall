@@ -9,12 +9,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.CurrencyAdapter;
-import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
 import com.whmnrc.flymall.beans.AllCurrencyBean;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import java.util.List;
 
 public class PopCurrency {
 
-    private List<AllCurrencyBean.ResultdataBean> currencyData;
+    private List<AllCurrencyBean.ResultdataBean.ModelsBean> currencyData;
     private CurrencyAdapter mCurrencyAdapter;
     private PopupWindow mPopupWindow;
     private Context mContext;
@@ -42,30 +42,25 @@ public class PopCurrency {
         mListener = listener;
     }
 
-    public PopCurrency(Context context, List<AllCurrencyBean.ResultdataBean> currencyData) {
+    public PopCurrency(Context context, List<AllCurrencyBean.ResultdataBean.ModelsBean> currencyData) {
         this.mContext = context;
         this.currencyData = currencyData;
         View view = LayoutInflater.from(context).inflate(R.layout.item_pop_currency, null);
         RecyclerView rv_currency = (RecyclerView) view.findViewById(R.id.rv_currency);
         TextView tv_submit = (TextView) view.findViewById(R.id.tv_submit);
+        ImageView iv_close = (ImageView) view.findViewById(R.id.iv_close);
         rv_currency.setLayoutManager(new GridLayoutManager(mContext, 2));
-        mCurrencyAdapter = new CurrencyAdapter(mContext, R.layout.item_currency);
-        rv_currency.setAdapter(mCurrencyAdapter);
-        mCurrencyAdapter.setDataArray(currencyData);
-        mCurrencyAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+        mCurrencyAdapter = new CurrencyAdapter(mContext, R.layout.item_currency, new CurrencyAdapter.CurrencyListener() {
             @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                selectedView(view);
-                mCurrencyId = mCurrencyAdapter.getDatas().get(position).getCurrency_ID();
-                mCurrencyPrice = mCurrencyAdapter.getDatas().get(position).getCurrency_Price();
-                mCurrencyCode = mCurrencyAdapter.getDatas().get(position).getCode();
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
+            public void selectResult(AllCurrencyBean.ResultdataBean.ModelsBean data) {
+                mCurrencyId = String.valueOf(data.getCurrency_ID());
+                mCurrencyPrice = data.getCurrency_Price();
+                mCurrencyCode = data.getCode();
             }
         });
+        rv_currency.setAdapter(mCurrencyAdapter);
+        mCurrencyAdapter.setDataArray(currencyData);
+
         // 设置popwindow弹出大小
         mPopupWindow = new PopupWindow(view,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -89,21 +84,13 @@ public class PopCurrency {
                 }
             }
         });
-    }
 
-    private View lastView;
-
-    private void selectedView(View view) {
-        if (lastView != null) {
-            lastView.setSelected(false);
-        }
-        if (!view.isSelected()) {
-            view.setSelected(true);
-            lastView = view;
-        } else {
-            view.setSelected(false);
-        }
-
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     public void show() {
@@ -116,6 +103,9 @@ public class PopCurrency {
             @Override
             public void onDismiss() {
                 PopUtils.setBackgroundAlpha((Activity) mContext, 1f);
+                if (mListener != null) {
+                    mListener.dissmisPop();
+                }
             }
         });
     }
@@ -127,7 +117,9 @@ public class PopCurrency {
 
 
     public interface CurrencyClickListener {
-        void onClick(String currencyId, double currencyPrice,String code);
+        void onClick(String currencyId, double currencyPrice, String code);
+
+        void dissmisPop();
     }
 
     /**

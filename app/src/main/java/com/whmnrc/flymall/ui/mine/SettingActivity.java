@@ -16,6 +16,7 @@ import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.DataCleanManager;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.views.ActionSheetDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -74,10 +75,10 @@ public class SettingActivity extends BaseActivity {
                 break;
             case R.id.tv_sign_out:
                 finish();
-//                EventBus.getDefault().post(new HomeTableChangeEvent().setEventType(HomeTableChangeEvent.CHANGE_TAB).setData(0));
                 UserManager.clearUser();
                 SPUtils.put(SettingActivity.this, CommonConstant.Common.LAST_LOGIN_ID, "");
                 LoginSelectedActivity.start(SettingActivity.this,true);
+                EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
                 break;
             default:
                 break;

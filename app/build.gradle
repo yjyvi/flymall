@@ -6,12 +6,12 @@ android {
         config {
             keyAlias 'flymall'
             keyPassword '123456'
-            storeFile file('C:/workProject/Flymall/flymall.jks')
+            storeFile file('C:/workProject/Flymall/flymall/flymall.jks')
             storePassword '123456'
         }
 
         debug {
-            storeFile file('C:/workProject/Flymall/flymall.jks')
+            storeFile file('C:/workProject/Flymall/flymall/flymall.jks')
             storePassword "123456"
             keyAlias "flymall"
             keyPassword "123456"
@@ -26,8 +26,8 @@ android {
         applicationId "com.whmnrc.flymall"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.01"
+        versionCode 5
+        versionName "1.05"
         multiDexEnabled true
 
         ndk {
@@ -67,4 +67,8 @@ dependencies {
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     implementation project(':mylibrary')
     implementation project(':push')
+
+    //paypay支付
+    compile('com.paypal.sdk:paypal-android-sdk:2.15.1')
+            { exclude group: 'io.card' }
 }

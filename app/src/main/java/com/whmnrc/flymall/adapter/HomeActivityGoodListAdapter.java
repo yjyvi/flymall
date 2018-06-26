@@ -38,7 +38,11 @@ public class HomeActivityGoodListAdapter extends CommonAdapter<ActivityGoodsList
         holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(productInfo.getProductName()) ? "" : productInfo.getProductName());
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(productInfo.getMinSalePrice()));
 
-            GlideUtils.LoadImage(mContext, productInfo.getImagePath(), (ImageView) holder.getView(R.id.iv_goods_img));
+        String imagePath = productInfo.getImagePath();
+        if (!imagePath.endsWith(".png") || !imagePath.endsWith(".jpg")) {
+            imagePath += "/1.png";
+        }
+        GlideUtils.LoadImage(mContext, imagePath, (ImageView) holder.getView(R.id.iv_goods_img));
 
 
         holder.setText(R.id.tv_source_price, PlaceholderUtils.pricePlaceholder(productInfo.getMarketPrice()));

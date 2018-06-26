@@ -36,6 +36,7 @@ public class AddEvaluatePresenter extends PresenterBase {
         params.put("CommentContent", content);
         params.put("ThumImg", videoThum);
         params.put("Stars", String.valueOf(star));
+        params.put("Status", "1");
         OKHttpManager.postString(getUrl(R.string.AddEvaluateItem), JSON.toJSONString(params), new CommonCallBack<BaseBean>() {
             @Override
             protected void onSuccess(BaseBean data) {

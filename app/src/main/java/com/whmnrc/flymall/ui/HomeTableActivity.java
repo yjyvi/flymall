@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
+import com.whmnrc.flymall.beans.UserBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.ui.table.ClassifyFragment;
 import com.whmnrc.flymall.ui.table.HomeFragment;
@@ -72,8 +73,8 @@ public class HomeTableActivity extends BaseActivity {
     @Override
     protected void initViewData() {
         EventBus.getDefault().register(this);
-        selectedView(mTvTableHome);
         setContentFragment(0);
+        selectedView(mTvTableHome);
         UserManager.refresh();
     }
 
@@ -127,7 +128,8 @@ public class HomeTableActivity extends BaseActivity {
         mIndex = position;
 
         if (UserManager.getUser() != null) {
-            showCartNum(UserManager.getUser().getShoppingCartNum());
+            UserBean.ResultdataBean user = UserManager.getUser();
+            showCartNum(user.getShoppingCartNum());
         }
     }
 

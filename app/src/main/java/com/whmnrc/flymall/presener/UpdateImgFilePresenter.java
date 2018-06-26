@@ -49,7 +49,7 @@ public class UpdateImgFilePresenter extends PresenterBase {
         OkHttpUtils.post()
                 .addFile("photo", file.getName(), file)
                 .addParams("userId", UserManager.getUser().getId())
-                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getNick()) ? "img" : UserManager.getUser().getNick())
+                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getUserName()) ? "img" : UserManager.getUser().getUserName())
                 .url(getUrl(R.string.UploadFile))
                 .build().execute(new StringCallback() {
             @Override

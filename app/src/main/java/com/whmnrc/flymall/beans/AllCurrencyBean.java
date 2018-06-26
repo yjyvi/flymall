@@ -9,25 +9,18 @@ import java.util.List;
 
 public class AllCurrencyBean {
 
+
     /**
-     * type : 1
      * code : 0
-     * message : 成功。
-     * resultdata : [{"Currency_ID":"0aed0e03-a110-40ff-939f-87c52146a09d","Currency_Name":"软妹币","Currency_Price":1,"Code":null},{"Currency_ID":"39930947-50af-4385-ae61-33526808d566","Currency_Name":"美元","Currency_Price":7,"Code":null}]
+     * message : 请求成功
+     * resultdata : {"Models":[{"Code":"￡","Currency_ID":5,"Currency_Name":"英镑","Currency_Price":10,"IsBase":0},{"Code":"¥ ","Currency_ID":4,"Currency_Name":"日元","Currency_Price":1.9,"IsBase":0},{"Code":"C$","Currency_ID":3,"Currency_Name":"加拿大元","Currency_Price":1.5,"IsBase":0},{"Code":"￥","Currency_ID":2,"Currency_Name":"人民币","Currency_Price":6.4,"IsBase":0},{"Code":"$","Currency_ID":1,"Currency_Name":"美元","Currency_Price":1,"IsBase":1}],"Total":5}
+     * type : 1
      */
 
-    private int type;
     private int code;
     private String message;
-    private List<ResultdataBean> resultdata;
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
+    private ResultdataBean resultdata;
+    private int type;
 
     public int getCode() {
         return code;
@@ -45,57 +38,101 @@ public class AllCurrencyBean {
         this.message = message;
     }
 
-    public List<ResultdataBean> getResultdata() {
+    public ResultdataBean getResultdata() {
         return resultdata;
     }
 
-    public void setResultdata(List<ResultdataBean> resultdata) {
+    public void setResultdata(ResultdataBean resultdata) {
         this.resultdata = resultdata;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public static class ResultdataBean {
         /**
-         * Currency_ID : 0aed0e03-a110-40ff-939f-87c52146a09d
-         * Currency_Name : 软妹币
-         * Currency_Price : 1
-         * Code : null
+         * Models : [{"Code":"￡","Currency_ID":5,"Currency_Name":"英镑","Currency_Price":10,"IsBase":0},{"Code":"¥ ","Currency_ID":4,"Currency_Name":"日元","Currency_Price":1.9,"IsBase":0},{"Code":"C$","Currency_ID":3,"Currency_Name":"加拿大元","Currency_Price":1.5,"IsBase":0},{"Code":"￥","Currency_ID":2,"Currency_Name":"人民币","Currency_Price":6.4,"IsBase":0},{"Code":"$","Currency_ID":1,"Currency_Name":"美元","Currency_Price":1,"IsBase":1}]
+         * Total : 5
          */
 
-        private String Currency_ID;
-        private String Currency_Name;
-        private double Currency_Price;
-        private String Code;
+        private int Total;
+        private List<ModelsBean> Models;
 
-        public String getCurrency_ID() {
-            return Currency_ID;
+        public int getTotal() {
+            return Total;
         }
 
-        public void setCurrency_ID(String Currency_ID) {
-            this.Currency_ID = Currency_ID;
+        public void setTotal(int Total) {
+            this.Total = Total;
         }
 
-        public String getCurrency_Name() {
-            return Currency_Name;
+        public List<ModelsBean> getModels() {
+            return Models;
         }
 
-        public void setCurrency_Name(String Currency_Name) {
-            this.Currency_Name = Currency_Name;
+        public void setModels(List<ModelsBean> Models) {
+            this.Models = Models;
         }
 
-        public double getCurrency_Price() {
-            return Currency_Price;
-        }
+        public static class ModelsBean {
+            /**
+             * Code : ￡
+             * Currency_ID : 5
+             * Currency_Name : 英镑
+             * Currency_Price : 10.0
+             * IsBase : 0
+             */
 
-        public void setCurrency_Price(double Currency_Price) {
-            this.Currency_Price = Currency_Price;
-        }
+            private String Code;
+            private int Currency_ID;
+            private String Currency_Name;
+            private double Currency_Price;
+            private int IsBase;
 
-        public String  getCode() {
-            return Code;
-        }
+            public String getCode() {
+                return Code;
+            }
 
-        public void setCode(String Code) {
-            this.Code = Code;
+            public void setCode(String Code) {
+                this.Code = Code;
+            }
+
+            public int getCurrency_ID() {
+                return Currency_ID;
+            }
+
+            public void setCurrency_ID(int Currency_ID) {
+                this.Currency_ID = Currency_ID;
+            }
+
+            public String getCurrency_Name() {
+                return Currency_Name;
+            }
+
+            public void setCurrency_Name(String Currency_Name) {
+                this.Currency_Name = Currency_Name;
+            }
+
+            public double getCurrency_Price() {
+                return Currency_Price;
+            }
+
+            public void setCurrency_Price(double Currency_Price) {
+                this.Currency_Price = Currency_Price;
+            }
+
+            public int getIsBase() {
+                return IsBase;
+            }
+
+            public void setIsBase(int IsBase) {
+                this.IsBase = IsBase;
+            }
         }
     }
 }

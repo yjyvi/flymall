@@ -17,6 +17,7 @@ import com.whmnrc.flymall.beans.AllVideoBean;
 import com.whmnrc.flymall.presener.AllVideoPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import butterknife.BindView;
 
@@ -37,6 +38,7 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
     public AllVideoPresenter mAllVideoPresenter;
     private int page = 1;
     private int rows = 10;
+    private LoadingDialog mLoadingDialog;
 
 
     @Override
@@ -48,7 +50,8 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
     @Override
     protected void initViewData() {
         setTitle("Customer Review Video");
-
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
         mAllVideoPresenter = new AllVideoPresenter(this);
         mAllVideoPresenter.getAllVideo(page, rows);
 
@@ -78,22 +81,14 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
 
     @Override
     public void loadSuccess(AllVideoBean allVideoBean) {
-//        if (page == 1) {
-            mVideoGoodsListAdapter.setDataArray(allVideoBean.getResultdata());
-//        } else {
-//            List<AllVideoBean.ResultdataBean> datas = mVideoGoodsListAdapter.getDatas();
-//            datas.addAll(allVideoBean.getResultdata());
-//            mVideoGoodsListAdapter.setDataArray(datas);
-//        }
+        mVideoGoodsListAdapter.setDataArray(allVideoBean.getResultdata());
         mVideoGoodsListAdapter.notifyDataSetChanged();
+
+        showEmpty();
+
+        mLoadingDialog.dismiss();
     }
 
-//    @Override
-//    public void onLoadMore(RefreshLayout refreshLayout) {
-//        page++;
-//        mAllVideoPresenter.getAllVideo(page, rows);
-//        refreshLayout.finishLoadMore();
-//    }
 
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
@@ -104,7 +99,7 @@ public class CustomerReviewVideoActivity extends BaseActivity implements AllVide
 
     public void showEmpty() {
         if (mVideoGoodsListAdapter != null && mVideoGoodsListAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true,"No Video", R.mipmap.no_video, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "No Video", R.mipmap.no_video, mVsEmpty);
         } else {
             if (mVsEmpty != null) {
                 mVsEmpty.setVisibility(View.GONE);

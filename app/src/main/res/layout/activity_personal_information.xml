@@ -69,7 +69,6 @@
                 android:gravity="right"
                 android:layout_weight="1"
                 android:textSize="@dimen/dm_15"
-                android:drawableRight="@mipmap/more"
                 android:drawablePadding="@dimen/dm_10"
                 android:textColor="@color/black"
                 android:layout_height="wrap_content"/>

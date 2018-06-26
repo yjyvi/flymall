@@ -122,7 +122,7 @@ public class OrderListActivity extends BaseActivity {
                 ColorTransitionPagerTitleView colorTransitionPagerTitleView = new ColorTransitionPagerTitleView(context);
                 colorTransitionPagerTitleView.setNormalColor(Color.BLACK);
                 colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.black));
-                colorTransitionPagerTitleView.setTextSize(10);
+                colorTransitionPagerTitleView.setTextSize(ColorTransitionPagerTitleView.AUTO_SIZE_TEXT_TYPE_NONE, getResources().getDimensionPixelSize(R.dimen.dm_10));
                 colorTransitionPagerTitleView.setText(titles[index]);
                 colorTransitionPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override

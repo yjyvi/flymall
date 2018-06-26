@@ -113,10 +113,10 @@ public class OrderDeitalsBean {
         private String CellPhone;
         private Object CloseReason;
         private int CommisTotalAmount;
-        private int DiscountAmount;
+        private double DiscountAmount;
         private Object ExpressCompanyName;
         private Object FinishDate;
-        private int Freight;
+        private double Freight;
         private Object GatewayOrderId;
         private long Id;
         private int IntegralDiscount;
@@ -152,13 +152,23 @@ public class OrderDeitalsBean {
         private String UserName;
         private Object UserRemark;
         private List<OrderItemInfoBean> OrderItemInfo;
+        private String Address_LastName;
+
+        public String getAddress_LastName() {
+            return Address_LastName;
+        }
+
+        public void setAddress_LastName(String address_LastName) {
+            Address_LastName = address_LastName;
+        }
 
         protected ResultdataBean(Parcel in) {
             ActiveType = in.readInt();
             Address = in.readString();
+            Address_LastName = in.readString();
             CellPhone = in.readString();
             CommisTotalAmount = in.readInt();
-            DiscountAmount = in.readInt();
+            DiscountAmount = in.readDouble();
             Freight = in.readInt();
             Id = in.readLong();
             IntegralDiscount = in.readInt();
@@ -234,11 +244,11 @@ public class OrderDeitalsBean {
             this.CommisTotalAmount = CommisTotalAmount;
         }
 
-        public int getDiscountAmount() {
+        public double getDiscountAmount() {
             return DiscountAmount;
         }
 
-        public void setDiscountAmount(int DiscountAmount) {
+        public void setDiscountAmount(double DiscountAmount) {
             this.DiscountAmount = DiscountAmount;
         }
 
@@ -258,11 +268,11 @@ public class OrderDeitalsBean {
             this.FinishDate = FinishDate;
         }
 
-        public int getFreight() {
+        public double getFreight() {
             return Freight;
         }
 
-        public void setFreight(int Freight) {
+        public void setFreight(double Freight) {
             this.Freight = Freight;
         }
 
@@ -556,9 +566,10 @@ public class OrderDeitalsBean {
             dest.writeInt(ActiveType);
             dest.writeString(Address);
             dest.writeString(CellPhone);
+            dest.writeString(Address_LastName);
             dest.writeInt(CommisTotalAmount);
-            dest.writeInt(DiscountAmount);
-            dest.writeInt(Freight);
+            dest.writeDouble(DiscountAmount);
+            dest.writeDouble(Freight);
             dest.writeLong(Id);
             dest.writeInt(IntegralDiscount);
             dest.writeInt(InvoiceType);

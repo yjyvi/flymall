@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -126,10 +127,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     public GoodsIsCollectionPresenter mGoodsIsCollectionPresenter;
     public GoodsCommitOrderPresenter mGoodsCommitOrderPresenter;
     private int mCurrentPostion;
+    private boolean mIsBuy = false;
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_goods_details;
+        return R.layout.activity_goods_details_copy;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -186,7 +188,9 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 String imgBeans = (String) path;
-                GlideUtils.LoadImage(GoodsDetailsActivity.this, imgBeans, imageView);
+                if (!TextUtils.isEmpty(imgBeans)) {
+                    GlideUtils.LoadImage(GoodsDetailsActivity.this, imgBeans, imageView);
+                }
 
                 //轮播图跳转
                 imageView.setOnClickListener(new View.OnClickListener() {
@@ -203,7 +207,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     private void initTab(String goodsContent, GoodsDetailsBean.ResultdataBean.ProductCommentInfo evaluate, String goodsId) {
         fragments.add(GoodsDetailsFragment.newInstance(goodsContent, JSON.toJSONString(evaluate)));
         fragments.add(GoodsEvaluationFragment.newInstance(goodsId));
-//        mVpOrder.setNoScroll(true);
         mVpOrder.setAdapter(new TableViewPagerAdapter(getSupportFragmentManager(), fragments));
 
         CommonNavigator commonNavigator = new CommonNavigator(this);
@@ -219,7 +222,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 ColorTransitionPagerTitleView colorTransitionPagerTitleView = new ColorTransitionPagerTitleView(context);
                 colorTransitionPagerTitleView.setNormalColor(Color.BLACK);
                 colorTransitionPagerTitleView.setSelectedColor(ContextCompat.getColor(context, R.color.black));
-                colorTransitionPagerTitleView.setTextSize(18);
+                colorTransitionPagerTitleView.setTextSize(ColorTransitionPagerTitleView.AUTO_SIZE_TEXT_TYPE_NONE, getResources().getDimensionPixelSize(R.dimen.dm_17));
                 colorTransitionPagerTitleView.setText(titles[index]);
                 colorTransitionPagerTitleView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -285,6 +288,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 }
                 break;
             case R.id.tv_buy:
+
                 isAddCart = false;
                 if (mGoodSpecificationsPop != null) {
                     mGoodSpecificationsPop.show();
@@ -346,7 +350,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mTvPrice.setText(PlaceholderUtils.pricePlaceholder(product.getMinSalePrice()));
             mTvOldPrice.setText(PlaceholderUtils.pricePlaceholder(product.getMarketPrice()));
             mTvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            mRbStar.setStar(product.getAuditStatus(), true);
+            mRbStar.setStar(goodsDetailsBean.getShop().getProductMark(), true);
             mTvCommentNum.setText(String.valueOf(product.getSaleCounts()));
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
             initBanner(goodsDetailsBean.getBannners());
@@ -389,6 +393,12 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
         if (!UserManager.getIsLogin(this)) {
             return;
         }
+
+        if (mIsBuy) {
+            return;
+        }
+        mIsBuy = true;
+
         if (mGoodsBean.getColor().size() == 0 && mGoodsBean.getSize().size() == 0 && mGoodsBean.getVersion().size() == 0) {
             mGoodsCommitOrderPresenter.getGoodsNoAttrCommit(mGoodsId + "_0_0_0", String.valueOf(number), "0");
         } else {
@@ -405,6 +415,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 confirmBean.setPriceIds(goodSpe);
                 confirmBean.setGoods_SourcePrice(mGoodsBean.getProduct().getMarketPrice());
                 confirmBean.setGoodsPrice_Price(mGoodsBean.getProduct().getMinSalePrice());
+                confirmBean.setGoodsId(String.valueOf(mGoodsBean.getProduct().getId()));
                 confirmBeans.add(confirmBean);
 
                 ConfirmOrderActivity.start(this, confirmBeans, true);
@@ -412,12 +423,15 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 if (mGoodSpecificationsPop != null && mGoodSpecificationsPop.isShow()) {
                     mGoodSpecificationsPop.dissmiss();
                 }
+                mIsBuy = false;
             }
         }
     }
 
     @Override
     public void addCartSuccess() {
+        mIsBuy = false;
+        mGoodSpecificationsPop.dissmiss();
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
         UserManager.refresh();
     }
@@ -438,6 +452,8 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     public void changeToComment(GoodsCommentEvent goodsCommentEvent) {
         if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_TO_COMMENT) {
             mVpOrder.setCurrentItem(1);
+        } else if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_TO_TOP) {
+            mPtlmSpecialistTourDetail.scrollToTop();
         }
     }
 
@@ -490,8 +506,9 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             confirmBean.setGoodsNUm(cartItemModelsBean.getCount());
             confirmBean.setGoods_spec("");
             confirmBean.setPriceIds(cartItemModelsBean.getSkuId());
+            confirmBean.setGoodsId(String.valueOf(cartItemModelsBean.getId()));
             confirmBean.setGoods_SourcePrice(cartItemModelsBean.getPrice());
-            confirmBean.setGoodsPrice_Price(0);
+            confirmBean.setGoodsPrice_Price(cartItemModelsBean.getPrice());
             confirmBeans.add(confirmBean);
 
             ConfirmOrderActivity.start(this, confirmBeans, true);
@@ -500,6 +517,8 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 mGoodSpecificationsPop.dissmiss();
             }
         }
+
+        mIsBuy = false;
     }
 
     @Override

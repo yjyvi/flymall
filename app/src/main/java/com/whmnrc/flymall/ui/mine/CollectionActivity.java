@@ -21,6 +21,7 @@ import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.views.AlertDialog;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import java.util.List;
 import java.util.Map;
@@ -54,10 +55,13 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
     private boolean isAllChecked;
     public MultipleDelCollectionPresenter mMultipleDelCollectionPresenter;
     private boolean isPageMax;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
         setTitle("My favorite");
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
         mMultipleDelCollectionPresenter = new MultipleDelCollectionPresenter(this);
         mAddOrDelCollectionGoodsPresenter = new AddOrDelCollectionGoodsPresenter(this);
         mCollectionListPresenter = new CollectionListPresenter(this);
@@ -162,7 +166,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
         new AlertDialog(this).builder().setTitle("Warning!")
                 .setMsg("Are you sure you want to delete the collection goods?")
                 .setCancelable(true)
-                .setPositiveButton("agree", new View.OnClickListener() {
+                .setPositiveButton("confirm", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (isOne) {
@@ -186,6 +190,14 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
             collections.put(collectionId, position);
         } else {
             collections.remove(collectionId);
+        }
+
+        if (collections.size() == mCollectionAdapter.getDatas().size()) {
+            mIvAllCheck.setSelected(true);
+            isAllChecked = true;
+        } else {
+            mIvAllCheck.setSelected(false);
+            isAllChecked = false;
         }
     }
 
@@ -215,6 +227,8 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
         mCollectionAdapter.notifyDataSetChanged();
 
         showEmpty();
+
+        mLoadingDialog.dismiss();
     }
 
 
@@ -233,6 +247,7 @@ public class CollectionActivity extends BaseActivity implements AddOrDelCollecti
     @Override
     public void onRefresh(RefreshLayout refreshLayout) {
         page = 1;
+        mRefresh.setNoMoreData(false);
         mCollectionListPresenter.getCollectionList(1, page);
         refreshLayout.finishRefresh();
     }

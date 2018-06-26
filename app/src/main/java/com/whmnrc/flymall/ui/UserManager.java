@@ -12,7 +12,7 @@ import com.whmnrc.flymall.network.CommonCallBack;
 import com.whmnrc.flymall.network.OKHttpManager;
 import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.SPUtils;
-import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
 import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
 
@@ -54,6 +54,9 @@ public class UserManager {
             @Override
             protected void onSuccess(UserBean data) {
                 saveUser(data.getResultdata());
+                SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY, String.valueOf(data.getResultdata().getCurrencyPrice()));
+                SPUtils.put(MyApplication.applicationContext, CommonConstant.Common.CURRENT_CURRENCY_CODE, data.getResultdata().getCode());
+                EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_CURRENCY));
                 EventBus.getDefault().post(new UserInfoEvent().setEventType(UserInfoEvent.UPDATE_USER_INFO));
                 EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(UserManager.getUser().getShoppingCartNum()));
             }
@@ -77,7 +80,7 @@ public class UserManager {
 
     public static boolean getIsLogin(Context context) {
         if (TextUtils.isEmpty(SPUtils.getString(context, CommonConstant.Common.LAST_LOGIN_ID))) {
-            ToastUtils.showToast("Please Login");
+//            ToastUtils.showToast("Please Login");
             LoginSelectedActivity.start(context);
             return false;
         }

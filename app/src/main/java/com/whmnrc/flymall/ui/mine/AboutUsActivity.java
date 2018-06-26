@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class AboutUsActivity extends BaseActivity {
     public void initViewData() {
         setTitle("About Us");
         setAppVersionName(this);
-        GlideUtils.LoadRoundImage(this, R.mipmap.ic_launcher, ivLogo);
+        GlideUtils.LoadRoundImage(this, ContextCompat.getDrawable(this, R.drawable.ic_launcher), ivLogo);
     }
 
     public static void start(Context context) {

@@ -50,6 +50,8 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
                     } else {
                         mAddressAddOrUpdateListener.upadteSuccess();
                     }
+                }else {
+                    mAddressAddOrUpdateListener.addField();
                 }
 
                 ToastUtils.showToast(data.getMessage());
@@ -63,5 +65,6 @@ public class AddressAddOrUpdatePresenter extends PresenterBase {
         void addSuccess();
 
         void upadteSuccess();
+        void addField();
     }
 }

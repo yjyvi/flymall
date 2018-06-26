@@ -34,6 +34,7 @@ import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.GoodsCommentEvent;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
+import com.whmnrc.flymall.views.AlertDialog;
 import com.whmnrc.flymall.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -86,10 +87,10 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     public DelShoppingCartPresenter mDelShoppingCartPresenter;
     private Map<String, Integer> delCartIds = new TreeMap<>();
     private Map<String, Integer> goToBuyCartItemIds = new TreeMap<>();
-    private List<Integer> removePosition = new ArrayList<>();
     public boolean mIsActivity;
     public ShopCartListIsAddPresenter mShopCartListIsAddPresenter;
     private LoadingDialog mLoadingDialog;
+    private double totalPrice = 0.0;
 
     @Override
     protected int contentViewLayoutID() {
@@ -168,47 +169,41 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         mRvOtherGoods.requestFocus();
 
 
-
-
         mShoppingCartAdapter.setOperationShoppingCartListener(new ShoppingCartAdapter.OperationShoppingCartListener() {
             @Override
             public void delItem(int position) {
-                removePosition.add(position);
-
                 delCartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(position).getId()), position);
                 mDelShoppingCartPresenter.delShoppingCartList(String.valueOf(mShoppingCartAdapter.getDatas().get(position).getSkuId()));
-
-                String trim = mTvSumPrices.getText().toString().trim();
-                trim = trim.substring(1, trim.length());
-                double goodsPricePrice = mShoppingCartAdapter.getDatas().get(position).getPrice() * mShoppingCartAdapter.getDatas().get(position).getCount();
-                double currentPrice = Double.parseDouble(trim);
-                mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(currentPrice - goodsPricePrice));
             }
 
             @Override
             public void selectToPrice(int position, double goodsPrice, boolean isAdd, String cartId, String cartItemId) {
-                String currentPrice = mTvSumPrices.getText().toString().trim();
-                String substring = currentPrice.substring(1, currentPrice.length());
-                double price = Double.parseDouble(substring);
-                double totalPrice;
 
                 if (isAdd) {
                     delCartIds.put(cartId, position);
                     goToBuyCartItemIds.put(cartItemId, position);
-                    totalPrice = price + goodsPrice;
+                    totalPrice += goodsPrice;
                 } else {
                     delCartIds.remove(cartId);
                     goToBuyCartItemIds.remove(cartItemId);
-                    totalPrice = price - goodsPrice;
+                    if (totalPrice > 0) {
+                        totalPrice -= goodsPrice;
+                    }
                 }
+
+
+                mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
+
+                changeTotalCartNum();
 
                 if (delCartIds.size() == mShoppingCartAdapter.getDatas().size()) {
                     mIvAllCheck.setSelected(true);
+                    isAllChecked = true;
                 } else {
                     mIvAllCheck.setSelected(false);
+                    isAllChecked = false;
                 }
 
-                mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
             }
 
             @Override
@@ -251,7 +246,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     }
 
 
-    @OnClick({R.id.iv_all_check, R.id.tv_entry, R.id.tv_to_home,R.id.rl_right_title})
+    @OnClick({R.id.iv_all_check, R.id.tv_entry, R.id.tv_to_home, R.id.rl_right_title})
     public void onClick(View view) {
 
         if (!UserManager.getIsLogin(getActivity())) {
@@ -267,24 +262,42 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                 break;
             case R.id.tv_entry:
                 if (mRlRightTitle.isSelected()) {
+
                     if (delCartIds.size() <= 0) {
                         ToastUtils.showToast("Please select the item to be deleted");
                         return;
                     }
-                    StringBuilder cartIdSt = new StringBuilder();
-                    for (String cartId : delCartIds.keySet()) {
-                        cartIdSt.append(cartId).append(",");
-                    }
 
-                    String result;
-                    if (delCartIds.size() > 1) {
-                        result = cartIdSt.toString().substring(0, cartIdSt.toString().length() - 1);
-                    } else {
-                        result = cartIdSt.toString();
-                    }
+                    new AlertDialog(getActivity()).builder().setTitle("Warning!")
+                            .setMsg("Are you sure you want to delete the goods?")
+                            .setCancelable(true)
+                            .setPositiveButton("confirm", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    StringBuilder cartIdSt = new StringBuilder();
+                                    for (String cartId : delCartIds.keySet()) {
+                                        cartIdSt.append(cartId).append(",");
+                                    }
 
-                    mDelShoppingCartPresenter.delShoppingCartList(result);
-                    editShopCart(false);
+                                    String result;
+                                    if (delCartIds.size() > 1) {
+                                        result = cartIdSt.toString().substring(0, cartIdSt.toString().length() - 1);
+                                    } else {
+                                        result = cartIdSt.toString();
+                                    }
+
+                                    mDelShoppingCartPresenter.delShoppingCartList(result);
+                                    editShopCart(false);
+                                }
+                            })
+                            .setNegativeButton("cancel", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                }
+                            }).show();
+
+
                 } else {
                     if (goToBuyCartItemIds.size() <= 0) {
                         ToastUtils.showToast("Please select the product to be purchased");
@@ -297,7 +310,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                             ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean = mShoppingCartAdapter.getDatas().get(i);
                             confirmBean.setGoodsPrice_Price(resultdataBean.getPrice());
                             confirmBean.setGoods_spec(resultdataBean.getColor() + resultdataBean.getSize() + resultdataBean.getVersion());
-                            confirmBean.setGoods_SourcePrice(0);
+                            confirmBean.setGoods_SourcePrice(resultdataBean.getPrice());
                             confirmBean.setPriceIds(String.valueOf(resultdataBean.getCartItemId()));
                             confirmBean.setGoodsNUm(resultdataBean.getCount());
                             confirmBean.setGoods_ImaPath(resultdataBean.getImgUrl());
@@ -307,8 +320,13 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                         }
                     }
 
-                    ConfirmOrderActivity.start(view.getContext(), confirmBeans, false);
-
+                    if (confirmBeans.size() > 0) {
+                        ConfirmOrderActivity.start(view.getContext(), confirmBeans, false);
+                        page = 1;
+                        mGetShoppingCartListPresenter.getShoppingCartList(page);
+                    } else {
+                        ToastUtils.showToast("Please select the product to be purchased");
+                    }
                 }
                 break;
             case R.id.tv_to_home:
@@ -328,26 +346,46 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
      * 选中所有商品
      */
     private void checkedAll() {
-        if (mGoodListAdapter.getDatas() != null) {
+        if (mShoppingCartAdapter.getDatas() != null) {
             isAllChecked = !isAllChecked;
             mIvAllCheck.setSelected(isAllChecked);
-            selectedFalse();
-            double totalPrice = 0;
+            totalPrice = 0.0;
             if (isAllChecked) {
                 for (int i = 0; i < mShoppingCartAdapter.getDatas().size(); i++) {
-                    delCartIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(i).getSkuId()), i);
-                    goToBuyCartItemIds.put(String.valueOf(mShoppingCartAdapter.getDatas().get(i).getCartItemId()), i);
-                    mShoppingCartAdapter.getDatas().get(i).setSelect(true);
-                    totalPrice += mShoppingCartAdapter.getDatas().get(i).getPrice();
+                    ShoppingCartListBean.ResultdataBean.ProductsBean productsBean = mShoppingCartAdapter.getDatas().get(i);
+                    delCartIds.put(String.valueOf(productsBean.getSkuId()), i);
+                    goToBuyCartItemIds.put(String.valueOf(productsBean.getCartItemId()), i);
+                    productsBean.setSelect(false);
                 }
-                mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
+
+
             } else {
-                delCartIds.clear();
-                goToBuyCartItemIds.clear();
-                mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(0.00));
+                for (int i = 0; i < mShoppingCartAdapter.getDatas().size(); i++) {
+                    ShoppingCartListBean.ResultdataBean.ProductsBean productsBean = mShoppingCartAdapter.getDatas().get(i);
+                    productsBean.setSelect(true);
+                }
+                initCartData();
             }
         }
-        mGoodListAdapter.notifyDataSetChanged();
+        changeTotalCartNum();
+
+        mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
+
+        mShoppingCartAdapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 初始化显示
+     */
+    private void initCartData() {
+        delCartIds.clear();
+        goToBuyCartItemIds.clear();
+        if (!mIvAllCheck.isSelected()) {
+            mTvEntry.setText("Delete");
+        } else {
+            mTvEntry.setText(String.format("Bill(%s)", 0));
+        }
     }
 
     @Override
@@ -362,54 +400,50 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     public void getListSuccess(ShoppingCartListBean.ResultdataBean resultdataBeans) {
         mShoppingCartAdapter.setDataArray(resultdataBeans.getProducts());
         mShoppingCartAdapter.notifyDataSetChanged();
+        UserManager.getUser().setShoppingCartNum(mShoppingCartAdapter.getDatas().size());
 
         EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.SHOPPING_CARR_NUM).setData(mShoppingCartAdapter.getDatas().size()));
-
+        initCartData();
         changeTotalCartNum();
-
+        isAllChecked = true;
+        totalPrice = 0.0;
         showEmpty();
+        checkedAll();
     }
 
     private void changeTotalCartNum() {
-        if (mShoppingCartAdapter != null && mShoppingCartAdapter.getDatas() != null) {
-            int goodsNum = 0;
-            for (ShoppingCartListBean.ResultdataBean.ProductsBean productsBean : mShoppingCartAdapter.getDatas()) {
-                if (productsBean.isSelect()) {
-                    goodsNum += productsBean.getCount();
+        if (!mRlRightTitle.isSelected()) {
+            if (mShoppingCartAdapter != null && mShoppingCartAdapter.getDatas() != null) {
+                int goodsNum = 0;
+                for (ShoppingCartListBean.ResultdataBean.ProductsBean productsBean : mShoppingCartAdapter.getDatas()) {
+                    if (productsBean.isSelect()) {
+                        goodsNum += productsBean.getCount();
+                    }
                 }
+                mTvEntry.setText(String.format("Bill(%s)", goodsNum));
+            } else {
+                mTvEntry.setText(String.format("Bill(%s)", 0));
             }
-            mTvEntry.setText(String.format("Bill(%s)", goodsNum));
-        } else {
-            mTvEntry.setText(String.format("Bill(%s)", 0));
         }
     }
 
     @Override
     public void delCartSuccess() {
-        RecyclerView.LayoutManager layoutManager = mRvInGoods.getLayoutManager();
-        int childCount = layoutManager.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            layoutManager.getChildAt(i).setSelected(false);
-        }
 
-        for (ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean : mShoppingCartAdapter.getDatas()) {
-            resultdataBean.setSelect(false);
-        }
-
-        mIvAllCheck.setSelected(false);
-
-
-        delCartIds.clear();
-        goToBuyCartItemIds.clear();
-
-        mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(0.00));
-
-        mShoppingCartAdapter.notifyDataSetChanged();
-
+        UserManager.refresh();
         page = 1;
         mGetShoppingCartListPresenter.getShoppingCartList(page);
 
-        UserManager.refresh();
+        int size = mShoppingCartAdapter.getDatas().size();
+        for (int i = 0; i < size; i++) {
+            ShoppingCartListBean.ResultdataBean.ProductsBean productsBean = mShoppingCartAdapter.getDatas().get(i);
+            if (productsBean.isSelect()) {
+                delCartIds.remove(String.valueOf(productsBean.getCartItemId()));
+                goToBuyCartItemIds.remove(productsBean.getSkuId());
+            }
+        }
+
+
     }
 
 
@@ -444,11 +478,14 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     }
 
 
+    /**
+     * 选择重置
+     */
     private void selectedFalse() {
         RecyclerView.LayoutManager layoutManager = mRvInGoods.getLayoutManager();
         int childCount = layoutManager.getChildCount();
         for (int i = 0; i < childCount; i++) {
-            layoutManager.getChildAt(i).setSelected(!layoutManager.getChildAt(i).isSelected());
+            layoutManager.getChildAt(i).setSelected(layoutManager.getChildAt(i).isSelected());
         }
     }
 
@@ -465,6 +502,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
     @Subscribe
     public void changePrice(GoodsCommentEvent goodsCommentEvent) {
         if (goodsCommentEvent.getEventType() == GoodsCommentEvent.CHANGE_CURRENCY) {
+            mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(totalPrice));
             mShoppingCartAdapter.notifyDataSetChanged();
             mGoodListAdapter.notifyDataSetChanged();
         }

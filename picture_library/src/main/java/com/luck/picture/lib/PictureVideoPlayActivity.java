@@ -6,14 +6,19 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+/**
+ * @author yjyvi
+ */
 public abstract class PictureVideoPlayActivity extends PictureBaseActivity implements MediaPlayer.OnErrorListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, View.OnClickListener {
     private String video_path = "";
     private ImageView picture_left_back;
@@ -26,6 +31,7 @@ public abstract class PictureVideoPlayActivity extends PictureBaseActivity imple
     private String goodsId;
     private TextView mTvDesc;
     private TextView mTvBuy;
+    public LinearLayout mLlVideoGoods;
 
 
     @Override
@@ -46,11 +52,18 @@ public abstract class PictureVideoPlayActivity extends PictureBaseActivity imple
         iv_play = (ImageView) findViewById(R.id.iv_play);
         pb = (ProgressBar) findViewById(R.id.image_buffer);
 
+        mLlVideoGoods = (LinearLayout) findViewById(R.id.ll_video_goods);
         mTvDesc = (TextView) findViewById(R.id.tv_desc);
         mTvBuy = (TextView) findViewById(R.id.tv_buy);
 
-        mTvDesc.setText(goodsDescription);
-        mTvBuy.setOnClickListener(this);
+        if (TextUtils.isEmpty(goodsId)) {
+            mLlVideoGoods.setVisibility(View.GONE);
+        } else {
+            mLlVideoGoods.setVisibility(View.VISIBLE);
+            mTvDesc.setText(goodsDescription);
+            mTvBuy.setOnClickListener(this);
+        }
+
 
         mMediaController = new MediaController(this);
         mVideoView.setOnCompletionListener(this);
@@ -142,7 +155,7 @@ public abstract class PictureVideoPlayActivity extends PictureBaseActivity imple
         }
     }
 
-    public abstract void  goToGoodsDetials(String goodsId);
+    public abstract void goToGoodsDetials(String goodsId);
 
     @Override
     protected void attachBaseContext(Context newBase) {

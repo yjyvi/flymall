@@ -37,22 +37,6 @@ public class FilterPop extends PopupWindow {
     private String cid = "";
     private OnConfirmClickListener mOnConfirmClickListener;
 
-
-    public interface MixinPopListener {
-        void addGroups();
-
-        void newFriend();
-
-        void scanFriend();
-
-    }
-
-    private MixinPopListener mMixinPopListener;
-
-    public void setMixinPopListener(MixinPopListener mixinPopListener) {
-        mMixinPopListener = mixinPopListener;
-    }
-
     public void setOnConfirmClickListener(OnConfirmClickListener onConfirmClickListener) {
         this.mOnConfirmClickListener = onConfirmClickListener;
     }
@@ -67,7 +51,7 @@ public class FilterPop extends PopupWindow {
         conentView = inflater.inflate(R.layout.item_pop_goods_filter, null);
         LinearLayout llAllTabFlow = conentView.findViewById(R.id.ll_all_flow_layout);
 
-        final SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean[] num = new SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean[mCategoryList.size()];
+        final List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> num = new ArrayList<>();
 
         //动态适配分类
         for (int i = 0; i < mCategoryList.size(); i++) {
@@ -92,7 +76,11 @@ public class FilterPop extends PopupWindow {
             tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                 @Override
                 public boolean onTagClick(View view, int position, FlowLayout parent) {
-                    num[finalI] = categoryBean.getSubCategory().get(position);
+                    if (num.contains(categoryBean.getSubCategory().get(position))) {
+                        num.remove(categoryBean.getSubCategory().get(position));
+                    } else {
+                        num.add(categoryBean.getSubCategory().get(position));
+                    }
                     return false;
                 }
             });
@@ -109,9 +97,9 @@ public class FilterPop extends PopupWindow {
                     if (mOnConfirmClickListener != null) {
                         List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid = new ArrayList<>();
                         //去Null值
-                        for (int i = 0; i < num.length; i++) {
-                            if (num[i] != null) {
-                                noNullCid.add(num[i]);
+                        for (int i = 0; i < num.size(); i++) {
+                            if (num.get(i) != null) {
+                                noNullCid.add(num.get(i));
                             }
 
                         }
@@ -119,7 +107,7 @@ public class FilterPop extends PopupWindow {
                             if (i == noNullCid.size() || noNullCid.size() == 1) {
                                 cid += noNullCid.get(i).getId();
                             } else {
-                                cid += noNullCid.get(i).getId() + "@";
+                                cid += noNullCid.get(i).getId() + ",";
                             }
                         }
 

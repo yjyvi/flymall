@@ -19,6 +19,7 @@ import com.whmnrc.flymall.utils.TextColorChangeUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.AddressEvent;
 import com.whmnrc.flymall.views.CityPop;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -52,10 +53,6 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     EditText mEtTel;
     @BindView(R.id.tv_indicates)
     TextView mTvIndicates;
-    @BindView(R.id.tv_first_name)
-    TextView mTvFirstName;
-    @BindView(R.id.tv_last_name)
-    TextView mTvLastName;
     @BindView(R.id.tv_shipping_address)
     TextView mTvShippingAddress;
     @BindView(R.id.tv_city)
@@ -80,7 +77,6 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     public CityPop mCityPop;
     private String mParentId;
     private String mCityAreaId;
-    private String mProvinceAreaId;
     private boolean mIsInit;
     private String addressId = "0";
     public String mCityName;
@@ -88,9 +84,11 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     public String mProName;
     private String mStringName;
     public String mAddressStateProvince;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
+        mLoadingDialog = new LoadingDialog(this);
 
         setTitle("New address");
         EventBus.getDefault().register(this);
@@ -100,6 +98,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         mAddressAddOrUpdatePresenter = new AddressAddOrUpdatePresenter(this);
 
         String resultdataBeanJson = getIntent().getStringExtra("resultdataBeanJson");
+        int size = getIntent().getIntExtra("size", 0);
         if (!TextUtils.isEmpty(resultdataBeanJson)) {
             mResultdataBean = JSON.parseObject(resultdataBeanJson, AddressBean.ResultdataBean.class);
             setTitle("Edit address");
@@ -115,21 +114,21 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             mEtCity.setText(mResultdataBean.getAddress_City());
             mEtAddressContinued.setText(mResultdataBean.getAddress_Address2());
             mEtPostalCode.setText(mResultdataBean.getAddress_ZipCode());
-            mParentId = mResultdataBean.getAddress_Country();
+            mParentId = mResultdataBean.getAddress_Provice();
             mAddressStateProvince = mResultdataBean.getAddress_StateProvince();
             mStringName = mAddressStateProvince;
 
             if (!TextUtils.isEmpty(mAddressStateProvince)) {
                 String[] split = mAddressStateProvince.split(",");
-                String country = split[0];
-                mTvCountry.setText(country);
+                mCityName = split[0];
+                mTvCountry.setText(mCityName);
                 if (split.length > 1) {
-                    String province = split[1];
-                    mTvProvince.setText(province);
+                    mProName = split[1];
+                    mTvProvince.setText(mProName);
                 }
                 if (split.length > 2) {
-                    String telCode = split[2];
-                    mTvTel.setText(telCode);
+                    mTelAre = split[2];
+                    mTvTel.setText(mTelAre);
                 }
             }
 
@@ -138,8 +137,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             } else {
                 mTvIsDefault.setSelected(false);
             }
-
-
+        }else {
+            if (size ==0) {
+                mTvIsDefault.setSelected(true);
+            }
         }
 
         redTextColor(mTvIndicates);
@@ -149,8 +150,6 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         redTextColor(mTvStateProvinceRegion);
         redTextColor(mTvCity);
         redTextColor(mTvShippingAddress);
-        redTextColor(mTvLastName);
-        redTextColor(mTvFirstName);
         redTextColor(mTvIndicates);
 
 
@@ -165,9 +164,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         return R.layout.activity_add_address;
     }
 
-    public static void start(Context context, String resultdataBeanJson) {
+    public static void start(Context context, String resultdataBeanJson,int size) {
         Intent starter = new Intent(context, AddAddressActivity.class);
         starter.putExtra("resultdataBeanJson", resultdataBeanJson);
+        starter.putExtra("size", size);
         context.startActivity(starter);
     }
 
@@ -188,6 +188,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
                 break;
             case R.id.tv_save:
                 if (inputVerification()) {
+                    mLoadingDialog.show();
                     if (mResultdataBean != null) {
                         addOrUpdateAddress(false);
                     } else {
@@ -216,7 +217,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
                 mEtLastName.getText().toString().trim(),
                 mEtAddress.getText().toString().trim(),
                 mEtCity.getText().toString().trim(),
-                mProvinceAreaId,
+                mParentId,
                 mCityAreaId,
                 mEtAddressContinued.getText().toString().trim(),
                 mEtPostalCode.getText().toString().trim(),
@@ -246,18 +247,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             ToastUtils.showToast("Please enter Address");
             return false;
         }
-        if (TextUtils.isEmpty(mEtAddressContinued.getText().toString().trim())) {
-            ToastUtils.showToast("Please enter Address Continued");
-            return false;
-        }
         if (TextUtils.isEmpty(mEtCity.getText().toString().trim())) {
             ToastUtils.showToast("Please enter City");
             return false;
         }
-//        if (TextUtils.isEmpty(mTvDestinationCountry.getText().toString().trim())) {
-//            ToastUtils.showToast("Please selectToPrice Destination Country");
-//            return false;
-//        }
         if (TextUtils.isEmpty(mTvStateProvinceRegion.getText().toString().trim())) {
             ToastUtils.showToast("Please selectToPrice State Province Region");
             return false;
@@ -270,24 +263,27 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             ToastUtils.showToast("Please enter phone number");
             return false;
         }
-//        if (!PhoneUtils.isMobileNO(mEtTel.getText().toString().trim())) {
-//            ToastUtils.showToast("please enter a valid phone number");
-//            return false;
-//        }
         return true;
     }
 
 
     @Override
     public void addSuccess() {
+        mLoadingDialog.dismiss();
         EventBus.getDefault().post(new AddressEvent().setEventType(AddressEvent.ADD_ADDRESS_SUCCESS));
         finish();
     }
 
     @Override
     public void upadteSuccess() {
+        mLoadingDialog.dismiss();
         EventBus.getDefault().post(new AddressEvent().setEventType(AddressEvent.ADD_ADDRESS_SUCCESS));
         finish();
+    }
+
+    @Override
+    public void addField() {
+        mLoadingDialog.dismiss();
     }
 
     @Override
@@ -309,7 +305,6 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             mTelAre = telAre;
             mTvTel.setText(mTelAre);
         } else {
-            this.mProvinceAreaId = areaId;
             mProName = cityName;
             mTvProvince.setText(mProName);
         }
@@ -321,6 +316,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+
     }
 
     @org.greenrobot.eventbus.Subscribe

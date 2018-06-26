@@ -117,8 +117,12 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
         //模拟右侧标签页
         TwoClassifyFragment fragment = TwoClassifyFragment.newInstance((ArrayList<OneBrandsBean.ResultdataBean.SubCategoriesBeanX>) oneBrandsId, width, mCurrentySex);
         FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.ll_right_main, fragment, "c0").commit();
+        if (fm != null) {
+            FragmentTransaction ft = fm.beginTransaction();
+            if (ft != null) {
+                ft.replace(R.id.ll_right_main, fragment, "c0").commit();
+            }
+        }
 
     }
 
@@ -199,6 +203,7 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
         }
 
         mClassifyLeftAdapter.notifyDataSetChanged();
+        mLoadingDialog.dismiss();
     }
 
     @Override

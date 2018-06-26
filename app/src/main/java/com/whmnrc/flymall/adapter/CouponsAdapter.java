@@ -22,14 +22,17 @@ public class CouponsAdapter extends CommonAdapter<CouponBean.ResultdataBean> {
     @Override
     public void convert(ViewHolder holder, CouponBean.ResultdataBean resultdataBean, int position) {
         holder.setText(R.id.tv_coupons_title, resultdataBean.getCouponName());
-        holder.setText(R.id.tv_coupons_money, PlaceholderUtils.pricePlaceholder(resultdataBean.getOrderAmount()));
+        holder.setText(R.id.tv_coupons_money, PlaceholderUtils.pricePlaceholder(resultdataBean.getPrice()));
         holder.setText(R.id.tv_coupons_time, "Please use before" + resultdataBean.getEndTime());
         RelativeLayout rlCouponsBg = holder.getView(R.id.rl_coupons_bg);
 
         switch (resultdataBean.getUseStatus()) {
-            case 1:
-                rlCouponsBg.setBackgroundResource(R.mipmap.icon_coupon_normal);
+            case 0:
+                rlCouponsBg.setBackgroundResource(R.mipmap.icon_coupon_select);
                 break;
+            case 1:
+//                rlCouponsBg.setBackgroundResource(R.mipmap.icon_coupon_normal);
+//                break;
             case 2:
                 rlCouponsBg.setBackgroundResource(R.mipmap.icon_coupon_overdue);
                 break;

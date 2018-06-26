@@ -122,7 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void exit() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            ToastUtils.showToast("再按一次退出".concat(getResources().getString(R.string.app_name)));
+            ToastUtils.showToast("Press again to exit".concat(getResources().getString(R.string.app_name)));
             exitTime = System.currentTimeMillis();
         } else {
             finish();

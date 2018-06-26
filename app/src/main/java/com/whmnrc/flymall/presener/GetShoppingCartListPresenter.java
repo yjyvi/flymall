@@ -25,6 +25,9 @@ public class GetShoppingCartListPresenter extends PresenterBase {
     }
 
     public void getShoppingCartList(int page) {
+        if (UserManager.getUser() == null) {
+            return;
+        }
         HashMap<String, String> paramters = new HashMap<>(3);
         paramters.put("Page", String.valueOf(page));
         paramters.put("Rows", "10");

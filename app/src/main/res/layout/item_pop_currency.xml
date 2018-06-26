@@ -43,6 +43,7 @@
     </LinearLayout>
 
     <ImageView
+        android:id="@+id/iv_close"
         android:layout_width="@dimen/dm_15"
         android:src="@mipmap/icon_close"
         android:layout_alignParentRight="true"

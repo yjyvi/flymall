@@ -112,7 +112,7 @@ public class OKHttpManager {
      */
     public static boolean getIsConnected() {
         if (!NetworkUtils.isConnected()) {
-            ToastUtils.showToast(MyApplication.applicationContext.getResources().getString(R.string.app_name).concat("：网络异常，请检查网络设置"));
+            ToastUtils.showToast(MyApplication.applicationContext.getResources().getString(R.string.app_name).concat("：Abnormal network, please check the network settings"));
             return true;
         }
         return false;

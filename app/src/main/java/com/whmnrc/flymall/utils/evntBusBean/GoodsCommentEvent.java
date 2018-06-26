@@ -15,4 +15,9 @@ public class GoodsCommentEvent extends BaseEvent {
      * 修改了货币
      */
     public static final int CHANGE_CURRENCY = 5002;
+
+    /**
+     * 回到顶部
+     */
+    public static final int CHANGE_TO_TOP = 5003;
 }

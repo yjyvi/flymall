@@ -17,12 +17,17 @@ import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.beans.UserBean;
 import com.whmnrc.flymall.presener.LoginPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
-import com.whmnrc.flymall.ui.CommonH5WebView;
 import com.whmnrc.flymall.ui.HomeTableActivity;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.TextColorChangeUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
+import com.whmnrc.flymall.utils.WxShareUtils;
+import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
+import com.whmnrc.flymall.utils.evntBusBean.UserInfoEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.Map;
 
@@ -74,6 +79,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
 
     @Override
     protected void initViewData() {
+        EventBus.getDefault().register(this);
         mIsExit = getIntent().getBooleanExtra("isExit", false);
         mLoginPresenter = new LoginPresenter(this);
         String agreement = mTvAgreement.getText().toString().trim();
@@ -114,15 +120,23 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                 quickLogin(SHARE_MEDIA.FACEBOOK);
                 break;
             case R.id.ll_twitter_login:
+                if (!WxShareUtils.isApplicationAvilible(this, "com.twitter.android")) {
+                    ToastUtils.showToast("You need to install the app");
+                    return;
+                }
                 quickLogin(SHARE_MEDIA.TWITTER);
                 selectedView(mLlTwitterLogin);
                 break;
             case R.id.ll_wechat_login:
+                if (!WxShareUtils.isApplicationAvilible(this, "com.tencent.mm")) {
+                    ToastUtils.showToast("You need to install the app");
+                    return;
+                }
                 quickLogin(SHARE_MEDIA.WEIXIN);
                 selectedView(mLlWechatLogin);
                 break;
             case R.id.tv_agreement:
-                CommonH5WebView.startCommonH5WebView(view.getContext(), CommonConstant.Common.AGREEMENT, "User Agreement");
+                UserAgreementActivity.start(view.getContext());
                 break;
             default:
                 break;
@@ -154,7 +168,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
     public void quickLogin(SHARE_MEDIA shareMedia) {
         mShareAPI = UMShareAPI.get(LoginSelectedActivity.this);
         mShareAPI.getPlatformInfo(LoginSelectedActivity.this, shareMedia, umAuthListener);
-        mShareAPI.deleteOauth(LoginSelectedActivity.this, shareMedia, null);
+        mShareAPI.deleteOauth(LoginSelectedActivity.this, shareMedia, umAuthListener);
     }
 
     private UMAuthListener umAuthListener = new UMAuthListener() {
@@ -167,19 +181,23 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
 
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            if (data == null) {
+                return;
+            }
             switch (platform) {
                 case FACEBOOK:
                     unionid = data.get("uid");
                     headIcon = data.get("iconurl");
                     nikeName = data.get("name");
-                    sex = data.get("gender").equals("男") ? "1" : "2";
+                    sex = "1";
                     originate = "2";
                     break;
-                case WEIXIN://微信授权回调
+                //微信授权回调
+                case WEIXIN:
                     unionid = data.get("uid");
                     headIcon = data.get("profile_image_url");
                     nikeName = data.get("screen_name");
-                    sex = data.get("gender").equals("男") ? "1" : "2";
+                    sex = data.get("gender").equals("Man") ? "1" : "2";
                     originate = "0";
 
                     break;
@@ -187,7 +205,7 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
                     unionid = data.get("uid");
                     headIcon = data.get("iconurl");
                     nikeName = data.get("name");
-                    sex = data.get("gender").equals("男") ? "1" : "2";
+                    sex = "1";
                     originate = "3";
                     break;
                 default:
@@ -212,6 +230,12 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
     };
 
     @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
@@ -222,7 +246,15 @@ public class LoginSelectedActivity extends BaseActivity implements LoginPresente
         SPUtils.put(this, CommonConstant.Common.LAST_LOGIN_ID, userBean.getId());
         UserManager.saveUser(userBean);
         HomeTableActivity.startHomeTableView(LoginSelectedActivity.this, 0);
+        EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));
+        EventBus.getDefault().post(new UserInfoEvent().setEventType(UserInfoEvent.UPDATE_USER_INFO));
         umAuthListener = null;
         finish();
+    }
+
+
+    @Subscribe
+    public void shoppingCartEvent(SHopCartEvent sHopCartEvent) {
+
     }
 }

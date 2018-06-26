@@ -87,7 +87,6 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
 
     @Override
     protected void initViewData() {
-        setTitle("Personal center");
         mLoadingDialog = new LoadingDialog(getActivity());
         mLoadingDialog.show();
         mGetLikeGoodsPresenter = new GetLikeGoodsPresenter(this);

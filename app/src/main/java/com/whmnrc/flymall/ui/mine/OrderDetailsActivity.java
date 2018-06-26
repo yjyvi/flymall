@@ -5,9 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,10 +24,15 @@ import com.whmnrc.flymall.presener.CheckPaymentStatusForTTPresenter;
 import com.whmnrc.flymall.presener.OrderDetailsPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
+import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.WxShareUtils;
+import com.whmnrc.flymall.utils.evntBusBean.OrderListEvent;
 import com.whmnrc.flymall.views.AlertDialog;
 import com.whmnrc.flymall.views.LoadingDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -76,6 +83,8 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
     @Override
     protected void initViewData() {
         setTitle("Line item");
+
+        EventBus.getDefault().register(this);
 
         mCancelOrReceiptOrderPresenter = new CancelOrReceiptOrderPresenter(this);
         mLoadingDialog = new LoadingDialog(this);
@@ -128,11 +137,16 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
         mTvAddressDesc.setText(resultdataBean.getAddress());
         mTvOrderNumber.setText(String.format("Order number:%s", resultdataBean.getId()));
         mTvOrderTime.setText(String.format("Order time:%s", resultdataBean.getOrderDate()));
-        mTvOrderType.setText(String.format("Mode of payment:%s", resultdataBean.getInvoiceType()));
-        mTvOrderFreight.setText(String.format("Freight:%s", resultdataBean.getFreight()));
-        mTvOrderTotalPrice.setText(String.format("Total Purchases:%s", resultdataBean.getProductTotalAmount()));
-        mTvOrderPayPrice.setText(String.format("Has to pay the amount:%s", resultdataBean.getProductTotalAmount()));
-        mTvSkype.setText(String.format("skype us:%s", resultdataBean.getTopRegionId()));
+        mTvOrderType.setText(String.format("Mode of payment:%s", resultdataBean.getPaymentTypeName()));
+        mTvOrderFreight.setText(String.format("Freight:%s", PlaceholderUtils.pricePlaceholder(resultdataBean.getFreight())));
+        double totalPrice = 0.0;
+        for (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean orderItemInfoBean : resultdataBean.getOrderItemInfo()) {
+            totalPrice += orderItemInfoBean.getSalePrice() * orderItemInfoBean.getQuantity();
+        }
+
+        mTvOrderTotalPrice.setText(String.format("Total Purchases:%s", PlaceholderUtils.pricePlaceholder(totalPrice)));
+        mTvOrderPayPrice.setText(String.format("Has to pay the amount:%s", PlaceholderUtils.pricePlaceholder(totalPrice - resultdataBean.getDiscountAmount())));
+        mTvSkype.setText(String.format("skype us:%s", "0"));
 
 
         switch (resultdataBean.getOrderStatus()) {
@@ -177,24 +191,30 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
                 if (mTvOrderNumber != null) {
                     ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                     String orderNumber = mTvOrderNumber.getText().toString().trim();
+                    if (TextUtils.isEmpty(orderNumber)) {
+                        return;
+                    }
                     String copyOrderNumber = orderNumber.split(":")[1];
+                    if (cm == null) {
+                        return;
+                    }
                     cm.setText(copyOrderNumber);
-                    ToastUtils.showToast("复制成功" + copyOrderNumber);
+                    ToastUtils.showToast("Copy Success");
                 }
 
                 break;
             case R.id.tv_skype:
-                Intent intent = new Intent();
-
                 //设置要传递的内容。
-//                intent.setData(Uri.parse(guanzhu_URL));
-                if (!WxShareUtils.isApplicationAvilible(this, "com.tencent.mm")) {
-                    ToastUtils.showToast("应用未安装");
+                if (!WxShareUtils.isApplicationAvilible(this, "com.skype.rover")) {
+                    ToastUtils.showToast("You need to install the app");
                     return;
                 }
-                intent.setPackage("com.tencent.mm");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                Intent intent = getPackageManager().getLaunchIntentForPackage("com.skype.rover");
+                if (intent != null) {
+                    intent.setData(Uri.parse("0"));
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
                 break;
             case R.id.tv_cancel_order:
                 if (orderBean.getOrderStatus() == 1) {
@@ -204,6 +224,7 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
             case R.id.tv_pay_order:
                 switch (orderBean.getOrderStatus()) {
                     case 1:
+                        mLoadingDialog.show();
                         mCheckPaymentStatusForTTPresenter.getIsPayTT(String.valueOf(orderBean.getId()));
                         break;
                     case 5:
@@ -246,21 +267,42 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
     @Override
     public void cancelSuccess() {
-
+        EventBus.getDefault().post(new OrderListEvent().setEventType(OrderListEvent.UNPAID));
+        finish();
     }
 
     @Override
     public void receiptSuccess() {
-
+        EventBus.getDefault().post(new OrderListEvent().setEventType(OrderListEvent.RECEIPT));
+        finish();
     }
 
     @Override
     public void getIsPayTTSuccess(String orderId) {
+        mLoadingDialog.dismiss();
         AddressBean.ResultdataBean addressBean = new AddressBean.ResultdataBean();
         addressBean.setShipTo(orderBean.getShipTo());
+        addressBean.setAddress_LastName("");
         addressBean.setPhone(orderBean.getCellPhone());
         addressBean.setAddress(orderBean.getAddress());
-        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), orderBean.getProductTotalAmount(), JSON.toJSONString(addressBean));
+        ConfirmPaymentActivity.start(OrderDetailsActivity.this, String.valueOf(orderBean.getId()), orderBean.getProductTotalAmount(), orderBean.getDiscountAmount(), JSON.toJSONString(addressBean));
+        finish();
+    }
+
+    @Override
+    public void getIsPayField() {
+        mLoadingDialog.dismiss();
+    }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+
+    @Subscribe
+    public void orderListEvent(OrderListEvent orderListEvent) {
 
     }
 }

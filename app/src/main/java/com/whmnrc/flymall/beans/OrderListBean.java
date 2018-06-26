@@ -76,7 +76,7 @@ public class OrderListBean  {
         private int commentCount;
         private long id;
         private int orderStatus;
-        private String orderTotalAmount;
+        private double orderTotalAmount;
         private int productCount;
         private String shopname;
         private String status;
@@ -86,7 +86,7 @@ public class OrderListBean  {
             commentCount = in.readInt();
             id = in.readLong();
             orderStatus = in.readInt();
-            orderTotalAmount = in.readString();
+            orderTotalAmount = in.readDouble();
             productCount = in.readInt();
             shopname = in.readString();
             status = in.readString();
@@ -129,11 +129,11 @@ public class OrderListBean  {
             this.orderStatus = orderStatus;
         }
 
-        public String getOrderTotalAmount() {
+        public double getOrderTotalAmount() {
             return orderTotalAmount;
         }
 
-        public void setOrderTotalAmount(String orderTotalAmount) {
+        public void setOrderTotalAmount(double orderTotalAmount) {
             this.orderTotalAmount = orderTotalAmount;
         }
 
@@ -179,7 +179,7 @@ public class OrderListBean  {
             dest.writeInt(commentCount);
             dest.writeLong(id);
             dest.writeInt(orderStatus);
-            dest.writeString(orderTotalAmount);
+            dest.writeDouble(orderTotalAmount);
             dest.writeInt(productCount);
             dest.writeString(shopname);
             dest.writeString(status);

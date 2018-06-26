@@ -45,10 +45,22 @@ public class SearchGoodsListPresenter extends PresenterBase {
             paramters.put("AttrIds", aid);
         }
 
-        paramters.put("OrderKey", orderKey);
-        paramters.put("OrderType", orderType);
-        paramters.put("PageNo", String.valueOf(page));
-        paramters.put("PageSize", "10");
+        if (page != 0) {
+            paramters.put("PageNo", String.valueOf(page));
+        }
+
+        if (!TextUtils.isEmpty(orderKey)) {
+            paramters.put("OrderKey", String.valueOf(orderKey));
+        }
+
+        if (rows != 0) {
+            paramters.put("PageSize", String.valueOf(rows));
+        }
+
+        if (!TextUtils.isEmpty(orderType)) {
+            paramters.put("OrderType", String.valueOf(orderType));
+        }
+
 
         OKHttpManager.get(getUrl(R.string.Search), paramters, new CommonCallBack<SearchResultBean>() {
             @Override

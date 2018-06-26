@@ -18,6 +18,8 @@ public class ConfirmBean  implements Parcelable{
     private String Goods_Name;
     private String Goods_Describe;
     private String goods_spec;
+    private String goodsId;
+
 
     protected ConfirmBean(Parcel in) {
         priceIds = in.readString();
@@ -28,6 +30,7 @@ public class ConfirmBean  implements Parcelable{
         Goods_Name = in.readString();
         Goods_Describe = in.readString();
         goods_spec = in.readString();
+        goodsId = in.readString();
     }
 
     public static final Creator<ConfirmBean> CREATOR = new Creator<ConfirmBean>() {
@@ -41,6 +44,14 @@ public class ConfirmBean  implements Parcelable{
             return new ConfirmBean[size];
         }
     };
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getGoods_spec() {
         return goods_spec;
@@ -127,5 +138,6 @@ public class ConfirmBean  implements Parcelable{
         dest.writeString(Goods_Name);
         dest.writeString(Goods_Describe);
         dest.writeString(goods_spec);
+        dest.writeString(goodsId);
     }
 }

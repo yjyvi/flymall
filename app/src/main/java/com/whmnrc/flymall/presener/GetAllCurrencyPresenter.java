@@ -30,7 +30,7 @@ public class GetAllCurrencyPresenter extends PresenterBase {
             @Override
             protected void onSuccess(AllCurrencyBean data) {
                 if (data.getType() == 1) {
-                    mGetAllCurrencyListener.loadSuccess(data.getResultdata());
+                    mGetAllCurrencyListener.loadSuccess(data.getResultdata().getModels());
                 } else {
                     ToastUtils.showToast(data.getMessage());
                 }
@@ -40,6 +40,6 @@ public class GetAllCurrencyPresenter extends PresenterBase {
 
 
     public interface GetAllCurrencyListener {
-        void loadSuccess(List<AllCurrencyBean.ResultdataBean> resultdataBean);
+        void loadSuccess(List<AllCurrencyBean.ResultdataBean.ModelsBean> resultdataBean);
     }
 }

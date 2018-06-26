@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm_376">
 
-
-
         <LinearLayout
 
             android:id="@+id/fl"

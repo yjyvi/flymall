@@ -8,7 +8,6 @@
         android:id="@+id/iv_play"
         android:layout_width="@dimen/dm_56"
         android:layout_height="@dimen/dm_56"
-        android:background="#46000000"
         android:scaleType="centerCrop"
         android:src="@color/normal_gray"
         android:visibility="visible"

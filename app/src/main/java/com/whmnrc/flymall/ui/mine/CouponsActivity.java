@@ -14,6 +14,7 @@ import com.whmnrc.flymall.presener.CouponListPresenter;
 import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.utils.EmptyListUtils;
 import com.whmnrc.flymall.utils.evntBusBean.CouponsEvent;
+import com.whmnrc.flymall.views.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -33,17 +34,18 @@ public class CouponsActivity extends BaseActivity implements CouponListPresenter
     ViewStub mVsEmpty;
     @BindView(R.id.rv_coupons_list)
     RecyclerView mRvCouponsList;
-    //    @BindView(R.id.refresh)
-//    SmartRefreshLayout mRefresh;
     private CouponsAdapter mCouponsAdapter;
     public CouponListPresenter mCouponListPresenter;
     private int page = 1;
     private int rows = 10;
     public boolean mIsSelect;
+    private LoadingDialog mLoadingDialog;
 
     @Override
     protected void initViewData() {
         setTitle("Coupon");
+        mLoadingDialog = new LoadingDialog(this);
+        mLoadingDialog.show();
         EventBus.getDefault().register(this);
         mCouponListPresenter = new CouponListPresenter(this);
         mCouponListPresenter.getCouponList(page, rows);
@@ -67,6 +69,7 @@ public class CouponsActivity extends BaseActivity implements CouponListPresenter
         mCouponsAdapter.setDataArray(resultdataBeans);
         mCouponsAdapter.notifyDataSetChanged();
         showEmpty();
+        mLoadingDialog.dismiss();
     }
 
     @Override

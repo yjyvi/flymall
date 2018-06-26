@@ -28,7 +28,7 @@ public class HomeBrandsListAdapter extends CommonAdapter<HomeDataBean.Resultdata
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.getId()));
+                GoodsListActivity.startBid(v.getContext(), String.valueOf(resultdataBean.getId()));
             }
         });
     }

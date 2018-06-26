@@ -93,6 +93,15 @@ public class AddressBean {
         private String Address_ZipCode;
         private String Address_LastName;
         private String Address_StateProvince;
+        private boolean isSelect;
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
 
         public String getAddress() {
             return Address;

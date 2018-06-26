@@ -35,9 +35,10 @@ public class GetCommentStatusPresenter extends PresenterBase {
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {
                     mGetCommentStatusListener.getState((int) data.getResultdata(), position);
-                } else {
-                    ToastUtils.showToast(data.getMessage());
                 }
+
+                ToastUtils.showToast("The goods have been evaluated");
+
             }
         });
     }

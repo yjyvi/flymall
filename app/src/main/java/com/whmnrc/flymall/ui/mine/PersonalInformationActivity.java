@@ -63,7 +63,7 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
 
         GlideUtils.LoadCircleImage(this, UserManager.getUser().getPhoto(), mTvUserHeaderImg);
 
-        mTvUserGender.setText(UserManager.getUser().getPoints() == 0 ? "Male" : "Female");
+        mTvUserGender.setText(UserManager.getUser().getPoints() == 0 ? "Man" : "Woman");
         mTvUserName.setText(UserManager.getUser().getNick());
         mTvUserName.setSelection(mTvUserName.getText().toString().length());
 
@@ -113,18 +113,18 @@ public class PersonalInformationActivity extends BaseActivity implements UpdateI
                         .setTitle("Select gender")
                         .setCancelable(false)
                         .setCanceledOnTouchOutside(false)
-                        .addSheetItem("Male", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        .addSheetItem("Man", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-                                mTvUserGender.setText("Male");
+                                mTvUserGender.setText("Man");
                                 mCurrentSex = 0;
                             }
                         })
 
-                        .addSheetItem("Female", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
+                        .addSheetItem("Woman", ActionSheetDialog.SheetItemColor.Blue, new ActionSheetDialog.OnSheetItemClickListener() {
                             @Override
                             public void onClick(int which) {
-                                mTvUserGender.setText("Female");
+                                mTvUserGender.setText("Woman");
                                 mCurrentSex = 1;
                             }
                         }).show();

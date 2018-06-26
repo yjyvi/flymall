@@ -16,28 +16,37 @@ import com.whmnrc.flymall.ui.mine.AddAddressActivity;
  */
 
 public class AddressManagerAdapter extends CommonAdapter<AddressBean.ResultdataBean> {
-    public AddressManagerAdapter(Context context, int layoutId) {
+    private boolean mIsSelect;
+
+    public AddressManagerAdapter(Context context, int layoutId, boolean isSelect) {
         super(context, layoutId);
+        this.mIsSelect = isSelect;
     }
 
     @Override
     public void convert(ViewHolder holder, final AddressBean.ResultdataBean resultdataBean, int position) {
-        holder.setText(R.id.tv_address_name, String.format("Receiver：%s", resultdataBean.getShipTo()));
+        holder.setText(R.id.tv_address_name, String.format("Receiver：%s %s", resultdataBean.getShipTo(), resultdataBean.getAddress_LastName()));
         holder.setText(R.id.tv_address_tel, resultdataBean.getPhone());
         holder.setText(R.id.tv_address_desc, resultdataBean.getAddress());
         holder.setOnClickListener(R.id.iv_address_edit, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddAddressActivity.start(v.getContext(), JSON.toJSONString(resultdataBean));
+                AddAddressActivity.start(v.getContext(), JSON.toJSONString(resultdataBean), 1);
             }
         });
+
 
         if (resultdataBean.getAddress_IsDefault() == 1) {
             holder.setVisible(R.id.v_isDefault, true);
         } else {
             holder.setVisible(R.id.v_isDefault, false);
         }
+
+        if (mIsSelect) {
+            holder.setVisible(R.id.iv_selected, true);
+            holder.setSelected(R.id.iv_selected, resultdataBean.isSelect());
+        } else {
+            holder.setVisible(R.id.iv_selected, false);
+        }
     }
-
-
 }

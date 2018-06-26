@@ -19,7 +19,15 @@ public class MyVideoPlayGoods extends PictureVideoPlayActivity {
         String goodsId1 = getIntent().getStringExtra("goodsId");
         GoodsDetailsActivity.start(this, goodsId1);
     }
-    
+
+
+    public static void start(Context context, String videoPath) {
+        Intent starter = new Intent(context, MyVideoPlayGoods.class);
+        starter.putExtra("video_path", videoPath);
+        context.startActivity(starter);
+    }
+
+
     public static void start(Context context, String videoPath, String goodsDescription, String goodsId) {
         Intent starter = new Intent(context, MyVideoPlayGoods.class);
         starter.putExtra("video_path", videoPath);

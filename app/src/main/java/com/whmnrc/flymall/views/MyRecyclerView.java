@@ -25,6 +25,11 @@ public class MyRecyclerView  extends RecyclerView{
     }
 
 
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        return false;
+
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

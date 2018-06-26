@@ -124,6 +124,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:id="@+id/ll_pay_pp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_45"
@@ -160,6 +161,7 @@
             </LinearLayout>
 
             <ImageView
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/dm_15"
@@ -170,6 +172,7 @@
                 android:src="@color/common_line"/>
 
             <LinearLayout
+                android:layout_marginTop="@dimen/dm_15"
                 android:id="@+id/ll_pay_tt"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm_45"

@@ -66,7 +66,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     @BindView(R.id.tv_pay)
     TextView mTvPay;
     private static final int REQUEST_CODE = 909;
-    private int payType = PAY_METHOD_PP;
+    private int payType = PAY_METHOD_TT;
     public PayUtils mPayUtils;
     private PayPPPresenter mPayPPPresenter;
     public String mOrderId;
@@ -75,16 +75,18 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     public TTPayPresenter mTtPayPresenter;
     private CheckPaymentStatusForTTPresenter mCheckPaymentStatusForTTPresenter;
     private LoadingDialog mLoadingDialog;
+    private double mCouponsPrice;
     //    @BindView(R.id.iv_pay_up)
 //    ImageView mIvPayUp;
 
     @Override
     protected void initViewData() {
         setTitle("Confirm payment");
-        selectedView(mIvPayPp);
+
         mLoadingDialog = new LoadingDialog(this);
         mOrderId = getIntent().getStringExtra("orderId");
         mTotalPrice = getIntent().getDoubleExtra("totalPrice", 0);
+        mCouponsPrice = getIntent().getDoubleExtra("couponsPrice", 0);
         String addressBean = getIntent().getStringExtra("addressBean");
         AddressBean.ResultdataBean confirmAddressBean = JSON.parseObject(addressBean, AddressBean.ResultdataBean.class);
         mPayUtils = new PayUtils(this);
@@ -93,13 +95,15 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         mCheckPaymentStatusForTTPresenter = new CheckPaymentStatusForTTPresenter(this);
         mTvOrderNo.setText(String.format("Order number：%s", mOrderId));
         mTvTotalPrice.setText(String.format("Total merchandise：%s", PlaceholderUtils.pricePlaceholder(mTotalPrice)));
-        mTvPay.setText(String.format("Pay Pal %s ", PlaceholderUtils.pricePlaceholder((mTotalPrice))));
 
         if (confirmAddressBean != null) {
             mTvAddressDesc.setText(confirmAddressBean.getAddress());
             mTvAddressName.setText(String.format("Receiver：%s", confirmAddressBean.getShipTo() + confirmAddressBean.getAddress_LastName()));
             mTvAddressTel.setText(confirmAddressBean.getPhone());
         }
+
+        selectedView(mIvPayTt);
+        mTvPay.setText(String.format("T/T Reimbursement Clause %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice - mCouponsPrice)));
     }
 
     @Override
@@ -112,6 +116,15 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         starter.putExtra("orderId", orderId);
         starter.putExtra("addressBean", addressBean);
         starter.putExtra("totalPrice", totalPrice);
+        context.startActivity(starter);
+    }
+
+    public static void start(Context context, String orderId, double totalPrice, double couponsPrice, String addressBean) {
+        Intent starter = new Intent(context, ConfirmPaymentActivity.class);
+        starter.putExtra("orderId", orderId);
+        starter.putExtra("addressBean", addressBean);
+        starter.putExtra("totalPrice", totalPrice);
+        starter.putExtra("couponsPrice", couponsPrice);
         context.startActivity(starter);
     }
 
@@ -150,7 +163,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
                 break;
             case R.id.ll_pay_tt:
                 payType = PAY_METHOD_TT;
-                mTvPay.setText(String.format("T/T Reimbursement Clause %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice)));
+                mTvPay.setText(String.format("T/T Reimbursement Clause %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice- mCouponsPrice)));
                 selectedView(mIvPayTt);
                 break;
             case R.id.ll_pay_zfb:
@@ -181,6 +194,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
                 payPalUtils.initPayPalUtils(ConfirmPaymentActivity.this, mOrderId, String.valueOf(mTotalPrice));
                 break;
             case PAY_METHOD_TT:
+                mLoadingDialog.show();
                 mCheckPaymentStatusForTTPresenter.getIsPayTT(mOrderId);
                 break;
             case PAY_METHOD_ZFB:
@@ -260,6 +274,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
 
     @Override
     public void payOrderSuccess(boolean isSuccess) {
+        mLoadingDialog.dismiss();
         finish();
         PayResultActivity.start(this, mOrderId, isSuccess);
     }
@@ -268,6 +283,11 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     @Override
     public void getIsPayTTSuccess(String orderId) {
         mTtPayPresenter.ttPayOrder(mOrderId, 1);
+    }
+
+    @Override
+    public void getIsPayField() {
+        mLoadingDialog.dismiss();
     }
 
 

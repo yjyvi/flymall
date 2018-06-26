@@ -13,6 +13,7 @@ import java.util.TreeMap;
 /**
  * @author yjyvi
  * @data 2018/6/14.
+ * 是否使用过TT支付该订单
  */
 
 public class CheckPaymentStatusForTTPresenter extends PresenterBase {
@@ -34,6 +35,7 @@ public class CheckPaymentStatusForTTPresenter extends PresenterBase {
                 if (data.getType() == 1) {
                     mCheckPaymentStatusForTTListener.getIsPayTTSuccess(orderId);
                 } else {
+                    mCheckPaymentStatusForTTListener.getIsPayField();
                     ToastUtils.showToast("You have used TT to pay for this order without recurring payment");
                 }
             }
@@ -43,5 +45,6 @@ public class CheckPaymentStatusForTTPresenter extends PresenterBase {
 
     public interface CheckPaymentStatusForTTListener {
         void getIsPayTTSuccess(String orderId);
+        void getIsPayField();
     }
 }

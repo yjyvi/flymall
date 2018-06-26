@@ -39,6 +39,8 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
         holder.setText(R.id.tv_goods_price, PlaceholderUtils.pricePlaceholder(resultdataBean.getPrice()));
 
         final ImageView view = holder.getView(R.id.iv_selected);
+        selectedView(view, position, resultdataBean);
+
         holder.setOnClickListener(R.id.iv_selected, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,16 +111,15 @@ public class ShoppingCartAdapter extends CommonAdapter<ShoppingCartListBean.Resu
 
 
     private void selectedView(View view, int position, ShoppingCartListBean.ResultdataBean.ProductsBean resultdataBean) {
-        if (!resultdataBean.isSelect()) {
+        if (resultdataBean.isSelect()) {
+            view.setSelected(false);
+            resultdataBean.setSelect(false);
+            mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
+        } else {
             view.setSelected(true);
             resultdataBean.setSelect(true);
             mOperationShoppingCartListener.selectToPrice(position, resultdataBean.getPrice() * resultdataBean.getCount(), true, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
-        } else {
-            view.setSelected(false);
-            resultdataBean.setSelect(false);
-            mOperationShoppingCartListener.selectToPrice(position,resultdataBean.getPrice() * resultdataBean.getCount(), false, String.valueOf(resultdataBean.getSkuId()), String.valueOf(resultdataBean.getCartItemId()));
         }
-
     }
 
 }

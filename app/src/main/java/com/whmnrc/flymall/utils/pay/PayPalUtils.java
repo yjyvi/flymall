@@ -36,8 +36,8 @@ public class PayPalUtils implements TTPayPresenter.TTPayOrderListener {
 
     private static PayPalConfiguration paypalConfig = new PayPalConfiguration()
             .environment(Config.PAYPAL_ENVIRONMENT)
-            .defaultUserEmail("sql_316-test@163.com")
-            .sandboxUserPassword("1234567890")
+//            .defaultUserEmail("sql_316-test@163.com")
+//            .sandboxUserPassword("1234567890")
             .clientId(Config.PAYPAL_CLIENT_ID);
 
     private Activity mContext;
@@ -56,8 +56,8 @@ public class PayPalUtils implements TTPayPresenter.TTPayOrderListener {
         public static final String PAYPAL_CLIENT_ID = "Ac-IqWBpbeR4mMtVIW6rQiNFbuWs1rI30zBlfn9ND7MX6j4HagcnGIIVu9KGsOzRr4-jVL7Nq0rx6KJn";
         public static final String PAYPAL_CLIENT_SECRET = "secret 前端用不到";
         //正式环境
-        // private public final String CONFIG_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
-        public static final String PAYPAL_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
+        public static final String PAYPAL_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
+//        public static final String PAYPAL_ENVIRONMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
         public static final String PAYMENT_INTENT = PayPalPayment.PAYMENT_INTENT_SALE;
         public static final String DEFAULT_CURRENCY = "USD";//美元
 

@@ -61,7 +61,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     List<GoodsDetailsBean.ResultdataBean.ColorBean> twoList = new ArrayList<>();
     public PopupWindow mPopupWindow;
     private int selectOneListPosition = -1;
-    private int selectTwoListPosition = 0;
+    private int selectTwoListPosition = -1;
     private int mTotalNumber;
     private String mProductAttrIds = "";
     private GoodsSpecificationsPresenter mGoodsSpecificationsPresenter;
@@ -130,13 +130,39 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
             public void onClick(View v) {
                 String skuId;
                 String skuAttr;
+
+                if (oneList.size() != 0) {
+                    if (twoList.size() == 0 && selectOneListPosition == -1) {
+                        ToastUtils.showToast("Please select specifications");
+                        return;
+                    }
+                    if (twoList.size() > 0 && selectTwoListPosition == -1) {
+                        ToastUtils.showToast("Please select specifications");
+                        return;
+                    }
+                    if (twoList.size() > 0 && selectOneListPosition == -1) {
+                        ToastUtils.showToast("Please select specifications");
+                        return;
+                    }
+                }
+
                 if (mSpecificationBean == null) {
                     skuId = mGoodsId + "_" + mColorSkuId + "_" + mSizeSkuId + "_" + versionSkuId;
                     skuAttr = "";
                 } else {
                     skuId = mSpecificationBean.getId();
-                    skuAttr = mSpecificationBean.getColor() + mSpecificationBean.getColor() + mSpecificationBean.getVersion();
+                    skuAttr = mSpecificationBean.getColor() + mSpecificationBean.getSize() + mSpecificationBean.getVersion();
                 }
+
+                if (oneList.size() != 0 && TextUtils.isEmpty(skuAttr)) {
+                    ToastUtils.showToast("Please select specifications");
+                    return;
+                }
+                if (twoList.size() != 0 && TextUtils.isEmpty(skuAttr)) {
+                    ToastUtils.showToast("Please select specifications");
+                    return;
+                }
+
                 popListener.onEntryClick(selectOneListPosition, selectTwoListPosition, currentNumber, skuId, skuAttr);
             }
         });
@@ -158,40 +184,54 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         recyclerView1.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
-                selectOneListPosition = position;
-                if (mGoodsSpecificationBean.getColor().size() == 0 | mGoodsSpecificationBean.getVersion().size() == 0 | !TextUtils.equals(mColorSkuId, "0") | !TextUtils.equals(versionSkuId, "0")) {
-                    mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                String colorName = " ";
+                if (selectTwoListPosition != -1) {
+                    colorName = mGoodsSpecificationBean.getColor().get(selectTwoListPosition).getValue();
                 }
-                return true;
+
+
+                if (selectOneListPosition != position) {
+                    mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
+                    selectOneListPosition = position;
+                    tvSelectTag.setText(String.format("Chosen %s %s ", mGoodsSpecificationBean.getSize().get(position).getValue(), colorName));
+                    if (twoList.size() > 0 && !TextUtils.equals(mColorSkuId, "0") || twoList.size() == 0) {
+                        mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                    }
+                    return true;
+                } else {
+                    mSizeSkuId = "0";
+                    tvSelectTag.setText(String.format("Chosen %s %s ", "", colorName));
+                    selectOneListPosition = -1;
+                    return false;
+                }
+
             }
         });
 
         recyclerView2.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                selectTwoListPosition = position;
-
-                mColorSkuId = String.valueOf(twoList.get(position).getSKUId());
-
-                if (mGoodsSpecificationBean.getColor() != null && mGoodsSpecificationBean.getColor().size() > 0 &&
-                        TextUtils.equals(mColorSkuId, "0")) {
-                    ToastUtils.showToast("请选择颜色");
-                    return true;
+                String sizeName = " ";
+                if (selectOneListPosition != -1) {
+                    sizeName = mGoodsSpecificationBean.getSize().get(selectOneListPosition).getValue();
                 }
 
-                if (mGoodsSpecificationBean.getSize() != null && mGoodsSpecificationBean.getSize().size() > 0 &&
-                        TextUtils.equals(mSizeSkuId, "0")) {
-                    ToastUtils.showToast("请选择尺寸");
+
+                if (selectTwoListPosition != position) {
+                    tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, mGoodsSpecificationBean.getColor().get(position).getValue()));
+                    selectTwoListPosition = position;
+                    mColorSkuId = String.valueOf(twoList.get(position).getSKUId());
+                    if (oneList.size() == 0 || oneList.size() > 0 && !TextUtils.equals("0", mSizeSkuId)) {
+                        mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                    }
                     return true;
+                } else {
+                    tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, " "));
+                    selectTwoListPosition = -1;
+                    mColorSkuId = "0";
+                    return false;
                 }
-                if (mGoodsSpecificationBean.getVersion() != null && mGoodsSpecificationBean.getVersion().size() > 0 &&
-                        TextUtils.equals(versionSkuId, "0")) {
-                    ToastUtils.showToast("请选择型号");
-                    return true;
-                }
-                mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
-                return true;
+
             }
         });
 
@@ -209,10 +249,6 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (currentNumber >= mTotalNumber) {
-//                    ToastUtils.showToast("库存不足了");
-//                    return;
-//                }
                 currentNumber++;
                 editNum.setText(String.valueOf(currentNumber));
             }
@@ -223,7 +259,12 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     public void show() {
         // 设置PopupWindow以外部分的背景颜色  有一种变暗的效果
         // 0.0 完全不透明,1.0完全透明
-        GlideUtils.LoadImage(activity, mGoodsImg, ivImg);
+        if (!TextUtils.isEmpty(mGoodsImg)) {
+            if (!mGoodsImg.endsWith(".png") || !mGoodsImg.endsWith(".jpg")) {
+                mGoodsImg += "/1.png";
+                GlideUtils.LoadImage(activity, mGoodsImg, ivImg);
+            }
+        }
         PopUtils.setBackgroundAlpha(activity, 0.5f);
         mPopupWindow.setFocusable(true);
         mPopupWindow.setOutsideTouchable(false);
@@ -295,18 +336,11 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         mTotalNumber = resultdataBean.getStock();
         tvPrice.setText(PlaceholderUtils.pricePlaceholder(resultdataBean.getSalePrice()));
         tvSelectTag.setText(String.format("Chosen %s %s ", resultdataBean.getSize(), resultdataBean.getColor()));
-
     }
 
     //
     public interface PopListener {
         void onEntryClick(int oneId, int twoId, int number, String productAttrIds, String goodsAttr);
-
-//        void onSelectClick(String sizeSku, String colorSku);
-//
-//        void onBuyClick(String oneId, String twoId, int number);
-//
-//        void addShopCar(String oneId, String twoId, int number);
     }
 
 }

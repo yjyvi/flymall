@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.adapter.GoodListAdapter;
 import com.whmnrc.flymall.beans.AddressBean;
 import com.whmnrc.flymall.beans.ConfirmBean;
 import com.whmnrc.flymall.beans.CouponBean;
@@ -78,7 +77,6 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
     TextView mTvGoodsNum;
     @BindView(R.id.et_remark)
     EditText mEtRemark;
-    private GoodListAdapter mGoodListAdapter;
     public StringBuffer mSkuIds = new StringBuffer();
     public CreateOrderPresenter mCreateOrderPresenter;
     public AddressListPresenter mAddressListPresenter;
@@ -117,8 +115,8 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
             double currentPrice = 0;
 
             for (ConfirmBean confirmBean : mGoodsBean) {
-                sourcePrice += confirmBean.getGoods_SourcePrice();
-                currentPrice += confirmBean.getGoodsPrice_Price();
+                sourcePrice += confirmBean.getGoods_SourcePrice() * confirmBean.getGoodsNUm();
+                currentPrice += confirmBean.getGoodsPrice_Price() * confirmBean.getGoodsNUm();
                 mGoodsNum += confirmBean.getGoodsNUm();
                 if (mGoodsBean.size() == 1) {
                     mSkuIds.append(confirmBean.getPriceIds());
@@ -130,12 +128,12 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
             sourcePrice = sourcePrice * mGoodsNum;
 
-            mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(sourcePrice));
-            mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
+            mTvOrderPrice.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
+            mTvOrderDiscountPrice.setText("-" + PlaceholderUtils.pricePlaceholder(0));
             mTvOrderFreight.setText("0");
-            mMoney = sourcePrice - (sourcePrice - currentPrice);
+            mMoney = currentPrice;
             mTvOrderTotalPrice.setText(PlaceholderUtils.pricePlaceholder(mMoney));
-            mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(mMoney));
+            mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(currentPrice));
             initSaleList();
         }
     }
@@ -145,6 +143,7 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
      */
     private void initSaleList() {
         mFlGoodsImg.removeAllViews();
+        int goodsNum = 0;
         for (int i = 0; i < mGoodsBean.size(); i++) {
             if (i <= 1) {
                 ImageView imageView = new ImageView(this);
@@ -161,9 +160,16 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 imageView.setBackgroundResource(R.color.normal_gray);
                 GlideUtils.LoadImage(this, R.mipmap.icon_order_normal, imageView);
                 mFlGoodsImg.addView(imageView);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        VerticalGoodsListActivity.start(view.getContext(), mGoodsBean);
+                    }
+                });
             }
+            goodsNum += mGoodsBean.get(i).getGoodsNUm();
         }
-        mTvGoodsNum.setText(String.format("%s items", mGoodsBean.size()));
+        mTvGoodsNum.setText(String.format("%s items", goodsNum));
     }
 
     @Override
@@ -190,21 +196,17 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 AddressManagerActivity.start(view.getContext());
                 break;
             case R.id.rl_select_address:
-                AddressManagerActivity.start(view.getContext());
+                AddressManagerActivity.start(view.getContext(), true, mAddressId);
                 break;
             case R.id.ll_tv_select_coupon:
                 SelectCouponsActivity.start(view.getContext(), String.valueOf(mMoney));
                 break;
             case R.id.tv_entry:
                 if (TextUtils.isEmpty(mAddressId)) {
-                    ToastUtils.showToast("地址不能为空");
+                    ToastUtils.showToast("Please select the shipping address");
                     return;
                 }
 
-                if (TextUtils.isEmpty(mAddressId)) {
-                    ToastUtils.showToast("地址不能为空");
-                    return;
-                }
                 String productAttrIds = mSkuIds.toString();
 
                 if (mIsGoodsDetails) {
@@ -227,13 +229,18 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
 
     @Override
     public void createOneOrderSuccess(OrderDeitalsBean.ResultdataBean resultdataBean) {
-        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount());
+        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount() - mCouponFullQuota);
+    }
+
+    @Override
+    public void createOrderField() {
+        mLoadingDialog.show();
     }
 
 
     @Override
     public void createMutOrderSuccess(ShopCartCreateOrderBean.ResultdataBean resultdataBean) {
-        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount());
+        createSuccess(String.valueOf(resultdataBean.getId()), resultdataBean.getProductTotalAmount() - mCouponFullQuota);
     }
 
 
@@ -263,19 +270,35 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
                 }
             });
         } else {
-            addressEventData = resultdataBeans.get(0);
-            mRlAddAddress.setVisibility(View.GONE);
-            mRlSelectAddress.setVisibility(View.VISIBLE);
-            mRlSelectAddress.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AddressManagerActivity.start(v.getContext(), true);
+            for (AddressBean.ResultdataBean resultdataBean : resultdataBeans) {
+                if (resultdataBean.getAddress_IsDefault() == 1) {
+                    addressEventData = resultdataBean;
+                    mRlAddAddress.setVisibility(View.GONE);
+                    mRlSelectAddress.setVisibility(View.VISIBLE);
+                    mRlSelectAddress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AddressManagerActivity.start(v.getContext(), true, mAddressId);
+                        }
+                    });
+                    mAddressId = String.valueOf(resultdataBean.getId());
+                    mTvAddressDesc.setText(resultdataBean.getAddress());
+                    mTvAddressName.setText(String.format("Receiver：%s %s", resultdataBean.getShipTo(), resultdataBean.getAddress_LastName()));
+                    mTvAddressTel.setText(resultdataBean.getPhone());
+                    break;
+                } else {
+                    mRlAddAddress.setVisibility(View.VISIBLE);
+                    mRlSelectAddress.setVisibility(View.GONE);
+                    mRlAddAddress.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AddressManagerActivity.start(v.getContext(), true, mAddressId);
+                        }
+                    });
                 }
-            });
-            mAddressId = String.valueOf(resultdataBeans.get(0).getId());
-            mTvAddressDesc.setText(resultdataBeans.get(0).getAddress());
-            mTvAddressName.setText(String.format("Receiver：%s", resultdataBeans.get(0).getShipTo() + resultdataBeans.get(0).getAddress_LastName()));
-            mTvAddressTel.setText(resultdataBeans.get(0).getPhone());
+
+            }
+
         }
 
     }
@@ -292,13 +315,18 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
         if (addressEvent.getEventType() == AddressEvent.ORDER_SELECT_ADDRESS) {
             addressEventData = (AddressBean.ResultdataBean) addressEvent.getData();
             if (addressEventData != null) {
+                mRlAddAddress.setVisibility(View.GONE);
+                mRlSelectAddress.setVisibility(View.VISIBLE);
                 mAddressId = String.valueOf(addressEventData.getId());
                 mTvAddressTel.setText(addressEventData.getPhone());
                 mTvAddressDesc.setText(addressEventData.getAddress());
-                mTvAddressName.setText(String.format("Receiver：%s", addressEventData.getRegionFullName()));
+                mTvAddressName.setText(String.format("Receiver：%s %s", addressEventData.getShipTo(), addressEventData.getAddress_LastName()));
             }
+        } else if (addressEvent.getEventType() == AddressEvent.ADD_ADDRESS_SUCCESS) {
+            mAddressListPresenter.getAddressList();
         }
     }
+
 
     @Subscribe
     public void selectCouponsEvent(CouponsEvent couponsEvent) {
@@ -306,8 +334,8 @@ public class ConfirmOrderActivity extends BaseActivity implements CreateOrderPre
             CouponBean.ResultdataBean data = (CouponBean.ResultdataBean) couponsEvent.getData();
             mCouponId = String.valueOf(data.getCouponId());
             mTvOrderCoupon.setText(data.getCouponName());
-            mCouponFullQuota = data.getOrderAmount();
-            mTvOrderDiscountPrice.setText(PlaceholderUtils.pricePlaceholder(mCouponFullQuota));
+            mCouponFullQuota = data.getPrice();
+            mTvOrderDiscountPrice.setText("-" + PlaceholderUtils.pricePlaceholder(mCouponFullQuota));
             mTvSumPrices.setText(PlaceholderUtils.pricePlaceholder(mMoney - mCouponFullQuota));
         }
     }

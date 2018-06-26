@@ -33,9 +33,8 @@ public class DelShoppingCartPresenter extends PresenterBase {
             protected void onSuccess(BaseBean data) {
                 if (data.getType() == 1) {
                     mDelShoppingCartListListener.delCartSuccess();
-                } else {
-                    ToastUtils.showToast(data.getMessage());
                 }
+                ToastUtils.showToast(data.getMessage());
             }
         });
     }

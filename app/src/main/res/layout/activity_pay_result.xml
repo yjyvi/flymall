@@ -21,7 +21,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dm_20"
         android:gravity="center"
-        android:text="You have paid for success"
+        android:text="You have paid successfully"
         android:textSize="@dimen/dm_12"/>
 
     <TextView

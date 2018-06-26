@@ -2,11 +2,13 @@ package com.whmnrc.flymall.adapter;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
@@ -14,6 +16,7 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.OrderListBean;
 import com.whmnrc.flymall.ui.home.OderCommentListActivity;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
+import com.whmnrc.flymall.utils.TextColorChangeUtils;
 
 import java.util.ArrayList;
 
@@ -37,15 +40,22 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
     @Override
     public void convert(ViewHolder holder, final OrderListBean.ResultdataBean resultdataBean, final int position) {
 
-        holder.setText(R.id.tv_order_no, String.format("Order Number:%s", resultdataBean.getId()));
+        String orderNoText = String.format("Order Number:%s", resultdataBean.getId());
+        TextColorChangeUtils.changeTextColor((TextView) holder.getView(R.id.tv_order_no), orderNoText, 13, orderNoText.length(), Color.BLACK);
+//        holder.setText(R.id.tv_order_no, orderNoText);
         int goodsNum = 0;
+        double goodsTotalPrice = 0;
         for (OrderListBean.ResultdataBean.ItemInfoBean itemInfoBean : resultdataBean.getItemInfo()) {
             goodsNum += itemInfoBean.getCount();
+            goodsTotalPrice += itemInfoBean.getPrice() * itemInfoBean.getCount();
         }
         holder.setText(R.id.tv_total_num, String.format("A total of %s products", goodsNum));
-        holder.setText(R.id.tv_total_price, String.format("Total:%s", PlaceholderUtils.pricePlaceholder(Double.parseDouble(resultdataBean.getOrderTotalAmount()))));
+        String price = String.format("Total:%s", PlaceholderUtils.pricePlaceholder(resultdataBean.getOrderTotalAmount()));
+//        holder.setText(R.id.tv_total_price, price);
+        TextColorChangeUtils.changeTextColor((TextView) holder.getView(R.id.tv_total_price), price, 6, price.length(), Color.RED);
         switch (resultdataBean.getOrderStatus()) {
             case 1:
+                holder.setVisible(R.id.line3, true);
                 holder.setVisible(R.id.tv_cancel, true);
                 holder.setVisible(R.id.tv_order_pay, true);
                 holder.setText(R.id.tv_order_state, resultdataBean.getStatus());
@@ -64,19 +74,23 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                 holder.setText(R.id.tv_order_state, resultdataBean.getStatus());
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, false);
+                holder.setVisible(R.id.line3, false);
                 break;
             case 4:
                 holder.setText(R.id.tv_order_state, resultdataBean.getStatus());
                 holder.setVisible(R.id.tv_cancel, false);
+                holder.setVisible(R.id.line3, false);
                 holder.setVisible(R.id.tv_order_pay, false);
                 break;
             case 5:
                 holder.setText(R.id.tv_order_state, resultdataBean.getStatus());
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, true);
-                holder.setText(R.id.tv_order_pay, "evaluated");
+                holder.setVisible(R.id.line3, true);
+                holder.setText(R.id.tv_order_pay, "Evaluated");
                 break;
             case 3:
+                holder.setVisible(R.id.line3, true);
                 holder.setText(R.id.tv_order_state, resultdataBean.getStatus());
                 holder.setText(R.id.tv_order_pay, "Confirm receipt");
                 holder.setVisible(R.id.tv_cancel, false);
@@ -84,6 +98,7 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
             default:
                 holder.setVisible(R.id.tv_cancel, false);
                 holder.setVisible(R.id.tv_order_pay, false);
+                holder.setVisible(R.id.line3, false);
                 break;
         }
 
@@ -104,7 +119,7 @@ public class OrderListAdapter extends CommonAdapter<OrderListBean.ResultdataBean
                 outRect.bottom = 1;
             }
         });
-        ConfirmOrderGoodListAdapter mOrderListAdapter = new ConfirmOrderGoodListAdapter(mContext, R.layout.item_goods_list_vertical, true, false);
+        ConfirmOrderGoodListAdapter mOrderListAdapter = new ConfirmOrderGoodListAdapter(mContext, R.layout.item_goods_list_vertical, true, false, String.valueOf(resultdataBean.getId()));
 
         rvGoodsList.setAdapter(mOrderListAdapter);
         rvGoodsList.setNestedScrollingEnabled(false);

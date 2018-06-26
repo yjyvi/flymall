@@ -41,7 +41,7 @@ public class GlideUtils {
         }
 
         if (!path.startsWith("http")) {
-            path = "http://flymall.store" + path;
+            path = "https://flymall.store" + path;
         }
 
         RequestOptions requestOptions = new RequestOptions();
@@ -143,11 +143,13 @@ public class GlideUtils {
         }
 
         if (!path.startsWith("http")) {
-            path = "http://flymall.store" + path;
+            path = "https://flymall.store" + path;
         }
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.transform(new GlideCircleTransform(mContext));
+        requestOptions.placeholder(R.color.normal_gray);
+        requestOptions.error(R.color.normal_gray);
         Glide.with(mContext).load(path).apply(requestOptions).into(imageview);
 
     }

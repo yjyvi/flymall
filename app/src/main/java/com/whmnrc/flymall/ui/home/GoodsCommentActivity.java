@@ -212,7 +212,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         OkHttpUtils.post()
                 .addFile("image", image.getName(), image)
                 .addFile("file", file.getName(), file)
-                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getNick()) ? "img" : UserManager.getUser().getNick())
+                .addParams("userName", TextUtils.isEmpty(UserManager.getUser().getUserName()) ? "img" : UserManager.getUser().getUserName())
                 .url(getString(R.string.service_host_address).concat(getResources().getString(R.string.UploadMp4File)))
                 .build().execute(new StringCallback() {
             @Override
@@ -259,7 +259,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
 
     @OnClick({R.id.iv_img, R.id.iv_video, R.id.tv_submit})
     public void onClick(View view) {
-        if (localMediaDatas.size() >= MAX_PICTURE) {
+        if (localMediaDatas.size() > MAX_PICTURE) {
             ToastUtils.showToast("Comment photos and videos cannot be greater than 9");
             return;
         }
@@ -279,6 +279,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                 break;
             case R.id.tv_submit:
                 int starCount = mRbStar.getStarCount();
+                if (starCount == 0) {
+                    starCount = 5;
+                }
                 String content = mEtContent.getText().toString().trim();
 
                 if (TextUtils.isEmpty(content)) {
@@ -298,8 +301,9 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
                 }
 
                 if (!mLoadingDialog.isShowing()) {
-                    mLoadingDialog.dismiss();
+                    mLoadingDialog.show();
                 }
+
                 mAddEvaluatePresenter.addEvaluate(starCount, content, imgsChange, videosUrl, videoThumbUrl, mOrderId, mGoodsId);
 
                 break;
@@ -324,7 +328,7 @@ public class GoodsCommentActivity extends BaseActivity implements AddEvaluatePre
         mediaBean.setSort(position);
         mediaMap.put(datas.get(position), mediaBean);
         uploadImg(datas, position + 1);
-        if (mLoadingDialog.isShowing()) {
+        if (mLoadingDialog.isShowing() && datas.size() == position + 1) {
             mLoadingDialog.dismiss();
         }
     }

@@ -42,7 +42,7 @@ public class OderCommentListActivity extends BaseActivity implements GetCommentS
 
     @Override
     protected void initViewData() {
-        setTitle("Product list");
+        setTitle("Evaluation list");
         mIsOrderDeitals = getIntent().getBooleanExtra("isOrderDeitals", false);
         if (mIsOrderDeitals) {
             goodsBeanDeitals = JSON.parseArray(getIntent().getStringExtra("goodsBeanDeitals"), OrderDeitalsBean.ResultdataBean.OrderItemInfoBean.class);
@@ -117,19 +117,19 @@ public class OderCommentListActivity extends BaseActivity implements GetCommentS
         if (state == 0) {
             if (mIsOrderDeitals) {
                 deitals = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) mAdapter.getDatas().get(position);
-                deitals.setComment(true);
+                deitals.setComment(false);
             } else {
                 orderList = (OrderListBean.ResultdataBean.ItemInfoBean) mAdapter.getDatas().get(position);
-                orderList.setComment(true);
+                orderList.setComment(false);
             }
             GoodsCommentActivity.start(OderCommentListActivity.this, mOrderId, goodsId);
         } else {
             if (mIsOrderDeitals) {
                 deitals = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) mAdapter.getDatas().get(position);
-                deitals.setComment(false);
+                deitals.setComment(true);
             } else {
                 orderList = (OrderListBean.ResultdataBean.ItemInfoBean) mAdapter.getDatas().get(position);
-                orderList.setComment(false);
+                orderList.setComment(true);
             }
         }
 

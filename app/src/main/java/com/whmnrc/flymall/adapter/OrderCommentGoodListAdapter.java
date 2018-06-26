@@ -11,6 +11,7 @@ import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
 import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.OrderDeitalsBean;
 import com.whmnrc.flymall.beans.OrderListBean;
+import com.whmnrc.flymall.ui.home.GoodsDetailsActivity;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.mylibrary.utils.GlideUtils;
 
@@ -19,11 +20,11 @@ import com.whmnrc.mylibrary.utils.GlideUtils;
  * @data 2018/5/18.
  */
 
-public class OrderCommentGoodListAdapter extends CommonAdapter  {
+public class OrderCommentGoodListAdapter extends CommonAdapter {
 
     private String orderId;
-        private boolean mIsOrderDetials;
-        private  GoodsCommentListener mGoodsCommentListener;
+    private boolean mIsOrderDetials;
+    private GoodsCommentListener mGoodsCommentListener;
 
     public void setGoodsCommentListener(GoodsCommentListener goodsCommentListener) {
         mGoodsCommentListener = goodsCommentListener;
@@ -41,7 +42,7 @@ public class OrderCommentGoodListAdapter extends CommonAdapter  {
         String prductName;
         double money;
         String imgs;
-        String goodsId;
+        final String goodsId;
         boolean isComment;
         if (!mIsOrderDetials) {
             OrderListBean.ResultdataBean.ItemInfoBean orderBean = (OrderListBean.ResultdataBean.ItemInfoBean) beans;
@@ -53,11 +54,18 @@ public class OrderCommentGoodListAdapter extends CommonAdapter  {
         } else {
             OrderDeitalsBean.ResultdataBean.OrderItemInfoBean orderBean = (OrderDeitalsBean.ResultdataBean.OrderItemInfoBean) beans;
             prductName = orderBean.getProductName();
-            money = orderBean.getCostPrice();
+            money = orderBean.getSalePrice();
             imgs = orderBean.getThumbnailsUrl();
             goodsId = String.valueOf(orderBean.getProductId());
             isComment = orderBean.isComment();
         }
+
+        holder.setOnClickListener(R.id.iv_goods_img, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GoodsDetailsActivity.start(v.getContext(), goodsId);
+            }
+        });
 
         holder.setText(R.id.tv_goods_name, TextUtils.isEmpty(prductName) ? "" : prductName);
         holder.setText(R.id.tv_price, PlaceholderUtils.pricePlaceholder(money));
@@ -65,9 +73,9 @@ public class OrderCommentGoodListAdapter extends CommonAdapter  {
 
         TextView tvGoodEvaluate = holder.getView(R.id.tv_good_evaluate);
         if (!isComment) {
-            tvGoodEvaluate.setBackgroundResource(R.color.normal_gray);
-        } else {
             tvGoodEvaluate.setBackgroundResource(R.color.normal_color);
+        } else {
+            tvGoodEvaluate.setBackgroundResource(R.color.normal_gray);
         }
 
         holder.setOnClickListener(R.id.tv_good_evaluate, new View.OnClickListener() {
@@ -82,7 +90,7 @@ public class OrderCommentGoodListAdapter extends CommonAdapter  {
 
     }
 
-    public interface GoodsCommentListener{
+    public interface GoodsCommentListener {
         void commentClick(int position);
     }
 
