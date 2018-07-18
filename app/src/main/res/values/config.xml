@@ -26,6 +26,30 @@
     <!--关于我们-->
     <string name="GetAboutUs">/api/ApiLogin/GetAboutUs</string>
 
+    <!-- //信用卡信息
+        creditCardNumber = "4111111111111111",
+        expDateMonth = "01",
+        expDateYear = "2022",
+        cardvNumber = "123",
+
+        //商品信息
+        amount = 24.52,
+        product_no = "26",
+        product_name = "Born+Ready+Greensboro+Jean+Blue+Bay",
+        quantity = 1,
+        price_unit = 24.52,
+
+        //收件人信息
+        email = "123@qq.com",
+        shipfirstname = "DName",
+        shiplastname = "DName",
+        shipaddress = "DAddress",
+        shipcity = "BCity",
+        shippostcode = "DPostcode",
+        shipphone = "DPhone",
+        -->
+    <string name="YiXinPayment">/api/PaySuccess/YiXinPayment</string>
+
 
     <!--第三方登录-->
     <string name="ThirdPartyLogin">/api/User/ThirdPartyLogin</string>

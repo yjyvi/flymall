@@ -55,14 +55,14 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
         String evaluate = getArguments().getString("evaluate");
         mEvaluateBean = JSON.parseObject(evaluate, GoodsDetailsBean.ResultdataBean.ProductCommentInfo.class);
 
-        String goodsContent = getArguments().getString("goodsContent");
+        String goodsId = getArguments().getString("goodsId");
 
         mRvGoodsComment.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRvGoodsComment.setNestedScrollingEnabled(false);
         mGoodsCommentAdapter = new GoodsCommentAdapter2(getActivity(), R.layout.item_goods_comment);
         mRvGoodsComment.setAdapter(mGoodsCommentAdapter);
         mGoodsCommentAdapter.setDataArray(mEvaluateBean.getModels());
-        initWeb(goodsContent);
+        initWeb(goodsId);
 
         mTvMoreComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +84,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_UP:
-                            if (mSrollY ==0) {
+                            if (mSrollY == 0) {
                                 EventBus.getDefault().post(new GoodsCommentEvent().setEventType(GoodsCommentEvent.CHANGE_TO_TOP));
                             }
                             break;
@@ -99,15 +99,21 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
     }
 
 
-    private void initWeb(final String contUrl) {
+    private void initWeb(final String goodsId) {
         web.post(new Runnable() {
             @Override
             public void run() {
-                String htmlData = getHtmlData(contUrl);
-                web.loadData(htmlData, "text/html; charset=UTF-8", null);
+//                String htmlData = getHtmlData(contUrl);
+//                web.loadData(htmlData, "text/html; charset=UTF-8", null);
+                web.loadUrl("https://flymall.store/DetailsForApp/Index?productId="+goodsId);
                 //去除WebView的焦点事件
                 web.setFocusableInTouchMode(false);
+
                 WebSettings settings = web.getSettings();
+//                settings.setTextSize(WebSettings.TextSize.LARGEST);
+                settings.setUseWideViewPort(true);
+//                settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+//                settings.setLoadWithOverviewMode(true);
                 settings.setSupportZoom(false);
                 settings.setJavaScriptEnabled(false);
                 settings.setDefaultTextEncodingName("utf-8");
@@ -124,7 +130,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
      * @return
      */
     public static String getHtmlData(String bodyHTML) {
-        String head = "<head><style>*{margin: 0;padding: 0;}img {width: 100%;}</style></head>";
+        String head = "<head><style>*{margin: 0;padding: 0;}img {width: 100%;}" + "</style></head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
 
@@ -132,7 +138,7 @@ public class GoodsDetailsFragment extends LazyLoadFragment {
     public static GoodsDetailsFragment newInstance(String goodsContent, String evaluate) {
         Bundle args = new Bundle();
         GoodsDetailsFragment fragment = new GoodsDetailsFragment();
-        args.putString("goodsContent", goodsContent);
+        args.putString("goodsId", goodsContent);
         args.putString("evaluate", evaluate);
         fragment.setArguments(args);
         return fragment;

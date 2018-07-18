@@ -136,8 +136,8 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
             public void onClick(View v) {
                 if (getActivity() != null) {
                     getActivity().finish();
+                    HomeTableActivity.startHomeTableView(getActivity(), 0);
                 }
-                HomeTableActivity.startHomeTableView(getActivity(), 0);
             }
         });
     }
@@ -311,7 +311,7 @@ public class OrderFragment extends LazyLoadFragment implements OrderListPresente
         addressBean.setAddress(resultdataBeans.getAddress());
         addressBean.setAddress_LastName("");
         mLoadingDialog.dismiss();
-        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), resultdataBeans.getProductTotalAmount() , resultdataBeans.getDiscountAmount(), JSON.toJSONString(addressBean));
+        ConfirmPaymentActivity.start(getActivity(), String.valueOf(resultdataBeans.getId()), resultdataBeans.getProductTotalAmount(), resultdataBeans.getDiscountAmount(), JSON.toJSONString(addressBean));
     }
 
     @Override

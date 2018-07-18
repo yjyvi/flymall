@@ -87,7 +87,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
     RatingBarView mRbStar;
 
     List<LazyLoadFragment> fragments = new ArrayList<>();
-    String[] titles = new String[]{"Details", "Evaluation"};
+    String[] titles = new String[]{"Details", "Reviews"};
     @BindView(R.id.tv_title)
     TextView mTvTitle;
     @BindView(R.id.tv_price)
@@ -186,7 +186,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             @Override
             public void displayImage(Context context, Object path, ImageView imageView) {
 
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                 String imgBeans = (String) path;
                 if (!TextUtils.isEmpty(imgBeans)) {
                     GlideUtils.LoadImage(GoodsDetailsActivity.this, imgBeans, imageView);
@@ -205,7 +205,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
 
     private void initTab(String goodsContent, GoodsDetailsBean.ResultdataBean.ProductCommentInfo evaluate, String goodsId) {
-        fragments.add(GoodsDetailsFragment.newInstance(goodsContent, JSON.toJSONString(evaluate)));
+        fragments.add(GoodsDetailsFragment.newInstance(goodsId, JSON.toJSONString(evaluate)));
         fragments.add(GoodsEvaluationFragment.newInstance(goodsId));
         mVpOrder.setAdapter(new TableViewPagerAdapter(getSupportFragmentManager(), fragments));
 
@@ -298,7 +298,6 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
                 finish();
                 break;
             case R.id.iv_back2:
-
                 mPtlmSpecialistTourDetail.scrollToTop();
                 if (mVpOrder != null) {
                     mVpOrder.setCurrentItem(0);
@@ -351,7 +350,16 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             mTvOldPrice.setText(PlaceholderUtils.pricePlaceholder(product.getMarketPrice()));
             mTvOldPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             mRbStar.setStar(goodsDetailsBean.getShop().getProductMark(), true);
-            mTvCommentNum.setText(String.valueOf(product.getSaleCounts()));
+            int vistiCounts = product.getVistiCounts();
+//            vistiCounts= 20005;
+            String resultCount;
+            if (vistiCounts > 1000) {
+                double counts = vistiCounts / 1000.0;
+                resultCount = String.format("%.1fk", counts);
+            } else {
+                resultCount = String.valueOf(vistiCounts);
+            }
+            mTvCommentNum.setText(resultCount);
             mTvSold.setText(String.format("Sold：%s", product.getSaleCounts()));
             initBanner(goodsDetailsBean.getBannners());
 
@@ -364,6 +372,11 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
             saveHistory(product);
         }
 
+        mLoadingDialog.dismiss();
+    }
+
+    @Override
+    public void getField() {
         mLoadingDialog.dismiss();
     }
 
@@ -459,9 +472,7 @@ public class GoodsDetailsActivity extends BaseActivity implements GoodsDetailsPr
 
     @Subscribe
     public void tabChangeEvent(HomeTableChangeEvent homeTableChangeEvent) {
-        if (homeTableChangeEvent.getEventType() == HomeTableChangeEvent.GO_TO_HOME) {
-            finish();
-        }
+
     }
 
     @Override

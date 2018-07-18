@@ -23,7 +23,7 @@
         <EditText
             android:singleLine="true"
             android:id="@+id/et_search"
-            android:hint="Search product name/brand"
+            android:hint="Enter Keywords"
             android:textSize="@dimen/dm_15"
             android:imeOptions="actionSearch"
             android:lines="1"

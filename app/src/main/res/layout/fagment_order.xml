@@ -58,7 +58,7 @@
                         android:layout_marginTop="@dimen/dm_10"
                         android:background="@color/normal_text_color"
                         android:gravity="center"
-                        android:text="Go to home to see"
+                        android:text="Back to home"
                         android:textColor="@color/black"/>
 
 

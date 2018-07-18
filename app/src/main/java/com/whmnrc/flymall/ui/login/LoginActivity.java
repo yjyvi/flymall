@@ -85,8 +85,8 @@ public class LoginActivity extends BaseActivity implements LoginPresenter.LoginL
         TextColorChangeUtils.changeTextColor(mTvAgreement, agreement, 34, agreement.length() - 1, ContextCompat.getColor(this, R.color.normal_red));
         mEmailLoginPresenter = new LoginPresenter(this);
 
-//        mEtMail.setText("androidlk@aliyun.com");
-//        mEtPwd.setText("123456");
+        mEtMail.setText("androidlk@aliyun.com");
+        mEtPwd.setText("123456");
     }
 
 

@@ -12,6 +12,9 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.whmnrc.flymall.CommonConstant;
 import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
@@ -37,13 +40,16 @@ import butterknife.BindView;
  * 分类界面
  */
 
-public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPresenter.OneBrandListListener {
+public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPresenter.OneBrandListListener, OnRefreshListener {
 
     @BindView(R.id.rv_left)
     RecyclerView rv_left;
 
     @BindView(R.id.rl_right)
     RelativeLayout rl_right;
+
+    @BindView(R.id.refresh)
+    SmartRefreshLayout mRefresh;
 
     private OneBrandListPresenter mClassifyP;
     private ClassifyLeftAdapter mClassifyLeftAdapter;
@@ -58,6 +64,7 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
     private View lastLineView;
     private int mCurrentySex = 0;
     private LoadingDialog mLoadingDialog;
+    private int mLastPosition = 0;
 
     @Override
     protected int contentViewLayoutID() {
@@ -72,6 +79,9 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
         mClassifyP = new OneBrandListPresenter(this, mLoadingDialog);
         mClassifyP.getOneBrans();
 
+        mRefresh.setOnRefreshListener(this);
+        mRefresh.setEnableLoadMore(false);
+
 
         //左侧列表
         SmoothScrollLayoutManager layout = new SmoothScrollLayoutManager(getActivity());
@@ -84,6 +94,7 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 scroll(position, mClassifyLeftAdapter, view);
+                mLastPosition = position;
                 initRightData(mClassifyLeftAdapter.getDatas().get(position).getSubCategories());
             }
 
@@ -98,6 +109,7 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
             List<OneBrandsBean.ResultdataBean> resultdataBeans = JSONObject.parseArray(classifyData, OneBrandsBean.ResultdataBean.class);
             initClassifyData(resultdataBeans);
         }
+
     }
 
 
@@ -133,7 +145,9 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
      * @param view
      */
     private void scroll(int position, CommonAdapter adapter1, View view) {
-
+        if (view == null) {
+            return;
+        }
 
         //改变选中状态
         if (!view.isSelected()) {
@@ -199,54 +213,20 @@ public class ClassifyFragment extends LazyLoadFragment implements OneBrandListPr
         mClassifyData = dataBean;
         //默认显示第一个分类的数据
         if (dataBean != null && dataBean.size() > 0) {
-            initRightData(dataBean.get(0).getSubCategories());
+            initRightData(dataBean.get(mLastPosition).getSubCategories());
+            scroll(mLastPosition, mClassifyLeftAdapter, rv_left.getLayoutManager().getChildAt(mLastPosition));
         }
 
         mClassifyLeftAdapter.notifyDataSetChanged();
         mLoadingDialog.dismiss();
     }
 
+
+
+
     @Override
-    public void onResume() {
-        super.onResume();
-        if (mClassifyData == null && mClassifyLeftAdapter != null) {
-            mClassifyP.getOneBrans();
-        }
-    }
-
-    //    @OnClick({
-//            R.id.iv_men, R.id.iv_women
-//    })
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//            case R.id.iv_men:
-//                selectedView(mIvMen);
-//                mCurrentySex = 0;
-//                break;
-//            case R.id.iv_women:
-//                mCurrentySex = 1;
-//                selectedView(mIvWomen);
-//                break;
-//            default:
-//                break;
-//        }
-//
-//    }
-
-
-    private View lastView;
-
-    private void selectedView(View view) {
-        if (lastView != null) {
-            lastView.setSelected(false);
-        }
-        if (!view.isSelected()) {
-            view.setSelected(true);
-            lastView = view;
-        } else {
-            view.setSelected(false);
-        }
+    public void onRefresh(RefreshLayout refreshLayout) {
+        refreshLayout.finishRefresh();
         mClassifyP.getOneBrans();
     }
-
 }

@@ -65,14 +65,14 @@
                 </LinearLayout>
 
                 <FrameLayout
+                    android:background="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dm_420"
-                        android:src="@color/normal_gray"/>
+                        android:layout_height="@dimen/dm_420"/>
 
                     <LinearLayout
                         android:id="@+id/ll_banner_position"

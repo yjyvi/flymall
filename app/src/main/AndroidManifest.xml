@@ -131,8 +131,15 @@
         <activity
             android:name="com.whmnrc.flymall.ui.HomeTableActivity"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="philn"/>
+            </intent-filter>
+        </activity>
 
         <!--向导界面-->
         <activity android:name="com.whmnrc.flymall.ui.GuideActivity"/>
@@ -226,8 +233,8 @@
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.mine.ConfirmPaymentActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".ui.mine.SettingActivity"
@@ -302,10 +309,9 @@
         <activity android:name=".ui.mine.AboutUsActivity"/>
         <activity android:name=".ui.mine.PayResultActivity"/>
         <activity android:name=".views.MyVideoPlayGoods"/>
-        <activity android:name=".ui.home.GoodsDetailsActivity_Copy"
-                  android:screenOrientation="portrait"
-                  android:windowSoftInputMode="adjustPan"/>
+
         <activity android:name=".ui.login.UserAgreementActivity"/>
+        <activity android:name=".ui.mine.QiPayActivity"/>
 
         <service android:name="com.paypal.android.sdk.payments.PayPalService"/>
 

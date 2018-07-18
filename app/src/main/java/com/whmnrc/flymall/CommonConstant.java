@@ -38,6 +38,10 @@ public class CommonConstant {
          * 支付方式-> 微信
          */
         public static final int PAY_METHOD_WX = 4;
+        /**
+         * 支付方式-> REV_LETTER
+         */
+        public static final int PAY_METHOD_REV = 5;
 
 
         /**
@@ -63,9 +67,9 @@ public class CommonConstant {
          */
         public static final String HISTORY_GOODS = "history_goods";
         /**
-         * 用户协议
+         * 联系方式
          */
-        public static final String AGREEMENT = "http://flymall.store/Agreement.html";
+        public static final String CONTACT = "https://flymall.store/Link/Index";
         /**
          * 设备的ID
          */

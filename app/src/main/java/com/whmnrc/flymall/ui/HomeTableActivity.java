@@ -3,7 +3,9 @@ package com.whmnrc.flymall.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,15 +17,15 @@ import com.whmnrc.flymall.ui.table.HomeFragment;
 import com.whmnrc.flymall.ui.table.MineFragment;
 import com.whmnrc.flymall.ui.table.ShoppingCartFragment;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
+import com.whmnrc.flymall.views.MyViewPager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP;
-import static android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP;
 
 /**
  * @author yjyvi
@@ -45,13 +47,15 @@ public class HomeTableActivity extends BaseActivity {
     @BindView(R.id.tv_table_mine)
     TextView mTvTableMine;
 
-    private int mIndex;
+    @BindView(R.id.tab_pager)
+     MyViewPager mTabPager;
 
+    private int mIndex;
+    ArrayList<Fragment> mFragments = new ArrayList<>();
 
     public static void startHomeTableView(Context activity, int tab) {
         Intent intent = new Intent(activity, HomeTableActivity.class);
         intent.putExtra(CHANGE_HOME_TABLE, tab);
-        intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP | FLAG_ACTIVITY_SINGLE_TOP);
         activity.startActivity(intent);
     }
 
@@ -64,18 +68,28 @@ public class HomeTableActivity extends BaseActivity {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-
         selectedView(mTvTableHome);
-        setContentFragment(0);
-
+        mTabPager.setCurrentItem(0);
+        Log.e("HomeTableActivity", "onNewIntent");
     }
 
     @Override
     protected void initViewData() {
+        mIndex = getIntent().getIntExtra(CHANGE_HOME_TABLE, 0);
         EventBus.getDefault().register(this);
-        setContentFragment(0);
-        selectedView(mTvTableHome);
+
+        mFragments.add(HomeFragment.newInstance());
+        mFragments.add(ClassifyFragment.newInstance());
+        mFragments.add(ShoppingCartFragment.newInstance(false));
+        mFragments.add(MineFragment.newInstance());
+
         UserManager.refresh();
+
+        HelpsViewPagerAdapter helpsViewPagerAdapter = new HelpsViewPagerAdapter(getSupportFragmentManager(), mFragments);
+        mTabPager.setNoScroll(true);
+        mTabPager.setAdapter(helpsViewPagerAdapter);
+        mTabPager.setOffscreenPageLimit(3);
+        selectedView(mTvTableHome);
     }
 
     @Override
@@ -83,56 +97,24 @@ public class HomeTableActivity extends BaseActivity {
         return R.layout.activity_table_home;
     }
 
+    public class HelpsViewPagerAdapter extends FragmentPagerAdapter {
+        private ArrayList<Fragment> mFragments;
 
-    /**
-     * TABLE页面切换
-     *
-     * @param position
-     */
-    public void setContentFragment(int position) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(String.valueOf(mIndex));
-
-        if (currentFragment != null) {
-            ft.hide(currentFragment);
-        }
-        Fragment foundFragment = getSupportFragmentManager().findFragmentByTag(String.valueOf(position));
-
-        if (foundFragment == null) {
-            switch (position) {
-                case 0:
-                    foundFragment = HomeFragment.newInstance();
-                    break;
-                case 1:
-                    foundFragment = ClassifyFragment.newInstance();
-                    break;
-                case 2:
-                    foundFragment = ShoppingCartFragment.newInstance(false);
-                    break;
-                case 3:
-                    foundFragment = MineFragment.newInstance();
-                    break;
-                default:
-                    foundFragment = HomeFragment.newInstance();
-                    break;
-
-            }
+        public HelpsViewPagerAdapter(FragmentManager supportFragmentManager, ArrayList<Fragment> fragments) {
+            super(supportFragmentManager);
+            this.mFragments = fragments;
         }
 
-        if (foundFragment.isAdded()) {
-            ft.show(foundFragment);
-        } else {
-            ft.add(R.id.fragment_content, foundFragment, String.valueOf(position));
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments.get(position);
         }
-        ft.commit();
-        mIndex = position;
 
-        if (UserManager.getUser() != null) {
-            UserBean.ResultdataBean user = UserManager.getUser();
-            showCartNum(user.getShoppingCartNum());
+        @Override
+        public int getCount() {
+            return mFragments.size();
         }
     }
-
 
     @Override
     protected void onDestroy() {
@@ -146,27 +128,23 @@ public class HomeTableActivity extends BaseActivity {
             int type = (int) homeTableChangeEvent.getData();
             switch (type) {
                 case 0:
+                    mTabPager.setCurrentItem(0);
                     selectedView(mTvTableHome);
-                    setContentFragment(0);
-                    break;
-                case 1:
-
                     break;
                 case 2:
                     if (!UserManager.getIsLogin(this)) {
                         return;
                     }
-                    selectedView(mTvTableShop);
-                    setContentFragment(2);
-                    break;
-                case 3:
 
+                    mTabPager.setCurrentItem(2);
+                    selectedView(mTvTableShop);
                     break;
                 default:
                     break;
             }
 
         }
+
     }
 
 
@@ -180,6 +158,7 @@ public class HomeTableActivity extends BaseActivity {
 
     /**
      * 显示购物车数量
+     *
      * @param data
      */
     private void showCartNum(int data) {
@@ -196,29 +175,35 @@ public class HomeTableActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_table_home:
+                Log.e("HomeTableActivity", "onClick");
+                mTabPager.setCurrentItem(0);
                 selectedView(mTvTableHome);
-                setContentFragment(0);
                 break;
             case R.id.tv_table_brands:
+                mTabPager.setCurrentItem(1);
                 selectedView(mTvTableBrands);
-                setContentFragment(1);
                 break;
             case R.id.tv_table_shop:
                 if (!UserManager.getIsLogin(this)) {
                     return;
                 }
+                mTabPager.setCurrentItem(2);
                 selectedView(mTvTableShop);
-                setContentFragment(2);
                 break;
             case R.id.tv_table_mine:
                 if (!UserManager.getIsLogin(this)) {
                     return;
                 }
+                mTabPager.setCurrentItem(3);
                 selectedView(mTvTableMine);
-                setContentFragment(3);
                 break;
             default:
                 break;
+        }
+
+        if (UserManager.getUser() != null) {
+            UserBean.ResultdataBean user = UserManager.getUser();
+            showCartNum(user.getShoppingCartNum());
         }
     }
 

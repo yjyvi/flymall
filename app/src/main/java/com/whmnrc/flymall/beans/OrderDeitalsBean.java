@@ -129,7 +129,7 @@ public class OrderDeitalsBean {
         private Object OrderType;
         private Object PayDate;
         private Object PaymentTypeGateway;
-        private Object PaymentTypeName;
+        private String PaymentTypeName;
         private Object PayRemark;
         private int Platform;
         private double ProductTotalAmount;
@@ -372,11 +372,11 @@ public class OrderDeitalsBean {
             this.PaymentTypeGateway = PaymentTypeGateway;
         }
 
-        public Object getPaymentTypeName() {
+        public String  getPaymentTypeName() {
             return PaymentTypeName;
         }
 
-        public void setPaymentTypeName(Object PaymentTypeName) {
+        public void setPaymentTypeName(String PaymentTypeName) {
             this.PaymentTypeName = PaymentTypeName;
         }
 

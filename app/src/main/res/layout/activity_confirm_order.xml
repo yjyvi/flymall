@@ -91,6 +91,7 @@
                 <TextView
                     android:id="@+id/tv_address_desc"
                     android:layout_width="wrap_content"
+                    android:textColor="#999999"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_address_tel"
                     android:layout_marginLeft="@dimen/dm_20"
@@ -177,7 +178,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Please complete the payment within 30 minutes. Overdue orders are automatically cancelled"
+                    android:text="Please complete the payment within 30 minutes. Overdue orders will be cancelled automatically"
                     android:textColor="@color/good_price_red"
                     android:textSize="@dimen/dm_13"/>
 
@@ -309,7 +310,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Freight"
+                        android:text="Shipping rate"
                         android:textColor="@color/normal_gray"
                         android:textSize="@dimen/dm_15"/>
 
@@ -387,7 +388,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Real payment"
+                android:text="Total"
                 android:textColor="@color/normal_gray"
                 android:textSize="@dimen/dm_14"/>
 

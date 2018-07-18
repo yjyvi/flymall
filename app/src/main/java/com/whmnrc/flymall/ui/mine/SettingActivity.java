@@ -14,6 +14,7 @@ import com.whmnrc.flymall.ui.BaseActivity;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.DataCleanManager;
+import com.whmnrc.flymall.utils.HistoryGoodsBeanUtils;
 import com.whmnrc.flymall.utils.SPUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.flymall.utils.evntBusBean.SHopCartEvent;
@@ -65,10 +66,12 @@ public class SettingActivity extends BaseActivity {
                             @Override
                             public void onClick(int which) {
                                 mTvCache.post(new ClearCache());
+                                HistoryGoodsBeanUtils.clearHistory();
                             }
 
 
                         }).show();
+
                 break;
             case R.id.ll_about:
                 AboutUsActivity.start(view.getContext());
@@ -76,6 +79,7 @@ public class SettingActivity extends BaseActivity {
             case R.id.tv_sign_out:
                 finish();
                 UserManager.clearUser();
+                HistoryGoodsBeanUtils.clearHistory();
                 SPUtils.put(SettingActivity.this, CommonConstant.Common.LAST_LOGIN_ID, "");
                 LoginSelectedActivity.start(SettingActivity.this,true);
                 EventBus.getDefault().post(new SHopCartEvent().setEventType(SHopCartEvent.ADD_SHOPPING_CART_SUCCESS));

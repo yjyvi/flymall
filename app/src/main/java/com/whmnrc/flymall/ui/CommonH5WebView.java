@@ -3,11 +3,8 @@ package com.whmnrc.flymall.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.whmnrc.flymall.R;
@@ -66,53 +63,53 @@ public class CommonH5WebView extends BaseActivity {
         WebSettings settings = wb_content.getSettings();
         settings.setSupportZoom(false);
 
-        settings.setJavaScriptEnabled(true);
-        wb_content.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        wb_content.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
+        settings.setJavaScriptEnabled(false);
+//        wb_content.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+//        wb_content.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                view.loadUrl(url);
+//                return true;
+//            }
+//
+//        });
 
-        });
-
-        wb_content.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    //表示按返回键
-                    if (keyCode == KeyEvent.KEYCODE_BACK && wb_content.canGoBack()) {
-                        wb_content.goBack();
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-        settings.setDefaultTextEncodingName("utf-8");
-        wb_content.setWebChromeClient(new WebChromeClient() {
-
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-
-                if (newProgress == 100) {
-                    //加载完网页进度条消失
-                    pb_loading.setVisibility(View.GONE);
-                } else {
-                    //开始加载网页时显示进度条
-                    pb_loading.setVisibility(View.VISIBLE);
-                    //设置进度值
-                    pb_loading.setProgress(newProgress);
-                }
-            }
-        });
+//        wb_content.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//                    //表示按返回键
+//                    if (keyCode == KeyEvent.KEYCODE_BACK && wb_content.canGoBack()) {
+//                        wb_content.goBack();
+//                        return true;
+//                    }
+//                }
+//                return false;
+//            }
+//        });
+//        settings.setDefaultTextEncodingName("utf-8");
+//        wb_content.setWebChromeClient(new WebChromeClient() {
+//
+//            @Override
+//            public void onProgressChanged(WebView view, int newProgress) {
+//                super.onProgressChanged(view, newProgress);
+//
+//                if (newProgress == 100) {
+//                    //加载完网页进度条消失
+//                    pb_loading.setVisibility(View.GONE);
+//                } else {
+//                    //开始加载网页时显示进度条
+//                    pb_loading.setVisibility(View.VISIBLE);
+//                    //设置进度值
+//                    pb_loading.setProgress(newProgress);
+//                }
+//            }
+//        });
 
 
-        if (!mH5Url.startsWith("http")&&mH5Url.startsWith("https")) {
-            mH5Url = "http://".concat(mH5Url);
-        }
+//        if (!mH5Url.startsWith("http")&&mH5Url.startsWith("https")) {
+//            mH5Url = "http://".concat(mH5Url);
+//        }
         wb_content.loadUrl(mH5Url);
     }
 

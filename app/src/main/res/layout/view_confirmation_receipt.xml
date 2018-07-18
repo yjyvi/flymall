@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/lLayout_bg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="@dimen/dm_250"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_home_order_back"
+        android:orientation="vertical"
+        android:padding="@dimen/dm_20">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Tem  Of Validity"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dm_15"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dm_10"
+            android:src="@mipmap/icon_pay_hint2"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm_10"
+            android:text="The date of your choice should not be
+less than the date of the day, preferably
+the first day of the next month"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dm_12"/>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dm_1"
+            android:layout_marginTop="@dimen/dm_10"
+            android:background="@color/normal_gray_line"/>
+
+
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dm_10"
+            android:text="know"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/dm_15"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -18,18 +18,18 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="@dimen/dm_200"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="Select the type of currency you want to display"
+            android:text="Select Default Currency"
             android:textColor="@color/normal_red"
             android:textSize="@dimen/dm_16"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_currency"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="@dimen/dm_150"/>
 
         <TextView
             android:id="@+id/tv_submit"

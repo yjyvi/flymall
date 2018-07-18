@@ -35,6 +35,7 @@ public class GoodsDetailsPresenter extends PresenterBase {
                 if (data.getType() == 1) {
                     mGoodsDetailsListener.getGoodsDetailsSuccess(data.getResultdata());
                 } else {
+                    mGoodsDetailsListener.getField();
                     ToastUtils.showToast(data.getMessage());
                 }
             }
@@ -44,6 +45,7 @@ public class GoodsDetailsPresenter extends PresenterBase {
 
     public interface GoodsDetailsListener {
         void getGoodsDetailsSuccess(GoodsDetailsBean.ResultdataBean goodsDetailsBean);
+        void getField();
     }
 
 }

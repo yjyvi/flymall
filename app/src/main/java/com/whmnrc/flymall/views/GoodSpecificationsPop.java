@@ -2,9 +2,10 @@ package com.whmnrc.flymall.views;
 
 import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,15 +13,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.whmnrc.flymall.R;
+import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.CommonAdapter;
+import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.MultiItemTypeAdapter;
+import com.whmnrc.flymall.adapter.recycleViewBaseAdapter.ViewHolder;
 import com.whmnrc.flymall.beans.GoodsDetailsBean;
 import com.whmnrc.flymall.beans.GoodsSpecificationsBean;
 import com.whmnrc.flymall.presener.GoodsSpecificationsPresenter;
 import com.whmnrc.flymall.utils.PlaceholderUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
 import com.whmnrc.mylibrary.utils.GlideUtils;
-import com.zhy.view.flowlayout.FlowLayout;
-import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +38,8 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     private View mShowView;
     TextView tvPrice;
     ImageView ivImg;
-    TagFlowLayout recyclerView1;
-    TagFlowLayout recyclerView2;
+    RecyclerView recyclerView1;
+    RecyclerView recyclerView2;
     ImageView ivMinus;
     TextView editNum;
     ImageView ivAdd;
@@ -53,8 +54,8 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
      */
     private int type = 0;
     private int currentNumber = 1;
-    private TagAdapter<GoodsDetailsBean.ResultdataBean.ColorBean> adapter2;
-    private TagAdapter<GoodsDetailsBean.ResultdataBean.SizeBean> adapter1;
+    private CommonAdapter<GoodsDetailsBean.ResultdataBean.ColorBean> adapter2;
+    private CommonAdapter<GoodsDetailsBean.ResultdataBean.SizeBean> adapter1;
     private Activity activity;
     private PopListener popListener;
     List<GoodsDetailsBean.ResultdataBean.SizeBean> oneList = new ArrayList<>();
@@ -115,7 +116,6 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         initData();
 
         initRv();
-
 
         ivClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,61 +181,6 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         tvPrice.setText(PlaceholderUtils.pricePlaceholder(mGoodsSpecificationBean.getProduct().getMinSalePrice()));
         mGoodsId = mGoodsSpecificationBean.getProduct().getId();
 
-        recyclerView1.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                String colorName = " ";
-                if (selectTwoListPosition != -1) {
-                    colorName = mGoodsSpecificationBean.getColor().get(selectTwoListPosition).getValue();
-                }
-
-
-                if (selectOneListPosition != position) {
-                    mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
-                    selectOneListPosition = position;
-                    tvSelectTag.setText(String.format("Chosen %s %s ", mGoodsSpecificationBean.getSize().get(position).getValue(), colorName));
-                    if (twoList.size() > 0 && !TextUtils.equals(mColorSkuId, "0") || twoList.size() == 0) {
-                        mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
-                    }
-                    return true;
-                } else {
-                    mSizeSkuId = "0";
-                    tvSelectTag.setText(String.format("Chosen %s %s ", "", colorName));
-                    selectOneListPosition = -1;
-                    return false;
-                }
-
-            }
-        });
-
-        recyclerView2.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-            @Override
-            public boolean onTagClick(View view, int position, FlowLayout parent) {
-                String sizeName = " ";
-                if (selectOneListPosition != -1) {
-                    sizeName = mGoodsSpecificationBean.getSize().get(selectOneListPosition).getValue();
-                }
-
-
-                if (selectTwoListPosition != position) {
-                    tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, mGoodsSpecificationBean.getColor().get(position).getValue()));
-                    selectTwoListPosition = position;
-                    mColorSkuId = String.valueOf(twoList.get(position).getSKUId());
-                    if (oneList.size() == 0 || oneList.size() > 0 && !TextUtils.equals("0", mSizeSkuId)) {
-                        mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
-                    }
-                    return true;
-                } else {
-                    tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, " "));
-                    selectTwoListPosition = -1;
-                    mColorSkuId = "0";
-                    return false;
-                }
-
-            }
-        });
-
-
         ivMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -257,6 +202,7 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
     }
 
     public void show() {
+
         // 设置PopupWindow以外部分的背景颜色  有一种变暗的效果
         // 0.0 完全不透明,1.0完全透明
         if (!TextUtils.isEmpty(mGoodsImg)) {
@@ -277,10 +223,25 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
                 PopUtils.setBackgroundAlpha(activity, 1);
             }
         });
+
     }
 
     public void dissmiss() {
         mPopupWindow.dismiss();
+    }
+
+    private View adapter1View;
+    private View adapter2View;
+
+    /**
+     * 选择重置
+     */
+    private void selectedFalse(RecyclerView recyclerView) {
+        RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        int childCount = layoutManager.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            layoutManager.getChildAt(i).setSelected(false);
+        }
     }
 
     private void initRv() {
@@ -288,16 +249,53 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         if (oneList.size() > 0) {
             tvName1.setVisibility(View.VISIBLE);
             recyclerView1.setVisibility(View.VISIBLE);
-            adapter1 = new TagAdapter<GoodsDetailsBean.ResultdataBean.SizeBean>(oneList) {
+            recyclerView1.setLayoutManager(new GridLayoutManager(activity, 3));
+
+            adapter1 = new CommonAdapter<GoodsDetailsBean.ResultdataBean.SizeBean>(activity, R.layout.item_speciflcations_select2) {
                 @Override
-                public View getView(FlowLayout parent, int position, GoodsDetailsBean.ResultdataBean.SizeBean o) {
-                    TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_speciflcations_select2, null);
-                    textView.setText(o.getValue());
-                    return textView;
+                public void convert(ViewHolder holder, GoodsDetailsBean.ResultdataBean.SizeBean sizeBean, int position) {
+                    holder.setText(R.id.tv_name, sizeBean.getValue());
                 }
             };
+            adapter1.setDataArray(oneList);
             recyclerView1.setAdapter(adapter1);
+            recyclerView1.setNestedScrollingEnabled(false);
             selectOneListPosition = 0;
+
+            adapter1.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    selectedFalse(recyclerView1);
+
+                    String colorName = " ";
+                    if (selectTwoListPosition != -1) {
+                        colorName = mGoodsSpecificationBean.getColor().get(selectTwoListPosition).getValue();
+                    }
+
+
+                    if (selectOneListPosition != position) {
+                        view.setSelected(true);
+                        mSizeSkuId = String.valueOf(oneList.get(position).getSKUId());
+                        selectOneListPosition = position;
+                        tvSelectTag.setText(String.format("Chosen %s %s ", mGoodsSpecificationBean.getSize().get(position).getValue(), colorName));
+                        if (twoList.size() > 0 && !TextUtils.equals(mColorSkuId, "0") || twoList.size() == 0) {
+                            mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                        }
+                    } else {
+                        view.setSelected(false);
+                        mSizeSkuId = "0";
+                        tvSelectTag.setText(String.format("Chosen %s %s ", "", colorName));
+                        selectOneListPosition = -1;
+                    }
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
+
+
         } else {
             tvName1.setVisibility(View.GONE);
             recyclerView1.setVisibility(View.GONE);
@@ -307,15 +305,49 @@ public class GoodSpecificationsPop implements GoodsSpecificationsPresenter.Goods
         if (twoList.size() > 0) {
             tvName2.setVisibility(View.VISIBLE);
             recyclerView2.setVisibility(View.VISIBLE);
-            adapter2 = new TagAdapter<GoodsDetailsBean.ResultdataBean.ColorBean>(twoList) {
+            recyclerView2.setNestedScrollingEnabled(false);
+            recyclerView2.setLayoutManager(new GridLayoutManager(activity, 3));
+            adapter2 = new CommonAdapter<GoodsDetailsBean.ResultdataBean.ColorBean>(activity, R.layout.item_speciflcations_select2) {
                 @Override
-                public View getView(FlowLayout parent, int position, GoodsDetailsBean.ResultdataBean.ColorBean contentBean) {
-                    TextView textView = (TextView) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_speciflcations_select2, null);
-                    textView.setText(contentBean.getValue());
-                    return textView;
+                public void convert(ViewHolder holder, GoodsDetailsBean.ResultdataBean.ColorBean colorBean, int position) {
+                    holder.setText(R.id.tv_name, colorBean.getValue());
                 }
             };
+            adapter2.setDataArray(twoList);
             recyclerView2.setAdapter(adapter2);
+
+            adapter2.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    selectedFalse(recyclerView2);
+
+                    String sizeName = " ";
+                    if (selectOneListPosition != -1) {
+                        sizeName = mGoodsSpecificationBean.getSize().get(selectOneListPosition).getValue();
+                    }
+
+
+                    if (selectTwoListPosition != position) {
+                        view.setSelected(true);
+                        tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, mGoodsSpecificationBean.getColor().get(position).getValue()));
+                        selectTwoListPosition = position;
+                        mColorSkuId = String.valueOf(twoList.get(position).getSKUId());
+                        if (oneList.size() == 0 || oneList.size() > 0 && !TextUtils.equals("0", mSizeSkuId)) {
+                            mGoodsSpecificationsPresenter.getSpecificationsList(String.valueOf(mGoodsId), mColorSkuId, mSizeSkuId, versionSkuId);
+                        }
+                    } else {
+                        view.setSelected(false);
+                        tvSelectTag.setText(String.format("Chosen %s %s ", sizeName, " "));
+                        selectTwoListPosition = -1;
+                        mColorSkuId = "0";
+                    }
+                }
+
+                @Override
+                public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                    return false;
+                }
+            });
         } else {
             tvName2.setVisibility(View.GONE);
             recyclerView2.setVisibility(View.GONE);

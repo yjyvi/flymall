@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/iv_goods_img"
         android:src="@color/normal_gray"
-        android:scaleType="centerCrop"
+        android:scaleType="fitCenter"
         android:layout_width="@dimen/dm_185"
         android:layout_height="@dimen/dm_185"/>
 
@@ -16,12 +16,13 @@
         android:paddingLeft="@dimen/dm_8"
         android:paddingRight="@dimen/dm_8"
         android:layout_width="wrap_content"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:id="@+id/tv_goods_name"
         android:ellipsize="end"
         android:lines="2"
         android:text="Converse Chuck Taylor All Star Canvas Low Top Sneaker"
-        android:textSize="@dimen/dm_12"/>
+        android:textSize="@dimen/dm_11"/>
 
     <LinearLayout
         android:paddingLeft="@dimen/dm_8"

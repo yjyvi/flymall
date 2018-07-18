@@ -64,7 +64,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     @BindView(R.id.tv_state_province_region)
     TextView mTvStateProvinceRegion;
     @BindView(R.id.tv_province)
-    TextView mTvProvince;
+    EditText mTvProvince;
     @BindView(R.id.tv_zip_postal_code)
     TextView mTvZipPostalCode;
     @BindView(R.id.tv_phone_number)
@@ -124,11 +124,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
                 mTvCountry.setText(mCityName);
                 if (split.length > 1) {
                     mProName = split[1];
-                    mTvProvince.setText(mProName);
-                }
-                if (split.length > 2) {
-                    mTelAre = split[2];
-                    mTvTel.setText(mTelAre);
+                    mTvProvince.setText("+" + mProName);
                 }
             }
 
@@ -137,8 +133,8 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             } else {
                 mTvIsDefault.setSelected(false);
             }
-        }else {
-            if (size ==0) {
+        } else {
+            if (size == 0) {
                 mTvIsDefault.setSelected(true);
             }
         }
@@ -164,7 +160,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
         return R.layout.activity_add_address;
     }
 
-    public static void start(Context context, String resultdataBeanJson,int size) {
+    public static void start(Context context, String resultdataBeanJson, int size) {
         Intent starter = new Intent(context, AddAddressActivity.class);
         starter.putExtra("resultdataBeanJson", resultdataBeanJson);
         starter.putExtra("size", size);
@@ -180,11 +176,11 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
                 mGetAddressCityPresenter.getTheAddress("0", true);
                 break;
             case R.id.tv_province:
-                if (!TextUtils.isEmpty(mParentId)) {
-                    mGetAddressCityPresenter.getTheAddress(mParentId, false);
-                } else {
-                    ToastUtils.showToast("Select Country");
-                }
+//                if (!TextUtils.isEmpty(mParentId)) {
+//                    mGetAddressCityPresenter.getTheAddress(mParentId, false);
+//                } else {
+//                    ToastUtils.showToast("Select Country");
+//                }
                 break;
             case R.id.tv_save:
                 if (inputVerification()) {
@@ -210,7 +206,7 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     }
 
     private void addOrUpdateAddress(boolean isAdd) {
-        mStringName = mCityName + "," + mProName + "," + mTelAre;
+        mStringName = mCityName + "," + mTelAre;
         mAddressAddOrUpdatePresenter.addOrUpdateAddress(isAdd, addressId,
                 mEtTel.getText().toString().trim(),
                 mEtFirstName.getText().toString().trim(),
@@ -248,6 +244,10 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
             return false;
         }
         if (TextUtils.isEmpty(mEtCity.getText().toString().trim())) {
+            ToastUtils.showToast("Please enter City");
+            return false;
+        }
+        if (TextUtils.isEmpty(mCityName)) {
             ToastUtils.showToast("Please enter City");
             return false;
         }
@@ -299,12 +299,12 @@ public class AddAddressActivity extends BaseActivity implements AddressAddOrUpda
     public void onSelect(String parentId, String cityName, String telAre, String areaId, boolean isCountry) {
         if (isCountry) {
             this.mParentId = parentId;
-            this.mCityAreaId = areaId;
             mCityName = cityName;
             mTvCountry.setText(mCityName);
             mTelAre = telAre;
             mTvTel.setText(mTelAre);
         } else {
+            this.mCityAreaId = parentId;
             mProName = cityName;
             mTvProvince.setText(mProName);
         }

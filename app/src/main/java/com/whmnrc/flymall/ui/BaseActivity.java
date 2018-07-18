@@ -3,7 +3,6 @@ package com.whmnrc.flymall.ui;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,12 +13,8 @@ import android.widget.TextView;
 
 import com.umeng.message.PushAgent;
 import com.whmnrc.flymall.R;
-import com.whmnrc.flymall.beans.GoodsListBean;
 import com.whmnrc.flymall.utils.StatusBarUtils;
 import com.whmnrc.flymall.utils.ToastUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -122,7 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     protected void exit() {
         if ((System.currentTimeMillis() - exitTime) > 2000) {
-            ToastUtils.showToast("Press again to exit".concat(getResources().getString(R.string.app_name)));
+            ToastUtils.showToast("Press again to exit ".concat(getResources().getString(R.string.app_name)));
             exitTime = System.currentTimeMillis();
         } else {
             finish();
@@ -207,13 +202,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    @NonNull
-    public List<GoodsListBean.ResultdataBean> initTestData(int size) {
-        List<GoodsListBean.ResultdataBean> mData = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            mData.add(new GoodsListBean.ResultdataBean());
-        }
-        return mData;
-    }
+
 
 }

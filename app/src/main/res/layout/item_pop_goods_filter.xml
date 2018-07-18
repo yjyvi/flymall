@@ -106,7 +106,7 @@
             android:paddingLeft="@dimen/dm_10"
             android:paddingRight="@dimen/dm_10"
             android:paddingTop="@dimen/dm_5"
-            android:text="Determine"
+            android:text="Confirm"
             android:textSize="@dimen/dm_15"/>
     </LinearLayout>
 

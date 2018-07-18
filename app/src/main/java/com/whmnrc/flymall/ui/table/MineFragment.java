@@ -12,11 +12,13 @@ import android.widget.TextView;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+import com.whmnrc.flymall.CommonConstant;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.adapter.LikeGoodListAdapter;
 import com.whmnrc.flymall.beans.LikeGoodsBean;
 import com.whmnrc.flymall.eventbus.HomeTableChangeEvent;
 import com.whmnrc.flymall.presener.GetLikeGoodsPresenter;
+import com.whmnrc.flymall.ui.CommonH5WebView;
 import com.whmnrc.flymall.ui.LazyLoadFragment;
 import com.whmnrc.flymall.ui.UserManager;
 import com.whmnrc.flymall.ui.mine.AddressManagerActivity;
@@ -142,7 +144,7 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
 
 
     @OnClick({
-            R.id.iv_setting, R.id.iv_cart, R.id.ll_date_edit,
+            R.id.iv_setting, R.id.iv_cart, R.id.ll_date_edit, R.id.tv_contact,
             R.id.tv_more, R.id.tv_order_unpaid, R.id.tv_order_un_shipped,
             R.id.tv_order_receipt, R.id.tv_currency, R.id.tv_address,
             R.id.tv_record, R.id.tv_collection, R.id.tv_video, R.id.tv_coupons
@@ -192,6 +194,9 @@ public class MineFragment extends LazyLoadFragment implements GetLikeGoodsPresen
                 break;
             case R.id.tv_coupons:
                 CouponsActivity.start(view.getContext());
+                break;
+            case R.id.tv_contact:
+                CommonH5WebView.startCommonH5WebView(view.getContext(), CommonConstant.Common.CONTACT, "contact");
                 break;
             default:
                 break;

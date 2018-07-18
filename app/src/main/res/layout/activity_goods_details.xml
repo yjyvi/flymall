@@ -68,6 +68,7 @@
 
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
+                        android:background="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dm_420"
                         android:src="@color/normal_gray"/>

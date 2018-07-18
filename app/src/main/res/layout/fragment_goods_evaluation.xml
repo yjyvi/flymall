@@ -46,7 +46,7 @@
             android:paddingLeft="@dimen/dm_5"
             android:paddingRight="@dimen/dm_5"
             android:paddingTop="@dimen/dm_3"
-            android:text="Praise"
+            android:text="Positive"
             android:textColor="@drawable/item_buy_text_color"
             android:textSize="@dimen/dm_13"/>
 
@@ -64,7 +64,7 @@
             android:paddingLeft="@dimen/dm_5"
             android:paddingRight="@dimen/dm_5"
             android:paddingTop="@dimen/dm_3"
-            android:text="Average"
+            android:text="Moderate"
             android:textColor="@drawable/item_buy_text_color"
             android:textSize="@dimen/dm_13"/>
 
@@ -82,7 +82,7 @@
             android:paddingLeft="@dimen/dm_5"
             android:paddingRight="@dimen/dm_5"
             android:paddingTop="@dimen/dm_3"
-            android:text="Bad review"
+            android:text="Negative"
             android:textColor="@drawable/item_buy_text_color"
             android:textSize="@dimen/dm_13"/>
 

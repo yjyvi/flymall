@@ -63,9 +63,6 @@
 
             </RelativeLayout>
 
-
-
-
             <android.support.v4.widget.NestedScrollView
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -86,14 +83,21 @@
                         android:textSize="@dimen/dm_14"
                         android:text="Size"/>
 
-                    <com.zhy.view.flowlayout.TagFlowLayout
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView1"
-                        android:layout_marginLeft="@dimen/dm_10"
-                        android:layout_marginRight="@dimen/dm_10"
+                    android:layout_marginLeft="@dimen/dm_10"
+                    android:layout_marginRight="@dimen/dm_10"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:max_select="1"
-                        />
+                        android:layout_height="wrap_content"/>
+
+                    <!--<com.zhy.view.flowlayout.TagFlowLayout-->
+                        <!--android:id="@+id/recyclerView1"-->
+                        <!--android:layout_marginLeft="@dimen/dm_10"-->
+                        <!--android:layout_marginRight="@dimen/dm_10"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:max_select="1"-->
+                        <!--/>-->
 
 
                     <TextView
@@ -105,14 +109,21 @@
                         android:textSize="@dimen/dm_14"
                         android:text="Color"/>
 
-                    <com.zhy.view.flowlayout.TagFlowLayout
+                    <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView2"
                         android:layout_marginLeft="@dimen/dm_10"
                         android:layout_marginRight="@dimen/dm_10"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:max_select="1"
-                        />
+                        android:layout_height="wrap_content"/>
+
+                    <!--<com.zhy.view.flowlayout.TagFlowLayout-->
+                        <!--android:id="@+id/recyclerView2"-->
+                        <!--android:layout_marginLeft="@dimen/dm_10"-->
+                        <!--android:layout_marginRight="@dimen/dm_10"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--app:max_select="1"-->
+                        <!--/>-->
 
 
 
@@ -220,7 +231,7 @@
         <ImageView
             android:id="@+id/iv_img"
             android:layout_marginLeft="@dimen/dm_15"
-            android:scaleType="centerCrop"
+            android:scaleType="fitCenter"
             android:src="@color/normal_gray"
             android:layout_width="@dimen/dm_100"
             android:layout_height="@dimen/dm_100"/>

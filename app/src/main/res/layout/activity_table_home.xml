@@ -5,11 +5,11 @@
                 android:background="@color/translate"
                 android:orientation="vertical">
     <!--主页面-->
-    <FrameLayout
-        android:id="@+id/fragment_content"
+    <com.whmnrc.flymall.views.MyViewPager
+        android:id="@+id/tab_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dm_50"/>
+        android:layout_marginBottom="@dimen/dm_50"
+        android:layout_height="match_parent"/>
 
 
     <View
@@ -18,42 +18,6 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/dm_50"
         android:background="@color/normal_gray_line"/>
-    <!--首页-->
-    <RadioGroup
-        android:id="@+id/rg_home_table_groups"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/withe"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <RadioButton
-            android:id="@+id/rb_home"
-            style="@style/Main_RadioGroup"
-            android:checked="true"
-            android:drawableTop="@drawable/tab_home"
-            android:text="HOME"
-            />
-
-        <RadioButton
-            android:id="@+id/rb_brands"
-            style="@style/Main_RadioGroup"
-            android:drawableTop="@drawable/tab_brands"
-            android:text="BRANDS"/>
-
-        <RadioButton
-            android:id="@+id/rb_shop"
-            style="@style/Main_RadioGroup"
-            android:drawableTop="@drawable/tab_shop"
-            android:text="SHOP"/>
-
-        <RadioButton
-            android:id="@+id/rb_mine"
-            style="@style/Main_RadioGroup"
-            android:drawableTop="@drawable/tab_mine"
-            android:text="ME"/>
-    </RadioGroup>
 
 
     <LinearLayout
@@ -71,7 +35,6 @@
 
 
         <TextView
-            android:clickable="true"
             android:id="@+id/tv_table_brands"
             style="@style/Main_RadioGroup"
             android:drawableTop="@drawable/tab_brands"
@@ -88,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/tab_shop"
-                android:text="SHOP"/>
+                android:text="CART"/>
 
             <TextView
                 android:visibility="gone"

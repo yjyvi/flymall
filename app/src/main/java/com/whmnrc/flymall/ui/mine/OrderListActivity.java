@@ -44,7 +44,7 @@ public class OrderListActivity extends BaseActivity {
 
 
     List<LazyLoadFragment> fragments = new ArrayList<>();
-    String[] titles = new String[]{"UNPAID", "UNSHIPPED", "RECEIPT", "ALL"};
+    String[] titles = new String[]{"UNPAID", "UNSHIPPED", "RECEIPTED", "ALL"};
     @BindView(R.id.mid_tab)
     MagicIndicator mMidTab;
     @BindView(R.id.vp_order)

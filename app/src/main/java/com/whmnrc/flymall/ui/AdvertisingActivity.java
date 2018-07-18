@@ -12,6 +12,7 @@ import com.whmnrc.flymall.MyApplication;
 import com.whmnrc.flymall.R;
 import com.whmnrc.flymall.ui.login.LoginSelectedActivity;
 import com.whmnrc.flymall.utils.SPUtils;
+import com.whmnrc.mylibrary.utils.GlideUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,12 +30,19 @@ public class AdvertisingActivity extends BaseActivity {
 
     public static Handler sHandler = new Handler();
 
+    String advertisingUrl = MyApplication.applicationContext.getResources().getString(R.string.service_host_address).concat("/Storage/Plat/Site/wxlogo.png");
+
+    private static boolean isGoTo = false;
+
     @Override
     protected void initViewData() {
+        GlideUtils.LoadImage(this, advertisingUrl, mIvAdvertising);
         sHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                goToHome();
+                if (!isGoTo) {
+                    goToHome();
+                }
             }
         }, mAdvertisingTime);
     }
@@ -52,24 +60,20 @@ public class AdvertisingActivity extends BaseActivity {
 
     @OnClick(R.id.iv_jump_home)
     public void onClick() {
+        isGoTo = true;
         goToHome();
     }
 
     private void goToHome() {
-//        if (SPUtils.getBooleanToken(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER)) {
-            if (SPUtils.getBooleanToken(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER)) {
-                HomeTableActivity.startHomeTableView(AdvertisingActivity.this, 0);
-            } else {
-                LoginSelectedActivity.start(AdvertisingActivity.this,true);
-            }
-//        } else {
-//            GuideActivity.startGuideActivity(AdvertisingActivity.this);
-//        }
+        if (SPUtils.getBooleanToken(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER)) {
+            HomeTableActivity.startHomeTableView(AdvertisingActivity.this, 0);
+        } else {
+            LoginSelectedActivity.start(AdvertisingActivity.this, true);
+        }
         finish();
         SPUtils.putTokend(MyApplication.applicationContext, CommonConstant.Common.FIRST_LAUNCHER, true);
 
     }
-
 
 
     private static CountDownTimer mCountDownTimer;

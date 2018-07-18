@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:textColor="@color/selecter_type_text_color_bg"
             android:layout_height="match_parent"
+            android:textSize="@dimen/dm_13"
             android:gravity="center"
             android:padding="@dimen/dm_5"
             android:text="oneType"/>

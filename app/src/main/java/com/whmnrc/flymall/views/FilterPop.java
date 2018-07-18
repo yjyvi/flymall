@@ -76,11 +76,8 @@ public class FilterPop extends PopupWindow {
             tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
                 @Override
                 public boolean onTagClick(View view, int position, FlowLayout parent) {
-                    if (num.contains(categoryBean.getSubCategory().get(position))) {
-                        num.remove(categoryBean.getSubCategory().get(position));
-                    } else {
-                        num.add(categoryBean.getSubCategory().get(position));
-                    }
+                    num.clear();
+                    num.add(categoryBean.getSubCategory().get(position));
                     return false;
                 }
             });

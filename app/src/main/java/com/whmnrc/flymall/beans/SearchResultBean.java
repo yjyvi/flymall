@@ -276,9 +276,9 @@ public class SearchResultBean {
             private boolean HasSKU;
             private int Id;
             private String ImagePath;
-            private int MarketPrice;
+            private double MarketPrice;
             private String MeasureUnit;
-            private int MinSalePrice;
+            private double MinSalePrice;
             private String ProductCode;
             private String ProductName;
             private int Quantity;
@@ -403,11 +403,11 @@ public class SearchResultBean {
                 this.ImagePath = ImagePath;
             }
 
-            public int getMarketPrice() {
+            public double getMarketPrice() {
                 return MarketPrice;
             }
 
-            public void setMarketPrice(int MarketPrice) {
+            public void setMarketPrice(double MarketPrice) {
                 this.MarketPrice = MarketPrice;
             }
 
@@ -419,11 +419,11 @@ public class SearchResultBean {
                 this.MeasureUnit = MeasureUnit;
             }
 
-            public int getMinSalePrice() {
+            public double getMinSalePrice() {
                 return MinSalePrice;
             }
 
-            public void setMinSalePrice(int MinSalePrice) {
+            public void setMinSalePrice(double MinSalePrice) {
                 this.MinSalePrice = MinSalePrice;
             }
 

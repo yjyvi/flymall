@@ -29,7 +29,7 @@
             android:background="@color/withe"
             android:drawableLeft="@mipmap/home_serach"
             android:drawablePadding="@dimen/dm_10"
-            android:hint="TREND NEW PRODUCT SALE"
+            android:hint="New product is on sale"
             android:padding="@dimen/dm_7"
             android:textSize="@dimen/dm_12"/>
 

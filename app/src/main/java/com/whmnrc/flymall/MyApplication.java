@@ -85,6 +85,7 @@ public class MyApplication extends MultiDexApplication {
         //友盟推送
         UMConfigure.init(this, "5b07c292f43e483b31000013", "", UMConfigure.DEVICE_TYPE_PHONE, "50194719f5daf7d21ae146523c86c2dc");
         UMConfigure.setLogEnabled(true);
+
         PushAgent mPushAgent = PushAgent.getInstance(this);
         //注册推送服务，每次调用register方法都会回调该接口
         mPushAgent.register(new IUmengRegisterCallback() {

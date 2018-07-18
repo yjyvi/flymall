@@ -78,7 +78,6 @@ public class GoodsEvaluationFragment extends LazyLoadFragment implements Evaluat
             mGoodsId = getArguments().getString("goodsId");
         }
 
-        mEvaluateListPresenter.getEvaluateList(mGoodsId, page, rows, mEvaluationType);
         mRvEvaluationList.setAdapter(mGoodsCommentAdapter);
         selectedView(mTvTypeAll);
 

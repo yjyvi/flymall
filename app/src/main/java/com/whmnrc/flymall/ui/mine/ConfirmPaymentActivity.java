@@ -33,6 +33,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_PP;
+import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_REV;
 import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_TT;
 import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_WX;
 import static com.whmnrc.flymall.CommonConstant.Common.PAY_METHOD_ZFB;
@@ -63,6 +64,8 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
     ImageView mIvPayZfb;
     @BindView(R.id.iv_pay_wx)
     ImageView mIvPayWx;
+    @BindView(R.id.iv_pay_rev_letter)
+    ImageView mIvPayRevLetter;
     @BindView(R.id.tv_pay)
     TextView mTvPay;
     private static final int REQUEST_CODE = 909;
@@ -103,7 +106,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
         }
 
         selectedView(mIvPayTt);
-        mTvPay.setText(String.format("T/T Reimbursement Clause %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice - mCouponsPrice)));
+        mTvPay.setText(String.format("Western Union %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice - mCouponsPrice)));
     }
 
     @Override
@@ -152,7 +155,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
 
 
     @OnClick({R.id.ll_pay_pp, R.id.ll_pay_tt, R.id.ll_pay_zfb, R.id.ll_pay_wx,
-//            R.id.ll_pay_up,
+            R.id.ll_pay_qi,
             R.id.tv_pay})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -163,7 +166,7 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
                 break;
             case R.id.ll_pay_tt:
                 payType = PAY_METHOD_TT;
-                mTvPay.setText(String.format("T/T Reimbursement Clause %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice- mCouponsPrice)));
+                mTvPay.setText(String.format("Western Union %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice - mCouponsPrice)));
                 selectedView(mIvPayTt);
                 break;
             case R.id.ll_pay_zfb:
@@ -176,9 +179,11 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
                 payType = PAY_METHOD_WX;
                 selectedView(mIvPayWx);
                 break;
-//            case R.id.ll_pay_up:
-//                selectedView(mIvPayUp);
-//                break;
+            case R.id.ll_pay_qi:
+                selectedView(mIvPayRevLetter);
+                payType = PAY_METHOD_REV;
+                mTvPay.setText(String.format("Credit card %s ", PlaceholderUtils.pricePlaceholder(mTotalPrice)));
+                break;
             case R.id.tv_pay:
                 payTypeSelect();
                 break;
@@ -222,6 +227,10 @@ public class ConfirmPaymentActivity extends BaseActivity implements PayPPPresent
 
                     }
                 });
+                break;
+            case PAY_METHOD_REV:
+                QiPayActivity.start(ConfirmPaymentActivity.this, mOrderId,mTotalPrice);
+                finish();
                 break;
             default:
                 break;

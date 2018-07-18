@@ -185,6 +185,11 @@ public class OrderDetailsActivity extends BaseActivity implements OrderDetailsPr
 
     @OnClick({R.id.tv_order_number_copy, R.id.tv_skype, R.id.tv_cancel_order, R.id.tv_pay_order})
     public void onClick(View view) {
+
+        if (orderBean == null) {
+            return;
+        }
+
         switch (view.getId()) {
             case R.id.tv_order_number_copy:
                 // 将文本内容放到系统剪贴板里。

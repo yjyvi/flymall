@@ -26,8 +26,8 @@ android {
         applicationId "com.whmnrc.flymall"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5
-        versionName "1.05"
+        versionCode 16
+        versionName "1.07"
         multiDexEnabled true
 
         ndk {
@@ -71,4 +71,6 @@ dependencies {
     //paypay支付
     compile('com.paypal.sdk:paypal-android-sdk:2.15.1')
             { exclude group: 'io.card' }
+    //友盟统计
+//    compile 'com.umeng.sdk:common:latest.integration'
 }

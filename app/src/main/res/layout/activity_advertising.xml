@@ -11,6 +11,7 @@
 
         <ImageView
             android:id="@+id/iv_advertising"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
@@ -18,10 +19,13 @@
             android:id="@+id/iv_jump_home"
             android:background="@drawable/shape_advertising_jump_bg"
             android:layout_width="wrap_content"
-            android:padding="@dimen/dm_6"
+            android:paddingLeft="@dimen/dm_8"
+            android:paddingRight="@dimen/dm_8"
+            android:paddingTop="@dimen/dm_6"
+            android:paddingBottom="@dimen/dm_6"
             android:layout_height="wrap_content"
             android:textColor="@color/withe"
-            android:textSize="@dimen/dm_12"
+            android:textSize="@dimen/dm_11"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="@dimen/dm_15"
             android:layout_marginRight="@dimen/dm_15"

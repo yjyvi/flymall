@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dm_50"
+        android:layout_marginTop="@dimen/dm_60">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/ll_number"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:layout_marginTop="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_cart"/>
+
+                <EditText
+                    android:id="@+id/et_card_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Credit card number:（upper limit of 16）"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/ll_year"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_time"/>
+
+                <TextView
+                    android:drawableRight="@mipmap/icon_pay_year_select"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/tv_year"
+                    android:drawablePadding="@dimen/dm_10"
+                    android:layout_width="@dimen/dm_50"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:background="@null"
+                    android:hint="Year"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <TextView
+                    android:drawablePadding="@dimen/dm_10"
+                    android:drawableRight="@mipmap/icon_pay_year_select"
+                    android:gravity="center"
+                    android:id="@+id/tv_month"
+                    android:layout_width="@dimen/dm_60"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:background="@null"
+                    android:hint="Month"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"
+                android:visibility="visible"/>
+
+
+            <LinearLayout
+                android:id="@+id/ll_code"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_code"/>
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Security Code"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_hint"
+                    android:layout_width="@dimen/dm_15"
+                    android:layout_height="@dimen/dm_15"
+                    android:src="@mipmap/icon_pay_hint"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:paddingLeft="@dimen/dm_10"
+                android:paddingRight="@dimen/dm_10"
+                android:src="@color/common_line"
+                android:visibility="visible"/>
+
+            <LinearLayout
+                android:id="@+id/ll_email"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15"
+                android:visibility="visible">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_mail"/>
+
+                <EditText
+                    android:id="@+id/et_mial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:lines="1"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/tv_pay"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm_50"
+        android:layout_alignParentBottom="true"
+        android:background="@color/normal_text_color"
+        android:gravity="center"
+        android:text="Pay Pal $9832"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dm_16"/>
+
+
+    <include layout="@layout/common_title"/>
+
+</RelativeLayout>

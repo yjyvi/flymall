@@ -53,7 +53,7 @@ public class ActivityGoodsListActivity extends BaseActivity implements HomePageA
 
         mTopActivityId = getIntent().getStringExtra("topActivityId");
         mHomePageActivityListGoodsPresenter.getHomePageActivityGoodsList(mTopActivityId,mLoadingDialog);
-        setTitle("ActivityGoods");
+        setTitle("Activities");
 
         mRvBrowsingHistoryList.setLayoutManager(new GridLayoutManager(this, 2));
         mAdapter = new HomeActivityGoodListAdapter(this, R.layout.item_goods_list);

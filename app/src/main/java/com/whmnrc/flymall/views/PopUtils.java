@@ -49,6 +49,28 @@ public class PopUtils {
     }
 
 
+    /**
+     * 默认提示弹窗
+     *
+     * @param context
+     * @param contentView
+     */
+    public static void showConfirmationReceiptPop(final Activity context, View contentView, final NormalNotifyPopListener clickListener) {
+
+        View layoutView = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.view_confirmation_receipt, null);
+        final PopupWindow popupWindow = new PopupWindow(layoutView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        TextView btCommit = (TextView) layoutView.findViewById(R.id.tv_commit);
+
+        btCommit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindow.dismiss();
+            }
+        });
+
+
+        showPoPNormal(context, contentView, popupWindow, Gravity.CENTER, null);
+    }
 
 
 

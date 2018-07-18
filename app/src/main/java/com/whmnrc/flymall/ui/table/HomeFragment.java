@@ -141,7 +141,7 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
 
         mRefresh.setOnRefreshLoadMoreListener(this);
 
-        requestNoTouch();
+//        requestNoTouch();
         initVideoList();
         initSaleList();
 
@@ -467,12 +467,14 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
             int maxNum = 0;
             int initI = i * pageMax;
             if (i + 1 == brandsPage) {
-                maxNum += initI + sizeResult;
+                maxNum += initI + pageMax;
             } else {
                 maxNum = initI + pageMax;
             }
             for (int j = initI; j < maxNum; j++) {
-                onPageVideoList.add(brands.get(j));
+                if (brands.size() > j) {
+                    onPageVideoList.add(brands.get(j));
+                }
             }
             onPageVideoLists.add(onPageVideoList);
         }
@@ -512,43 +514,57 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
      * @param resultdataBean
      */
     private void initHomeActivityData(final List<HomeActivityGoodsBean.ResultdataBean> resultdataBean) {
-        GlideUtils.LoadImage(getActivity(), resultdataBean.get(0).getImageUrl(), mIvActivity1);
-        GlideUtils.LoadImage(getActivity(), resultdataBean.get(1).getImageUrl(), mIvActivity2);
-        GlideUtils.LoadImage(getActivity(), resultdataBean.get(2).getImageUrl(), mIvActivity3);
-        GlideUtils.LoadImage(getActivity(), resultdataBean.get(3).getImageUrl(), mIvActivity4);
-        GlideUtils.LoadImage(getActivity(), resultdataBean.get(4).getImageUrl(), mIvActivity5);
+        if (resultdataBean == null) {
+            return;
+        }
+        if (resultdataBean.size() > 0) {
+            GlideUtils.LoadImage(getActivity(), resultdataBean.get(0).getImageUrl(), mIvActivity1);
+            mIvActivity1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(0).getId()));
+                }
+            });
+        }
+        if (resultdataBean.size() > 1) {
+            GlideUtils.LoadImage(getActivity(), resultdataBean.get(1).getImageUrl(), mIvActivity2);
+            mIvActivity2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(1).getId()));
+                }
+            });
+        }
 
+        if (resultdataBean.size() > 2) {
+            GlideUtils.LoadImage(getActivity(), resultdataBean.get(2).getImageUrl(), mIvActivity3);
+            mIvActivity3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(2).getId()));
+                }
+            });
+        }
 
-        mIvActivity1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(0).getId()));
-            }
-        });
-        mIvActivity2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(1).getId()));
-            }
-        });
-        mIvActivity3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(2).getId()));
-            }
-        });
-        mIvActivity4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(3).getId()));
-            }
-        });
-        mIvActivity5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(4).getId()));
-            }
-        });
+        if (resultdataBean.size() > 3) {
+            GlideUtils.LoadImage(getActivity(), resultdataBean.get(3).getImageUrl(), mIvActivity4);
+            mIvActivity4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(3).getId()));
+                }
+            });
+        }
+
+        if (resultdataBean.size() > 4) {
+            GlideUtils.LoadImage(getActivity(), resultdataBean.get(4).getImageUrl(), mIvActivity5);
+            mIvActivity5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ActivityGoodsListActivity.start(v.getContext(), String.valueOf(resultdataBean.get(4).getId()));
+                }
+            });
+        }
     }
 
 
@@ -572,10 +588,8 @@ public class HomeFragment extends LazyLoadFragment implements OnRefreshLoadMoreL
         }
         mGoodListAdapter.notifyDataSetChanged();
 
-
         mLoadingDialog.dismiss();
     }
-
 
     @Override
     public void loadSuccess(List<AllCurrencyBean.ResultdataBean.ModelsBean> resultdataBean) {

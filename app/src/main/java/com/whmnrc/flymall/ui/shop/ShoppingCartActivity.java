@@ -27,7 +27,6 @@ public class ShoppingCartActivity extends BaseActivity {
     }
 
 
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -49,6 +48,7 @@ public class ShoppingCartActivity extends BaseActivity {
         if (homeTableChangeEvent.getEventType() == HomeTableChangeEvent.GO_TO_HOME) {
             finish();
             HomeTableActivity.startHomeTableView(this, 0);
+            EventBus.getDefault().post(new HomeTableChangeEvent().setEventType(HomeTableChangeEvent.CHANGE_TAB).setData(0));
         }
     }
 }

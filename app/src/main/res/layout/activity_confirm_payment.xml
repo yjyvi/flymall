@@ -195,7 +195,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dm_20"
                     android:layout_weight="1"
-                    android:text="T/T Reimbursement Clause"
+                    android:text="Western Union"
                     android:textColor="@color/black"
                     android:textSize="@dimen/dm_12"/>
 
@@ -208,7 +208,7 @@
             </LinearLayout>
 
             <ImageView
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginLeft="@dimen/dm_15"
@@ -218,6 +218,41 @@
                 android:paddingRight="@dimen/dm_10"
                 android:src="@color/common_line"/>
 
+            <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/ll_pay_qi"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm_45"
+                android:layout_marginLeft="@dimen/dm_15"
+                android:layout_marginRight="@dimen/dm_15"
+                android:background="@color/withe"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dm_15"
+                android:paddingRight="@dimen/dm_15">
+
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_pay_qi"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm_20"
+                    android:layout_weight="1"
+                    android:text="Credit card"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dm_12"/>
+
+                <ImageView
+                    android:id="@+id/iv_pay_rev_letter"
+                    android:layout_width="@dimen/dm_20"
+                    android:layout_height="@dimen/dm_20"
+                    android:background="@drawable/select_cart"/>
+
+            </LinearLayout>
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/ll_pay_zfb"
@@ -359,7 +394,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/normal_text_color"
         android:gravity="center"
-        android:text="Pay Pal $9832"
         android:textColor="@color/black"
         android:textSize="@dimen/dm_16"/>
 

@@ -384,7 +384,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         if (!mIvAllCheck.isSelected()) {
             mTvEntry.setText("Delete");
         } else {
-            mTvEntry.setText(String.format("Bill(%s)", 0));
+            mTvEntry.setText(String.format("PAY(%s)", 0));
         }
     }
 
@@ -420,9 +420,9 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
                         goodsNum += productsBean.getCount();
                     }
                 }
-                mTvEntry.setText(String.format("Bill(%s)", goodsNum));
+                mTvEntry.setText(String.format("PAY(%s)", goodsNum));
             } else {
-                mTvEntry.setText(String.format("Bill(%s)", 0));
+                mTvEntry.setText(String.format("PAY(%s)", 0));
             }
         }
     }
@@ -458,7 +458,7 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
 
     public void showEmpty() {
         if (mShoppingCartAdapter != null && mShoppingCartAdapter.getDatas().size() == 0) {
-            EmptyListUtils.loadEmpty(true, "No shopping cart", R.mipmap.no_shopping_cart, mVsEmpty);
+            EmptyListUtils.loadEmpty(true, "Empty", R.mipmap.no_shopping_cart, mVsEmpty);
             mTvToHome.setVisibility(View.VISIBLE);
         } else {
             mTvToHome.setVisibility(View.GONE);
@@ -477,17 +477,6 @@ public class ShoppingCartFragment extends LazyLoadFragment implements GetLikeGoo
         }
     }
 
-
-    /**
-     * 选择重置
-     */
-    private void selectedFalse() {
-        RecyclerView.LayoutManager layoutManager = mRvInGoods.getLayoutManager();
-        int childCount = layoutManager.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            layoutManager.getChildAt(i).setSelected(layoutManager.getChildAt(i).isSelected());
-        }
-    }
 
     @Override
     public void addSuceess() {

@@ -43,6 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:textColor="#333333"
                     android:lines="1"
                     android:text="Receiver：Amazon Customer"
                     android:textSize="@dimen/dm_15"/>
@@ -51,9 +52,10 @@
                     android:id="@+id/tv_address_tel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_address_name"
                     android:layout_marginLeft="@dimen/dm_70"
+                    android:layout_below="@+id/tv_address_name"
                     android:text="13999998888"
+                    android:textColor="#333333"
                     android:textSize="@dimen/dm_15"/>
 
                 <TextView
@@ -61,6 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_address_tel"
+                    android:textColor="#333333"
                     android:text="No.16, Basic Surface of Jianghan Road, Qiaokou District, Wuhan City, Hubei Province"
                     android:textSize="@dimen/dm_15"/>
 

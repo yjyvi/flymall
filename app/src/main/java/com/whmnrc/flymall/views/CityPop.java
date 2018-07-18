@@ -39,6 +39,7 @@ public class CityPop {
     private Unbinder bind;
     private Adapter oneAdapter;
     private View showView;
+    public SelectAddressBean.ResultdataBean mResultdataBean;
 
     public PopupWindow getmPopupWindow() {
         return mPopupWindow;
@@ -83,6 +84,28 @@ public class CityPop {
         mPopupWindow.setFocusable(true);
         mPopupWindow.setTouchable(true);
 
+        view.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dissmiss();
+            }
+        });
+
+        view.findViewById(R.id.tv_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mResultdataBean != null) {
+                    cityListener.onSelect(String.valueOf(mResultdataBean.getId()),
+                            mResultdataBean.getAreaName(),
+                            mResultdataBean.getMobilePhoneCode(),
+                            String.valueOf(mResultdataBean.getAreaCode()),
+                            mIsCountry);
+                }
+                oneAdapter.notifyDataSetChanged();
+                mPopupWindow.dismiss();
+            }
+        });
+
         oneRv.setLayoutManager(new LinearLayoutManager(activity));
         oneAdapter = new Adapter(activity, R.layout.item_city_select);
         oneRv.setAdapter(oneAdapter);
@@ -90,14 +113,8 @@ public class CityPop {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 oneSelect = position;
-                SelectAddressBean.ResultdataBean resultdataBean = oneAdapter.getDatas().get(position);
-                cityListener.onSelect(String.valueOf(resultdataBean.getId()),
-                        resultdataBean.getAreaName(),
-                        resultdataBean.getMobilePhoneCode(),
-                        String.valueOf(resultdataBean.getAreaCode()),
-                        mIsCountry);
-                oneAdapter.notifyDataSetChanged();
-                mPopupWindow.dismiss();
+                mResultdataBean = oneAdapter.getDatas().get(position);
+                selectedView(view);
             }
 
             @Override
@@ -106,14 +123,40 @@ public class CityPop {
             }
         });
 
+
+        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                PopUtils.setBackgroundAlpha(activity, 1f);
+            }
+        });
+
+    }
+
+
+    private View lastView;
+
+    private void selectedView(View view) {
+        if (lastView != null) {
+            lastView.setSelected(false);
+        }
+        if (!view.isSelected()) {
+            view.setSelected(true);
+            lastView = view;
+        } else {
+            view.setSelected(false);
+        }
+
     }
 
 
     public void show(boolean isCountry) {
         this.mIsCountry = isCountry;
+        // 设置PopupWindow以外部分的背景颜色  有一种变暗的效果
+        PopUtils.setBackgroundAlpha(activity, 0.5f);
         oneAdapter.setDataArray(oneList);
         oneAdapter.notifyDataSetChanged();
-        mPopupWindow.showAtLocation(showView, Gravity.BOTTOM, 0, 0);
+        mPopupWindow.showAtLocation(showView, Gravity.BOTTOM, 0,0);
     }
 
     public void dissmiss() {
@@ -135,4 +178,5 @@ public class CityPop {
             holder.setText(R.id.tv, s.getAreaName());
         }
     }
+
 }

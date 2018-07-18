@@ -39,20 +39,21 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dm_60"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/dm_30"
         android:src="@mipmap/icon_logo"/>
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/ll_mail_login"
-        android:clickable="true"
         android:background="@drawable/selector_login_bg"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/dm_35"
         android:layout_marginRight="@dimen/dm_35"
         android:layout_height="@dimen/dm_49"
-        android:layout_marginTop="@dimen/dm_60">
+        android:layout_marginTop="@dimen/dm_10">
 
         <ImageView
             android:layout_width="wrap_content"

@@ -38,8 +38,9 @@ import com.whmnrc.flymall.views.LoadingDialog;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -81,7 +82,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     public SearchGoodsListPresenter mSearchGoodsListPresenter;
     private int rows = 10;
     private int page = 1;
-    public ArrayList<String> mCids = new ArrayList<>();
+    public Map<String, String> mCids = new TreeMap();
     public String mCid = "";
     private String aid = "";
     private String orderKey = "";
@@ -109,7 +110,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
         selectedView(mTvTabSynthesize);
         mIvArrow.setSelected(false);
 
-        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, mBid, "", "", "", 0, 0);
+        mSearchGoodsListPresenter.getSearchGoodsList("", mCid, mBid, "", "", "", page, rows);
 
         mEtSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -122,9 +123,9 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     mSearchContent = view.getText().toString().trim();
 
                     if (!TextUtils.isEmpty(mSearchContent)) {
-                        for (String cid : mCids) {
-                            mCid = mCid + cid;
-                        }
+
+                        getCids();
+
                         mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
                         return true;
                     }
@@ -171,7 +172,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 if (mCids.size() > 0) {
-                    mCids.remove("," + mSearchTagListAdapter.getDatas().get(position).getId());
+                    mCids.remove(mSearchTagListAdapter.getDatas().get(position).getId());
                 }
 
                 mSearchTagListAdapter.getDatas().remove(position);
@@ -180,17 +181,10 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                     mRvTgaList.setVisibility(View.GONE);
                 }
 
-                for (String cid : mCids) {
-                    mCid = mCid + "," + cid;
-                }
-                if (mCids.size() > 2) {
-                    mCid = mCid.substring(0, mCid.length());
-                }
                 mLoadingDialog.show();
-                if (mCids.size() == 0) {
-                    mCid = "";
-                }
-                mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, "", orderKey, orderType, 0, 0);
+
+                refresh.autoRefresh();
+
             }
 
             @Override
@@ -198,6 +192,26 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                 return false;
             }
         });
+    }
+
+    private void getCids() {
+
+
+        if (mCids.size() == 0) {
+            if (TextUtils.isEmpty(mCid)) {
+                mCid = "0";
+            }
+        } else {
+            mCid = "";
+
+            for (String cid : mCids.keySet()) {
+                mCid = mCid + mCids.get(cid) + ",";
+            }
+
+            if (mCid.contains(",")) {
+                mCid = mCid.substring(0, mCid.length() - 1);
+            }
+        }
     }
 
     @Override
@@ -280,10 +294,10 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
                         @Override
                         public void onConfirm(String selectCid, List<SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean> noNullCid) {
                             for (SearchResultBean.ResultdataBean.CategoryBean.SubCategoryBean cid : noNullCid) {
-                                mCids.add(cid.getId());
+                                mCids.put(cid.getId(), cid.getId());
                             }
                             mLoadingDialog.show();
-                            mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, selectCid, "", aid, orderKey, orderType, 0, 0);
+                            mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, selectCid, "", aid, orderKey, orderType, page, rows);
                             setTab(noNullCid);
                         }
                     });
@@ -317,7 +331,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
     private void selectedView(TextView view) {
         if (lastView != null) {
             lastView.setSelected(false);
-            lastView.setTextColor(ContextCompat.getColor(this, R.color.black));
+            lastView.setTextColor(ContextCompat.getColor(this, R.color.normal_gray));
         }
         if (!view.isSelected()) {
             view.setSelected(true);
@@ -379,13 +393,7 @@ public class GoodsListActivity extends BaseActivity implements SearchGoodsListPr
      */
     private void getNewData() {
         rows = 10;
-        for (String cid : mCids) {
-            mCid = mCid + "," + cid;
-        }
-
-        if (mCids.size() > 2) {
-            mCid = mCid.substring(0, mCid.length());
-        }
+        getCids();
         mSearchGoodsListPresenter.getSearchGoodsList(mSearchContent, mCid, mBid, aid, orderKey, orderType, page, rows);
     }
 

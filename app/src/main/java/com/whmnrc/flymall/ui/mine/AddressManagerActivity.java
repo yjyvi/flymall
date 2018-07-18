@@ -68,7 +68,7 @@ public class AddressManagerActivity extends BaseActivity implements AddressListP
         mIsSelect = getIntent().getBooleanExtra("isSelect", false);
         mAddressId = getIntent().getStringExtra("addressId");
         if (mIsSelect) {
-            setTitle("Select address");
+            setTitle("choose the shipping address");
         } else {
             setTitle("Shipping address");
         }

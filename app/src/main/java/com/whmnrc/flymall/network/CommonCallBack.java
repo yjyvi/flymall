@@ -36,10 +36,14 @@ public abstract class CommonCallBack<T> implements OKHttpManager.ObjectCallback 
 
     @Override
     public void onSuccess(String result) {
-        Type genType = this.getClass().getGenericSuperclass();
-        Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-        T data = JSON.parseObject(result, params[0]);
-        onSuccess(data);
+        try {
+            Type genType = this.getClass().getGenericSuperclass();
+            Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
+            T data = JSON.parseObject(result, params[0]);
+            onSuccess(data);
+        } catch (Exception e) {
+            onError("Network request error! Please try again");
+        }
     }
 
     protected abstract void onSuccess(T data);
